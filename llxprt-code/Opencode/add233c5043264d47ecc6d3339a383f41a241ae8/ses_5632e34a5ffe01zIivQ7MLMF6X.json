@@ -1,0 +1,16 @@
+{
+  "id": "ses_5632e34a5ffe01zIivQ7MLMF6X",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Auditing branch changes for logical design, fixing Enter-triggered subsettings switch failure",
+  "time": {
+    "created": 1763567586139,
+    "updated": 1763568254721
+  },
+  "summary": {
+    "additions": 224,
+    "deletions": 81,
+    "files": 2
+  }
+}

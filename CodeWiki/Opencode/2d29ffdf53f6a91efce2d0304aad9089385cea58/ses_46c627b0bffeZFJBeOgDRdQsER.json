@@ -1,0 +1,17 @@
+{
+  "id": "ses_46c627b0bffeZFJBeOgDRdQsER",
+  "version": "1.0.220",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "parentID": "ses_46ca9d826ffe0F3lHSSf3rfT2e",
+  "title": "Analyze old config system (@explore subagent)",
+  "time": {
+    "created": 1767708132596,
+    "updated": 1767708276563
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

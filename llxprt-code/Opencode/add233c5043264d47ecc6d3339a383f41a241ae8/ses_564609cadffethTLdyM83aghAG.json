@@ -1,0 +1,16 @@
+{
+  "id": "ses_564609cadffethTLdyM83aghAG",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing git diff HEAD, confirming why subsettings switches stay false",
+  "time": {
+    "created": 1763547505490,
+    "updated": 1763547894173
+  },
+  "summary": {
+    "additions": 102,
+    "deletions": 13,
+    "files": 1
+  }
+}

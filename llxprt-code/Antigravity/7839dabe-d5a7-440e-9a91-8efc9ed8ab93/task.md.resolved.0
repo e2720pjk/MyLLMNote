@@ -1,0 +1,3 @@
+- [x] Fetch issue #307 details from `vybestack/llxprt-code`
+- [ ] Get target repository name from user
+- [ ] Create new issue in target repository

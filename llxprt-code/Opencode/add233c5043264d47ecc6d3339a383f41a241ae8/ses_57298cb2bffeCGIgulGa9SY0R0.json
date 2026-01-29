@@ -1,0 +1,17 @@
+{
+  "id": "ses_57298cb2bffeCGIgulGa9SY0R0",
+  "version": "1.0.65",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_572a80ff4ffeOD0L3Fq24pyz8G",
+  "title": "Check build bundling issue (@general subagent)",
+  "time": {
+    "created": 1763308942548,
+    "updated": 1763309545121
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

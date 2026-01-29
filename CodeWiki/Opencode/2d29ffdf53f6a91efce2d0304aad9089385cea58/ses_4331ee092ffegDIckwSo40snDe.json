@@ -1,0 +1,17 @@
+{
+  "id": "ses_4331ee092ffegDIckwSo40snDe",
+  "slug": "hidden-canyon",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "title": "Merging strategy: retain merge-main architecture (A)",
+  "time": {
+    "created": 1768668864367,
+    "updated": 1768669386536
+  },
+  "summary": {
+    "additions": 169,
+    "deletions": 213,
+    "files": 4
+  }
+}

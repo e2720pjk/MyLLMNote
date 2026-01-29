@@ -1,0 +1,16 @@
+{
+  "id": "ses_56ccf46ddffehrGaD3bb2OlDvs",
+  "version": "1.0.68",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing git log for CodeRabbit handling commits and merge candidates",
+  "time": {
+    "created": 1763406035234,
+    "updated": 1763406484891
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

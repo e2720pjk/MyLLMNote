@@ -1,0 +1,5 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_OTHER",
+  "summary":  "Code review report for ASTEditTool refactoring. Identifies critical issues with context display and missing tests.",
+  "updatedAt":  "2026-01-15T00:40:54.506431Z"
+}

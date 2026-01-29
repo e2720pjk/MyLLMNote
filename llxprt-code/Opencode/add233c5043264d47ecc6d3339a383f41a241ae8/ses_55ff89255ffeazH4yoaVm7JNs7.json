@@ -1,0 +1,17 @@
+{
+  "id": "ses_55ff89255ffeazH4yoaVm7JNs7",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_561835c5bffeomVdwjUVK7T8BJ",
+  "title": "分析 generateDynamicToolSettings 設計 (@general subagent)",
+  "time": {
+    "created": 1763621432746,
+    "updated": 1763621681231
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

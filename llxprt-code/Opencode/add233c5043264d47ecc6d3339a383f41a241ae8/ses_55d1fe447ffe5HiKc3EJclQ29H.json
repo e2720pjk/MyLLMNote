@@ -1,0 +1,16 @@
+{
+  "id": "ses_55d1fe447ffe5HiKc3EJclQ29H",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Reviewing PR#20 and branch 20251119-cherry-pick-ui for main merge strategy",
+  "time": {
+    "created": 1763669187512,
+    "updated": 1763669827066
+  },
+  "summary": {
+    "additions": 5150,
+    "deletions": 4475,
+    "files": 60
+  }
+}

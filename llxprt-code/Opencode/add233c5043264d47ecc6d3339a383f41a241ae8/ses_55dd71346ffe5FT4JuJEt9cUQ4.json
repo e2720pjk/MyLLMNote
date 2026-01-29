@@ -1,0 +1,17 @@
+{
+  "id": "ses_55dd71346ffe5FT4JuJEt9cUQ4",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_55dd752c7ffeYR3p7Z9VkkC0T5",
+  "title": "Find React context providers (@general subagent)",
+  "time": {
+    "created": 1763657182393,
+    "updated": 1763657870571
+  },
+  "summary": {
+    "additions": 101,
+    "deletions": 34,
+    "files": 9
+  }
+}

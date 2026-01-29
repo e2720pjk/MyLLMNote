@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Design document for the 'Spotlight Pipeline', enabling fast PR analysis by isolating affected subgraphs (Diff + Dependents) instead of full-repo analysis.",
+  "updatedAt": "2026-01-22T03:35:33.891377Z"
+}

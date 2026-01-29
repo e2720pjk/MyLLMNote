@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "This plan addresses two critical issues in the MCP implementation:\n1.  **Display Glitch**: Fixes \"untranslated text\" (raw ANSI codes) by modifying `HistoryItemDisplay.tsx` to skip sanitization for trusted system messages.\n2.  **Status Logic**: Fixes incorrect \"Not Authenticated\" status for expired tokens by removing the expiration check in `getCredentials` within `FileTokenStorage` and `KeychainTokenStorage`, allowing the UI to correctly identify and display \"Expired\" status.",
+  "updatedAt": "2025-11-29T20:51:22.511487Z"
+}

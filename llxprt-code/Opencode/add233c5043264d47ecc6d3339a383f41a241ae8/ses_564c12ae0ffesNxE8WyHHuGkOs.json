@@ -1,0 +1,16 @@
+{
+  "id": "ses_564c12ae0ffesNxE8WyHHuGkOs",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing configuration for allowedTools excludeTools integration",
+  "time": {
+    "created": 1763541177631,
+    "updated": 1763543482087
+  },
+  "summary": {
+    "additions": 296,
+    "deletions": 20,
+    "files": 6
+  }
+}

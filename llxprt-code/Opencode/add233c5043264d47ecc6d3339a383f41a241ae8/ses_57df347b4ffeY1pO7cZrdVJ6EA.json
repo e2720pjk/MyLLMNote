@@ -1,0 +1,16 @@
+{
+  "id": "ses_57df347b4ffeY1pO7cZrdVJ6EA",
+  "version": "1.0.62",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "DEBUG=true llxprt --provider xAI",
+  "time": {
+    "created": 1763118463061,
+    "updated": 1763122523073
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

@@ -1,0 +1,4 @@
+- [ ] Check if [packages/cli/dist/index.js](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/dist/index.js) exists
+- [ ] Search for "chutes" in the codebase to understand the profile
+- [ ] Verify `llxprt` command execution (e.g. help or version)
+- [ ] Answer user about capability

@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Detailed plan to port the Tabs Logic from the current feature branch to a clean upstream main branch (llxprt-code-4), ensuring upstream improvements (smooth scrolling, error handling) are preserved.",
+  "updatedAt": "2025-12-18T03:09:38.644052Z"
+}

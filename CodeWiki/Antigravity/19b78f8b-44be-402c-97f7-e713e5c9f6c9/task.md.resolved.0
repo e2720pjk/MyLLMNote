@@ -1,0 +1,11 @@
+# Task: Investigate llxprt for Agent Workflow
+
+- [ ] Run `llxprt --help` to understand CLI options <!-- id: 0 -->
+- [ ] Investigate Interactive vs Non-interactive modes <!-- id: 1 -->
+    - [ ] Test non-interactive command execution
+    - [ ] Check if interactive-only features (slash commands) are accessible via flags
+- [ ] Analyze codebase for CLI argument parsing and mode handling <!-- id: 2 -->
+- [ ] Design `llxprt` Agent Workflow Template <!-- id: 3 -->
+    - [ ] Define recommended mode (Interactive vs Non-interactive)
+    - [ ] Outline workflow steps
+- [ ] Create `llxprt_workflow_proposal.md` with findings and recommendations <!-- id: 4 -->

@@ -1,0 +1,36 @@
+# Walkthrough - Fix Input Prompt Misalignment & Height Calculation Stability
+
+## Goal
+Fix the vertical misalignment of the input prompt in `llxprt-code-4` and stabilize the dynamic height calculation to prevent UI jitter.
+
+## Changes
+
+### 1. Input Prompt Misalignment
+- **File:** [packages/cli/src/ui/components/InputPrompt.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/InputPrompt.tsx)
+- **Issue:** The prompt text was rendering one line below the `>` symbol due to an extra newline in the [Text](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/text-buffer.ts#2207-2450) component.
+- **Fix:** Removed the newline and ensured `flexDirection="row"` alignment.
+
+### 2. Height Calculation Stability
+- **File:** [packages/cli/src/ui/AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/AppContainer.tsx)
+- **Issue:**
+    - `llxprt-code-2` was stable but static (only updated on resize), causing overflow with dynamic panels.
+    - `llxprt-code-4` (initial fix) was dynamic but prone to jitter loops.
+- **Fix:** Aligned with `gemini-cli` strategy + `llxprt` support.
+    - Updated `useLayoutEffect` dependency array to: `[buffer, terminalHeight, terminalWidth, settings.merged.showTodoPanel]`.
+    - **Why:**
+        - `buffer`: Updates height when user types (Composer grows).
+        - `showTodoPanel`: Updates height when TodoPanel toggles.
+        - `terminalHeight/Width`: Updates on resize.
+        - **Stability:** During LLM streaming, `buffer` is constant, so height is NOT recalculated, preventing jitter.
+
+## Verification Results
+
+### Automated Tests
+- `npm run lint`: Passed.
+- `npm run typecheck`: Passed.
+- `npm run test`: Passed.
+
+### Manual Verification
+- **Typing:** Input box grows, footer adjusts correctly.
+- **TodoPanel:** Toggling panel adjusts footer height correctly.
+- **Streaming:** UI remains stable (no jitter) while LLM outputs text.

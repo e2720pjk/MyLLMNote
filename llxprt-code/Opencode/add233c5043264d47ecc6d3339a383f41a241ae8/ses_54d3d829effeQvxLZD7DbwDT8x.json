@@ -1,0 +1,16 @@
+{
+  "id": "ses_54d3d829effeQvxLZD7DbwDT8x",
+  "version": "1.0.106",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing review comments for truthfulness in PR22",
+  "time": {
+    "created": 1763935681889,
+    "updated": 1763935836425
+  },
+  "summary": {
+    "additions": 27,
+    "deletions": 12,
+    "files": 1
+  }
+}

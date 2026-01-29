@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Walkthrough of the MCP display and status logic fixes.\n1.  **Display Fix**: Modified `HistoryItemDisplay.tsx` to skip ANSI sanitization for trusted system messages.\n2.  **Status Fix**: Removed expiration checks in `FileTokenStorage` and `KeychainTokenStorage` to allow UI to handle expiration state.\n3.  **Validation**: Added structural validation in `KeychainTokenStorage` to ensure robustness.\n4.  **Verification**: Verified with `vitest` unit tests.",
+  "updatedAt": "2025-11-29T21:19:14.173843Z"
+}

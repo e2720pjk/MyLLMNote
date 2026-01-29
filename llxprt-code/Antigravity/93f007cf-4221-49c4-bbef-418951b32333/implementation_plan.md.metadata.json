@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Comprehensive plan to fix terminal corruption by introducing a centralized `SignalManager` to handle process signals and cleanup, replacing ad-hoc handlers.",
+  "updatedAt": "2025-11-29T00:50:38.042856Z",
+  "version": "2"
+}

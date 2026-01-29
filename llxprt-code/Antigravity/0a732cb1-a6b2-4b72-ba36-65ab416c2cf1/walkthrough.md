@@ -1,0 +1,56 @@
+# Walkthrough - IME Ctrl+C, Deadlock & Terminal Leakage Fix
+
+## Changes
+
+### CLI
+
+#### [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/AppContainer.tsx)
+
+-   Replaced `process.exit(0)` with `gracefulExit(0)` in the `useEffect` hook that handles `quittingMessages`.
+-   This ensures that when the application exits via the `/quit` command or the IME-mapped `Ctrl+C` path, the terminal is correctly restored.
+
+#### [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)
+
+-   Updated `registerCleanup` to fix a deadlock where the cleanup handler waited for the process to exit before unmounting the UI.
+-   **Optimization**: Removed `await instance.waitUntilExit()` entirely as it was found to hang during explicit exit.
+-   Replaced with: `instance.unmount()` -> `await 10ms` (flush) -> `instance.clear()`.
+-   **Leakage Fix**: Replaced `process.exit()` with `gracefulExit()` in `SIGTERM`/`SIGINT` handlers.
+
+#### [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts)
+
+-   Updated `runExitCleanup` to explicitly write `DISABLE_BRACKETED_PASTE`, `DISABLE_FOCUS_TRACKING`, and `SHOW_CURSOR` sequences to stdout.
+-   Calls `disableProtocol()` (Kitty Keyboard Protocol) to reset advanced key handling.
+-   Explicitly calls `process.stdin.setRawMode(false)`.
+-   **Drain Fix**: Added logic to wait for `process.stdout` 'drain' event (with 100ms timeout) after writing reset sequences.
+-   **Graceful Exit**: Implemented `gracefulExit(code)` which:
+    1.  Runs `runExitCleanup()`.
+    2.  Pauses and unrefs `stdin`.
+    3.  Sets `process.exitCode`.
+    4.  Allows natural process termination (with 1s fallback timeout).
+
+#### [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/kittyProtocolDetector.ts)
+
+-   Exported `disableProtocol` so it can be called from `cleanup.ts`.
+
+## Verification Results
+
+### Manual Verification
+> [!IMPORTANT]
+> Please perform the following steps to verify the fixes:
+
+1.  **Command Quit Test (Optimization Fix)**:
+    -   Launch the CLI: `npm run dev` (or equivalent).
+    -   Run `/quit`.
+    -   **Expected Result**: The CLI should exit **immediately** (no 5s delay).
+
+2.  **IME Ctrl+C Test (Terminal Corruption & Leakage Fix)**:
+    -   Launch the CLI.
+    -   Enable an IME (e.g., Chinese/Japanese).
+    -   Press `Ctrl+C` (which generates the mapped sequence).
+    -   **Expected Result**: The CLI should exit *cleanly*.
+    -   **Leakage Check**: After exit, type `Ctrl+C` in your terminal. It should generate a new prompt line (SIGINT) or copy text, NOT print `^C` or other characters as input.
+
+3.  **Standard Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Press standard `Ctrl+C`.
+    -   **Expected Result**: Clean exit.

@@ -1,0 +1,17 @@
+{
+  "id": "ses_43c501146ffehY118DBnTBXjnW",
+  "slug": "sunny-cactus",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Notices.txt copyright updates for hono/node-server and tiktoken verification",
+  "time": {
+    "created": 1768514645689,
+    "updated": 1768516714666
+  },
+  "summary": {
+    "additions": 73,
+    "deletions": 6,
+    "files": 2
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Walkthrough of the fix for Issue #26, including changes to cleanup.ts and gemini.tsx, and verification steps.",
+  "updatedAt": "2025-12-03T00:06:15.392414Z"
+}

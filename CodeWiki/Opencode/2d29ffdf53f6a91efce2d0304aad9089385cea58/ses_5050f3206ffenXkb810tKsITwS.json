@@ -1,0 +1,17 @@
+{
+  "id": "ses_5050f3206ffenXkb810tKsITwS",
+  "version": "1.0.134",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "parentID": "ses_5051a2fe8ffebRHDhja0Tsd1cb",
+  "title": "分析依賴分析架構和瓶頸 (@explore subagent)",
+  "time": {
+    "created": 1765146676729,
+    "updated": 1765146834750
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

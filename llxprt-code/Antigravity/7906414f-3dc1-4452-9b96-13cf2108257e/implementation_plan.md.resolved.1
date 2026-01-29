@@ -1,0 +1,63 @@
+# Implementation Plan - Extract UI Architecture to Open Source Template
+
+## Goal
+Extract the generic UI architecture and flow from the current Shopify App into a reusable open-source template (npm package). This allows the main project to focus on business logic while the template handles the UI shell, navigation, and common Shopify app patterns.
+
+## User Review Required
+> [!IMPORTANT]
+> This plan involves refactoring the current [app/routes/app/route.tsx](file:///Users/caishanghong/devbox/workspace/test/app/routes/app/route.tsx) and potentially [app/root.tsx](file:///Users/caishanghong/devbox/workspace/test/app/root.tsx) to use a new library.
+> We need to decide if we want to convert the current repo into a monorepo (using workspaces) to host both the app and the library, or if the library should be a completely separate repository.
+> **Recommendation**: Start with a monorepo structure (`packages/template` and `app`) for easier development, then publish the template package.
+
+## Proposed Changes
+
+### 1. Create Template Package
+Create a new repository `shopify-app-template` with the following structure:
+- `packages/lib/`: The core library code.
+    - `components/`: Reusable UI components.
+    - `flows/`: Encapsulated business flows (e.g., `ExtensionInstallFlow`).
+    - `hooks/`: Logic hooks.
+- `examples/demo-app/`: **[NEW]** A standalone Remix app that imports `packages/lib` to demonstrate functionality.
+    - This allows developing and testing the template in isolation.
+    - Serves as a "Living Documentation" for the flows.
+
+### 2. Extract Logic & Create Flow Components
+Move the following logic to the template package:
+- `AppProvider` setup.
+- `NavMenu` rendering logic.
+- **[NEW] `ExtensionInstallFlow` Component**:
+    - Encapsulates the UI (Modal/Prompt) and Logic (Redirect -> Return -> Notify).
+    - Accepts props: `targetUrl`, `onComplete`, `content`.
+- Loading state handling.
+- I18n setup.
+
+### 3. Refactor Original App
+Modify [app/routes/app/route.tsx](file:///Users/caishanghong/devbox/workspace/test/app/routes/app/route.tsx) to use the new package:
+- Import `AppLayout` from the new package.
+- Pass `apiKey`, `shop`, `navItems`, and `children` (Outlet) to `AppLayout`.
+
+### 4. Define Interface
+The `AppLayout` component will accept:
+```typescript
+interface AppLayoutProps {
+  apiKey: string;
+  shop: string;
+  i18n: any; // Polaris i18n data
+  navItems: { label: string; href: string; rel?: string }[];
+  children: React.ReactNode;
+}
+```
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run test` to ensure existing tests pass.
+- Add unit tests in the new package for `AppLayout`.
+
+### Manual Verification
+- Run `npm run dev` to start the app.
+- Verify the app loads correctly with the new layout.
+- Verify navigation works.
+- Verify loading states work.
+- Verify i18n works (change locale).
+

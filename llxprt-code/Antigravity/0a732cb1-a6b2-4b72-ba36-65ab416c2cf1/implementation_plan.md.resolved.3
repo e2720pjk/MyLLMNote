@@ -1,0 +1,43 @@
+# Fix Deadlock in /quit Command
+
+## Goal Description
+Fix the deadlock that occurs when running `/quit`. The issue is caused by the cleanup handler waiting for `instance.waitUntilExit()` (which waits for unmount) *before* calling `instance.unmount()`. Additionally, we want to prevent future hangs by adding a timeout.
+
+## User Review Required
+> [!IMPORTANT]
+> This change reorders the cleanup operations and adds a safety timeout. We call `instance.unmount()` first, then wait for it to complete with a 5-second timeout to ensure the process can always exit.
+
+## Proposed Changes
+
+### CLI
+#### [MODIFY] [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)
+- Update the [registerCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#14-17) callback to use `unmount()`, `Promise.race()` with a timeout, and `try-catch`.
+
+```typescript
+  registerCleanup(async () => {
+    try {
+      instance.unmount();
+      // Wait for exit or timeout after 5 seconds to prevent deadlocks
+      await Promise.race([
+        instance.waitUntilExit(),
+        new Promise((resolve) => setTimeout(resolve, 5000))
+      ]);
+      instance.clear();
+    } catch (error) {
+      // Fallback if cleanup fails
+      console.error('Cleanup error:', error);
+    }
+  });
+```
+
+## Verification Plan
+
+### Manual Verification
+1.  **Command Quit Test**:
+    -   Launch the CLI.
+    -   Run `/quit`.
+    -   **Expected Result**: The CLI should exit immediately (or within 5s if it hangs) without blocking indefinitely.
+2.  **Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Press `Ctrl+C`.
+    -   **Expected Result**: Clean exit.

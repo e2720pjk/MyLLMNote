@@ -1,0 +1,38 @@
+# Fix UI Instability in MainChat Tabs
+
+## Goal Description
+The `Tabs` feature in [llxprt-code-4](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4) causes UI instability (flashing, re-printing history) because switching tabs unmounts and remounts the [MainContent](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx#23-155) components. Ink's `<Static>` component, used for chat history, loses its internal state (tracked items) upon unmounting, causing it to re-render the entire history when the tab is revisited.
+
+This plan refactors [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx) to render all tab contents simultaneously but control their visibility using `display: 'none' | 'flex'`. This ensures that `<Static>` remains mounted and preserves its state, preventing duplicate outputs and flickering.
+
+## User Review Required
+> [!IMPORTANT]
+> This change keeps all tab components mounted in memory. While this improves stability, it slightly increases memory usage. Given the text-based nature of the UI, this should be negligible.
+
+## Proposed Changes
+
+### [packages/cli](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli)
+
+#### [MODIFY] [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx)
+- Refactor [renderTabContent](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx#354-422) to `renderSafeTabContent`.
+- Instead of a `switch` statement returning one component, render `Box` wrappers for each tab (Chat, Debug, Todo, System).
+- Apply `display: activeTab === '...' ? 'flex' : 'none'` to each wrapper.
+- Ensure [key](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx#61-77) props are stable.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run build && npm run test` to ensure no regressions in existing tests.
+- Since this is a visual/interactive fix for Ink, standard unit tests might not catch the "flashing" behavior, but we will ensure the component logic is valid.
+
+### Manual Verification
+- **Test 1: Tab Persistence**
+    1. Start the CLI.
+    2. Send a message to generate history.
+    3. Switch to 'Debug' tab.
+    4. Switch back to 'Chat' tab.
+    5. **Pass Condition**: The chat history is NOT re-printed; the view looks exactly as it did before switching.
+- **Test 2: New Output**
+    1. Stay in 'Chat' tab.
+    2. Send another message.
+    3. **Pass Condition**: New message appends correctly without re-rendering old messages.

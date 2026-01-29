@@ -1,0 +1,16 @@
+{
+  "id": "ses_518dd46a1ffenOoGio7xvc3Wrl",
+  "version": "1.0.129",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing customWittyPhrases system prompts and UI configurability",
+  "time": {
+    "created": 1764814403934,
+    "updated": 1764844017166
+  },
+  "summary": {
+    "additions": 289,
+    "deletions": 0,
+    "files": 2
+  }
+}

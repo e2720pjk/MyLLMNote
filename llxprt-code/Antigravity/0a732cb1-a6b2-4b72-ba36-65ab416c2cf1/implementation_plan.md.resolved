@@ -1,0 +1,58 @@
+# Fix Terminal Leakage (Graceful Exit)
+
+## Goal Description
+Fix the persistent terminal leakage where control keys are interpreted as input after exit. Previous attempts using `process.exit(0)` with explicit cleanup failed, likely because `process.exit()` abruptly terminates the process before IO buffers are fully flushed or handles are closed. We will implement a `gracefulExit` strategy that allows Node.js to terminate naturally.
+
+## User Review Required
+> [!IMPORTANT]
+> This change introduces a `gracefulExit` function in [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/utils/cleanup.ts). Instead of calling `process.exit()`, we will:
+> 1. Run cleanup.
+> 2. Pause and unref `stdin`.
+> 3. Set `process.exitCode`.
+> 4. Allow the event loop to drain.
+> 5. Set a fallback timeout to force exit if it hangs.
+
+## Proposed Changes
+
+### CLI
+#### [MODIFY] [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts)
+- Export `gracefulExit(code: number)`.
+- Implement logic to pause stdin, set exitCode, and set a fallback timeout.
+
+```typescript
+export async function gracefulExit(code: number = 0) {
+  await runExitCleanup();
+
+  // Allow process to exit naturally by unreferencing stdin
+  if (process.stdin) {
+    process.stdin.pause();
+    process.stdin.unref();
+  }
+
+  process.exitCode = code;
+
+  // Fallback: Force exit if process doesn't exit naturally within 1s
+  setTimeout(() => {
+    process.exit(code);
+  }, 1000).unref();
+}
+```
+
+#### [MODIFY] [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/AppContainer.tsx)
+- Replace `process.exit(0)` with `gracefulExit(0)`.
+
+#### [MODIFY] [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)
+- Replace `process.exit(0)` and `process.exit(130)` with `gracefulExit(...)` in signal handlers.
+
+## Verification Plan
+
+### Manual Verification
+1.  **IME Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Enable non-English IME.
+    -   Run `/quit` or press `Ctrl+C`.
+    -   **Expected Result**: Clean exit, no leakage.
+
+2.  **Standard Exit Test**:
+    -   Run `/quit`.
+    -   **Expected Result**: Immediate exit (no hang).

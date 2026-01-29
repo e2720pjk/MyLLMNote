@@ -1,0 +1,16 @@
+{
+  "id": "ses_48206342effekdGANBWUtFH4HQ",
+  "version": "1.0.134",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/var/folders/8m/309xc4vn3737_yftd2xz73l40000gn/T/vibe-kanban/worktrees/22b3-/CodeWiki",
+  "title": "ACP Session d914f912-ed08-455e-9f4e-ddc2a112c93d",
+  "time": {
+    "created": 1767345081297,
+    "updated": 1767345601804
+  },
+  "summary": {
+    "additions": 245,
+    "deletions": 205,
+    "files": 5
+  }
+}

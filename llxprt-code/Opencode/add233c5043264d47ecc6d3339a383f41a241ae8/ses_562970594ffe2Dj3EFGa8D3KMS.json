@@ -1,0 +1,16 @@
+{
+  "id": "ses_562970594ffe2Dj3EFGa8D3KMS",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing git diff HEAD Enter key issue",
+  "time": {
+    "created": 1763577494123,
+    "updated": 1763578252867
+  },
+  "summary": {
+    "additions": 35,
+    "deletions": 1594,
+    "files": 8
+  }
+}

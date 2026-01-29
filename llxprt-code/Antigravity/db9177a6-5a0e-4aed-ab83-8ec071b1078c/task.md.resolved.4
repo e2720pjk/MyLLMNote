@@ -1,0 +1,15 @@
+# UI Architecture Parity Analysis
+
+- [x] **Foundation**: Port Virtualization Engine <!-- id: 5 -->
+    - [x] Port [VirtualizedList.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/VirtualizedList.tsx) and [ScrollableList.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/ScrollableList.tsx)
+    - [x] Port [useAnimatedScrollbar.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/useAnimatedScrollbar.ts), [useMouse.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/useMouse.ts), [useMouseClick.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/useMouseClick.ts)
+- [ ] **Components**: Port Missing UI Components <!-- id: 6 -->
+    - [ ] Port [ConfigInitDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/ConfigInitDisplay.tsx)
+    - [ ] Re-implement [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx) (adapted for llxprt)
+- [ ] **Integration**: Refactor Layout <!-- id: 7 -->
+    - [ ] Update [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) to use [MainContent](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx#23-155)
+    - [ ] Verify integration with `TodoPanel` and `Header`
+- [ ] **Verification**: Validate Performance & Features <!-- id: 8 -->
+    - [ ] Verify scrolling in long sessions
+    - [ ] Verify mouse interactions
+    - [ ] Ensure no regressions in existing features

@@ -1,0 +1,16 @@
+{
+  "id": "ses_511508d75ffe8Wxy6ZRBdsVCBb",
+  "version": "1.0.133",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing CTRL+O vs CTRL+S change gaps",
+  "time": {
+    "created": 1764941066890,
+    "updated": 1764964408519
+  },
+  "summary": {
+    "additions": 501,
+    "deletions": 97,
+    "files": 10
+  }
+}

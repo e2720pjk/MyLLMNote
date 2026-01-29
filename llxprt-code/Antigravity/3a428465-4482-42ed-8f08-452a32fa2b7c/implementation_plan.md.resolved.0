@@ -1,0 +1,307 @@
+# Performance Optimization for SettingsDialog
+
+## Goal Description
+Optimize [SettingsDialog.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx) to prevent unnecessary re-execution of [generateDynamicToolSettings](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/utils/dynamicSettings.ts#92-154) on every render. Currently, [generateSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#219-226) is called directly in the component body, causing performance overhead when navigating the settings menu, particularly in the `coreToolSettings` section.
+
+## Proposed Changes
+
+### packages/cli/src/ui/components
+#### [MODIFY] [SettingsDialog.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx)
+- Import `useMemo` from 'react'.
+- Wrap the [generateSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#219-226) call in `useMemo`.
+- Add appropriate dependencies: `subSettingsMode.isActive`, `subSettingsMode.parentKey`, `selectedScope`, `settings`, `globalPendingChanges`, `config`.
+
+```typescript
+  const items = useMemo(() => {
+    if (subSettingsMode.isActive) {
+      return generateSubSettingsItems(subSettingsMode.parentKey);
+    } else {
+      return generateNormalSettingsItems();
+    }
+  }, [
+    subSettingsMode.isActive,
+    subSettingsMode.parentKey,
+    selectedScope,
+    settings,
+    globalPendingChanges,
+    config,
+  ]);
+```
+- Note: [generateSubSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#227-360) and [generateNormalSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#361-455) use state variables like `settings` and `globalPendingChanges`, so they need to be included in the dependency array. Alternatively, [generateSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#219-226) function itself could be wrapped in `useCallback` and then called, but wrapping the result in `useMemo` is cleaner as per the recommendation.
+- However, [generateSubSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#227-360) and [generateNormalSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#361-455) are defined *inside* the component and capture scope variables. To use `useMemo` effectively, we need to ensure we aren't capturing stale closures if we don't include everything.
+- Actually, [generateSubSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#227-360) and [generateNormalSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#361-455) are defined *inside* the component. If we wrap the *result* in `useMemo`, we need to make sure we list all dependencies that those functions use.
+- Dependencies identified:
+    - `subSettingsMode` (isActive, parentKey)
+    - `config`
+    - `settings`
+    - `globalPendingChanges`
+    - `selectedScope` (used in [generateSubSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#227-360) -> [updateToolExclusion](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#75-109) -> `settings` which is already there, but `selectedScope` is passed to [updateToolExclusion](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#75-109))
+    - `vimEnabled` (used in [generateNormalSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#361-455) -> `toggleVimEnabled` - wait, `toggleVimEnabled` is a function, likely stable or changes. `vimEnabled` value is used in the comparison `newValue !== vimEnabled`).
+    - `setPendingSettings`, `setModifiedSettings`, `setRestartRequiredSettings`, `setGlobalPendingChanges`, `setShowRestartPrompt`, `toggleVimEnabled` (setters/functions are usually stable).
+
+- **Refined Approach**:
+    The recommendation suggested:
+    ```typescript
+    const items = useMemo(() => {
+      return generateSettingsItems();
+    }, [
+      subSettingsMode.isActive,
+      subSettingsMode.parentKey,
+      selectedScope,
+      settings,
+      globalPendingChanges,
+      config
+    ]);
+    ```
+    This assumes [generateSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#219-226) (and the functions it calls) only rely on these values.
+    Let's check [generateNormalSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#361-455):
+    - Uses `pendingSettings`. **Wait, `pendingSettings` is missing from the recommended list!**
+    - Uses `vimEnabled`.
+    
+    If `pendingSettings` changes (e.g. user toggles a switch), `items` needs to be re-generated to reflect the new state (although `items` structure might not change, the [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) functions inside `items` capture the *current* state? No, [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) functions are closures. If we memoize `items`, the [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) functions inside them will be stale if they capture state from the render where they were created).
+    
+    Wait, [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) functions in `items` use `pendingSettings` and `settings`.
+    If we memoize `items`, the [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) function attached to an item will be the one created when `items` was last computed.
+    Inside [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452):
+    ```typescript
+    const currentValue = getSettingValue(key, pendingSettings, {});
+    ```
+    If `pendingSettings` is captured from closure, it will be stale.
+    However, `pendingSettings` is a state variable.
+    
+    **CRITICAL**: If we use `useMemo`, the functions defined inside (like [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452)) will capture the scope at the time of creation. If `pendingSettings` changes but is NOT in the dependency array, [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) will see old `pendingSettings`.
+    
+    So `pendingSettings` MUST be in the dependency array.
+    Also `vimEnabled`.
+    
+    The recommended solution in the prompt was:
+    ```typescript
+    const items = useMemo(() => {
+      return generateSettingsItems();
+    }, [
+      subSettingsMode.isActive,
+      subSettingsMode.parentKey,
+      selectedScope,
+      settings,
+      globalPendingChanges,
+      config
+    ]);
+    ```
+    It missed `pendingSettings`.
+    
+    However, [generateSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#219-226) calls [generateSubSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#227-360) or [generateNormalSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#361-455).
+    [generateNormalSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#361-455) creates objects with [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) methods.
+    
+    If we memoize `items`, we are memoizing the *list of objects*.
+    The [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) method inside these objects captures `pendingSettings`.
+    
+    If `pendingSettings` changes, we *must* re-generate the items so that [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) captures the new `pendingSettings`.
+    
+    But wait, `pendingSettings` changes on *every* toggle. If we include `pendingSettings` in `useMemo`, then `items` will be re-generated on every toggle.
+    This defeats the purpose if the goal is to avoid re-generation when *nothing* relevant changes.
+    But when `pendingSettings` changes, we *do* need to re-render to show the new value (e.g. checkbox state).
+    
+    The issue reported is:
+    "This line of code executes every time the component re-renders... generateDynamicToolSettings(config) is called... This is a compute-intensive operation".
+    
+    The problem is that [generateDynamicToolSettings](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/utils/dynamicSettings.ts#92-154) is called even when `pendingSettings` changes (which triggers a re-render).
+    
+    If we include `pendingSettings` in the dependency array, [generateDynamicToolSettings](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/utils/dynamicSettings.ts#92-154) will STILL be called every time `pendingSettings` changes (i.e., every time the user toggles a setting).
+    
+    **Better Solution (Scheme 3 in the report)**:
+    Separate the *expensive* part ([generateDynamicToolSettings](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/utils/dynamicSettings.ts#92-154)) from the *cheap* part (creating the item objects with closures).
+    
+    The report suggested:
+    ```typescript
+    const dynamicToolSettings = useMemo(() => {
+      if (subSettingsMode.isActive && subSettingsMode.parentKey === 'coreToolSettings' && config) {
+        return generateDynamicToolSettings(config);
+      }
+      return {};
+    }, [subSettingsMode.isActive, subSettingsMode.parentKey, config]);
+    ```
+    
+    And then use `dynamicToolSettings` inside [generateSubSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#227-360).
+    
+    This way, `dynamicToolSettings` is only re-computed when `config` or mode changes, NOT when `pendingSettings` changes.
+    The `items` array (and the [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) closures) can still be re-generated on every render (or memoized with `pendingSettings` dependency), but the *expensive* [generateDynamicToolSettings](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/utils/dynamicSettings.ts#92-154) call is skipped.
+    
+    I will adopt **Scheme 3** (Separating dynamic settings generation) as it is more robust for performance in this specific case where we want to avoid the expensive call even when other state changes.
+    
+    Actually, the report recommended Scheme 1. Let's re-read Scheme 1.
+    Scheme 1: `useMemo` for `items`.
+    Dependencies: `subSettingsMode.isActive`, `subSettingsMode.parentKey`, `selectedScope`, `settings`, `globalPendingChanges`, `config`.
+    It *omitted* `pendingSettings`.
+    
+    If `pendingSettings` is omitted, `items` won't update when `pendingSettings` changes.
+    But `items` contains `value` (the key) and [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) (the handler).
+    Does `items` contain the *current value* (checked/unchecked)?
+    
+    Let's look at [SettingsDialog.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx) again.
+    `items` is an array of `{ label, value, type, toggle }`.
+    It does NOT seem to contain the *current value* (boolean state).
+    The *rendering* of the items happens later, likely using `items.map(...)` where it looks up the value from `pendingSettings`.
+    
+    Let's check how `items` is used.
+    I need to see the rendering part of [SettingsDialog.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx).
+    
+    If `items` only defines the *structure* and *callbacks*, and the *callbacks* use `pendingSettings`, then we have a problem with stale closures if `pendingSettings` is not a dependency.
+    
+    UNLESS [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) uses a functional update for `setPendingSettings` (it does: `setPendingSettings((prev) => ...)`).
+    BUT [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) also reads `currentValue` to determine `newValue`:
+    ```typescript
+    const currentValue = getSettingValue(fullKey, pendingSettings, settings.merged);
+    const newValue = !currentValue;
+    ```
+    Here `pendingSettings` is used directly. If [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) is stale, `pendingSettings` will be stale.
+    
+    So `pendingSettings` MUST be a dependency if we memoize `items` which contains [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452).
+    
+    If `pendingSettings` is a dependency, then `items` regenerates on every toggle.
+    And [generateDynamicToolSettings](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/utils/dynamicSettings.ts#92-154) runs on every toggle.
+    
+    Is that acceptable?
+    Maybe. The user complains it runs "every time the component re-renders".
+    Re-renders happen when:
+    1. `pendingSettings` changes (user toggles something).
+    2. `cursorVisible` changes (blinking cursor, every 500ms!).
+    
+    **AHA!**
+    Line 469: `const id = setInterval(() => setCursorVisible((v) => !v), 500);`
+    
+    The component re-renders **every 500ms** due to the blinking cursor effect (even if not editing?).
+    Line 465: `if (!editingKey) { setCursorVisible(true); return; }`
+    The interval is only set if `editingKey` is present.
+    
+    So if I am just navigating (not editing), it doesn't blink.
+    
+    But if I am navigating, `activeSettingIndex` changes.
+    `activeSettingIndex` is state.
+    Does [generateSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#219-226) depend on `activeSettingIndex`? No.
+    
+    So if I move up/down, [SettingsDialog](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#110-1254) re-renders.
+    And [generateSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#219-226) runs.
+    And [generateDynamicToolSettings](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/utils/dynamicSettings.ts#92-154) runs.
+    
+    This is the main waste. Navigating the list shouldn't regenerate the list.
+    
+    So `useMemo` for `items` is good.
+    But we need to handle the `pendingSettings` dependency.
+    
+    If we include `pendingSettings`, then navigating (changing `activeSettingIndex`) will NOT trigger regeneration. This is a big win.
+    Toggling a setting (changing `pendingSettings`) WILL trigger regeneration. This is acceptable (one expensive call per user action is fine, one per navigation step is bad).
+    
+    So Scheme 1 is actually fine, provided we include `pendingSettings` (and `vimEnabled` etc) in the dependency list to avoid stale closures.
+    
+    **However**, Scheme 3 is even better because it memoizes the *expensive part* ([generateDynamicToolSettings](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/utils/dynamicSettings.ts#92-154)) independently of `pendingSettings`.
+    
+    If I use Scheme 3:
+    1. `dynamicToolSettings` is memoized (depends only on `config`).
+    2. `items` is NOT memoized (or memoized with `pendingSettings`).
+    
+    If `items` is not memoized, it runs on every render (including navigation).
+    But [generateSubSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#227-360) will be cheap because [generateDynamicToolSettings](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/utils/dynamicSettings.ts#92-154) is cached.
+    
+    So Scheme 3 solves the "expensive calculation during navigation" problem AND the "expensive calculation during toggle" problem.
+    
+    Scheme 1 (with `pendingSettings` dependency) solves "expensive calculation during navigation" but NOT "during toggle".
+    
+    The report recommends Scheme 1 but with a specific list of dependencies that *excludes* `pendingSettings`.
+    If they exclude `pendingSettings`, then [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) will be stale.
+    
+    Wait, let's look at [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) implementation again.
+    ```typescript
+    toggle: () => {
+      // ...
+      const currentValue = getSettingValue(fullKey, pendingSettings, settings.merged);
+      const newValue = !currentValue;
+      setPendingSettings((prev) => setPendingSettingValue(fullKey, newValue, prev));
+      // ...
+    }
+    ```
+    If `pendingSettings` is stale, `currentValue` will be wrong (it will be the value at the time `items` was generated).
+    So if I toggle it ON, `items` is generated (value is ON).
+    Then I toggle it OFF. `pendingSettings` updates.
+    If `items` is NOT regenerated, [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) still sees `pendingSettings` where value is ON.
+    So `currentValue` is ON. `newValue` becomes OFF.
+    So I can toggle it OFF.
+    
+    But if I toggle it again (expecting ON), [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) still sees `pendingSettings` where value is ON.
+    So `currentValue` is ON. `newValue` becomes OFF.
+    So I can't toggle it back ON!
+    
+    So `pendingSettings` **MUST** be a dependency for `items` if [toggle](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#371-452) closes over it.
+    
+    **Therefore, Scheme 3 is the superior technical solution.** It isolates the expensive data generation from the cheap UI item generation.
+    
+    I will propose Scheme 3 in the implementation plan, or a modified Scheme 1 that includes `pendingSettings` but explain that Scheme 3 is better if we want to avoid cost on toggle.
+    
+    Actually, the user's report says:
+    "推薦實施: 建議採用方案1（useMemo），因為：... 4. 不會影響現有的邏輯結構"
+    And the dependency list in Scheme 1 *includes* `settings` but *excludes* `pendingSettings`.
+    Wait, `settings` is `LoadedSettings` object. `pendingSettings` is the local state.
+    
+    The report might have missed `pendingSettings` in the dependency list, or I am misinterpreting something.
+    
+    Let's look at the report's Scheme 1 again.
+    ```typescript
+    }, [
+      subSettingsMode.isActive,
+      subSettingsMode.parentKey,
+      selectedScope,
+      settings,
+      globalPendingChanges,
+      config  // 確保config變化時重新計算
+    ]);
+    ```
+    It includes `globalPendingChanges` but not `pendingSettings`.
+    
+    If I follow the report exactly, I might introduce a bug (stale closure).
+    
+    However, the user asked me to "Review the authenticity of the above report".
+    I have reviewed it. The performance issue is real.
+    But the recommended fix (Scheme 1 as written) has a potential correctness issue (stale `pendingSettings`).
+    
+    I should fix it using the **best** approach, which is likely Scheme 3 (memoizing the expensive data) OR Scheme 1 with correct dependencies.
+    
+    If I use Scheme 1 with `pendingSettings`, it fixes the main issue (re-render on navigation).
+    
+    I will stick to the user's preferred "Scheme 1" style (wrapping `items`) but I will **add `pendingSettings` to the dependency list** to ensure correctness. This is a safe and robust fix.
+    
+    Wait, if I add `pendingSettings`, then every time I type in an input field (if that updates `pendingSettings`? No, input updates `editBuffer`), or toggle a switch (updates `pendingSettings`), it re-runs.
+    Toggling is fine.
+    Does typing update `pendingSettings`?
+    [commitEdit](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#480-563) updates `pendingSettings`.
+    So while typing (in `editBuffer`), `pendingSettings` does NOT change.
+    So `items` won't regenerate while typing. Good.
+    
+    So Scheme 1 with `pendingSettings` added is a good fix.
+    
+    **Implementation Plan:**
+    1.  Modify [SettingsDialog.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx).
+    2.  Import `useMemo`.
+    3.  Wrap [generateSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#219-226) call in `useMemo`.
+    4.  Dependencies: `subSettingsMode.isActive`, `subSettingsMode.parentKey`, `selectedScope`, `settings`, `globalPendingChanges`, `config`, `pendingSettings`, `vimEnabled`.
+    
+    I will also verify if `vimEnabled` is needed. [generateNormalSettingsItems](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/ui/components/SettingsDialog.tsx#361-455) uses `vimEnabled`.
+    
+    Let's prepare the plan.
+
+## Verification Plan
+1.  **Manual Verification**:
+    - Open Settings Dialog.
+    - Navigate to `Core Tool Settings`.
+    - Verify that the list loads.
+    - Toggle a tool. Verify it toggles.
+    - Toggle it back. Verify it toggles back (confirms no stale closure).
+    - Navigate up/down. Verify no lag (hard to verify visually if it was already fast, but we know the code path is optimized).
+    - Check logs? The existing code has `console.debug` in [generateDynamicToolSettings](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/utils/dynamicSettings.ts#92-154).
+    - I can check if "Processing ... registered and ... unregistered tools" appears in the output *only once* when entering the menu, and not on every keypress.
+    
+    This is a great verification step.
+
+    **Test Command**:
+    I can't easily run the interactive CLI in the test environment to check logs interactively.
+    But I can use `llxprt` to apply the fix.
+    
+    I will write the plan now.

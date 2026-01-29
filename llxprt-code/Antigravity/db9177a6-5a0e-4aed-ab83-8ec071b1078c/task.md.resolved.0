@@ -1,0 +1,16 @@
+# UI Architecture Parity Analysis
+
+- [ ] Analyze History Rendering & Virtualization <!-- id: 0 -->
+    - [ ] Compare [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx) (gemini) vs [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) (llxprt) history rendering.
+    - [ ] Check for `ScrollableList` / Virtualization support in `llxprt-code-3`.
+    - [ ] Verify Alternate Buffer handling parity.
+- [ ] Analyze Input & Composer <!-- id: 1 -->
+    - [ ] Compare [Composer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/Composer.tsx) implementations.
+    - [ ] Check `InputPrompt` and `ShellInputPrompt` parity.
+- [ ] Analyze Hooks & Logic <!-- id: 2 -->
+    - [ ] Compare `hooks` directory contents for missing logic.
+    - [ ] Check `UIStateContext` vs `AppReducer` coverage.
+- [ ] Identify Missing or Incomplete Features <!-- id: 3 -->
+    - [ ] List components present in `gemini-cli` but missing in `llxprt-code-3`.
+    - [ ] Check for "TODO" or commented out code in `llxprt-code-3` UI files.
+- [ ] Report Findings <!-- id: 4 -->

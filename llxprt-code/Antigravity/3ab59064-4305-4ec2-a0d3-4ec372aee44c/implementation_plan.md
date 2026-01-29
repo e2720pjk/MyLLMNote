@@ -1,0 +1,41 @@
+# Refinement of AST Tools and Build Configuration
+
+This plan addresses several requested improvements to enhance cross-platform support, build robustness, and code intelligence accuracy.
+
+## Proposed Changes
+
+### Build Configuration
+
+#### [MODIFY] [esbuild.config.js](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/esbuild.config.js)
+- Update the `external` array to include missing `@ast-grep` native packages:
+    - `@ast-grep/lang-csharp`
+    - `@ast-grep/lang-kotlin`
+    - `@ast-grep/lang-php`
+    - `@ast-grep/lang-scala`
+    - `@ast-grep/lang-swift`
+
+#### [MODIFY] [package.json (core)](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/package.json)
+- The user mentioned `esbuild config's external array in esbuild.config.js is missing...` but referenced `packages/core/package.json`. I'll double check if `packages/core/package.json` has its own build config or if it was just a confusion in the request. Looking at the research, `packages/core/package.json` DOES NOT have an `esbuild` config section, but it does have the dependencies. I will verify if I need to add them to any other build script.
+
+### CLI Zed Integration
+
+#### [MODIFY] [zedIntegration.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/cli/src/zed-integration/zedIntegration.ts)
+- Add a type guard or safe property check in `toToolCallContent` before accessing `toolResult.returnDisplay.content`.
+- Return a safe default (empty string or generic message) if `content` is missing.
+
+### Core AST Tools
+
+#### [MODIFY] [ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts)
+- **`getWorkspaceFiles`**: Replace `spawnSync('find', ...)` with `fast-glob` for cross-platform file discovery.
+- **`resolveImportPath`**: Update to try multiple extensions (`.ts`, `.tsx`, `.js`, `.jsx`, `.mjs`, `.cjs`) and index variants.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run lint` and `npm run format:check`.
+- Run existing tests to ensure no regressions: `npm run test` in `packages/core`.
+
+### Manual Verification
+- Verify that `ast_edit` still works correctly in the UI.
+- Verify that import path resolution works better by testing with different file extensions (if possible via logs/debug).
+- Confirm build still works: `npm run build:packages`.

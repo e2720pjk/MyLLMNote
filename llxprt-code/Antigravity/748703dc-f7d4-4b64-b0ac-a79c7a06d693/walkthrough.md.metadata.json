@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Fixed deadlock in OpenAI provider by adding AbortSignal support to retry logic.",
+  "updatedAt": "2025-12-02T19:02:48.439383Z"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "ses_506a62668ffe37paw7NIj86bqz",
+  "version": "1.0.134",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "title": "Analyzing project execution flow, file limits, ignores (gitignore, tests, node_modules)",
+  "time": {
+    "created": 1765120006551,
+    "updated": 1765144013133
+  },
+  "summary": {
+    "additions": 326,
+    "deletions": 0,
+    "files": 2
+  }
+}

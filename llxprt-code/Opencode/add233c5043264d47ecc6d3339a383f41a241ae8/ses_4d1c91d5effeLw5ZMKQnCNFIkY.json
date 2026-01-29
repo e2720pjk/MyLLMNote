@@ -1,0 +1,16 @@
+{
+  "id": "ses_4d1c91d5effeLw5ZMKQnCNFIkY",
+  "version": "1.0.164",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "title": "Enhancing DebugTab.tsx: Aligning with MainChat Rendering",
+  "time": {
+    "created": 1766006907553,
+    "updated": 1766007035439
+  },
+  "summary": {
+    "additions": 14,
+    "deletions": 10,
+    "files": 1
+  }
+}

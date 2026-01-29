@@ -1,0 +1,40 @@
+
+
+
+
+
+
+
+
+
+
+
+┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ [Chat] | Debug  | Todo  | System  (Ctrl+O to switch)                                                                 │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+⠋ Looking for an adult superviso... I mean, processing. (esc to cancel, 0s)
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+✦
+ ╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+ ╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+ │ ✓  Shell echo hello (Print hello to console)                                                                        │
+ │                                                                                                                     │
+ │    Command: echo hello                                                                                              │
+ │    Directory: (root)                                                                                                │
+ │    Stdout: hello                                                                                                    │
+ │    Stderr: (empty)                                                                                                  │
+ │    Error: (none)                                                                                                    │
+│ [Chat] | Debug  | Todo  | System  (Ctrl+O to switch)                                                                 │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+⠧ Looking for an adult superviso... I mean, processing. (esc to cancel, 4s)
+⠏ Looking for an adult superviso... I mean, processing. (esc to cancel, 5s)
+│ >   Type your message or @path/to/file                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+(feat/ink-tabs*)                                                 Memory: 5% | Context: 3.8k/200k | TPM: 0.00 | Wait: 0ms
+(feat/ink-tabs*)                                                 Memory: 6% | Context: 3.8k/200k | TPM: 0.00 | Wait: 0ms
+
+
+Cache hit: openai:big-pickle:CodeSearch,DeleteLineRange,DirectWebFetch,Edit,ExaWebSearch,Glob,GoogleWebFetch,GoogleWebSt
+

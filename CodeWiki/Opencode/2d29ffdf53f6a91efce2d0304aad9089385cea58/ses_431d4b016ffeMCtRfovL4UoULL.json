@@ -1,0 +1,17 @@
+{
+  "id": "ses_431d4b016ffeMCtRfovL4UoULL",
+  "slug": "crisp-tiger",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "Plan for .gitignore and limits in code analysis workflow",
+  "time": {
+    "created": 1768690503657,
+    "updated": 1768691183880
+  },
+  "summary": {
+    "additions": 659,
+    "deletions": 383,
+    "files": 7
+  }
+}

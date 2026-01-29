@@ -1,0 +1,9 @@
+# Task: Implement WebSearch Tool
+
+- [ ] Implement `ExaWebSearchTool` and Rename [WebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/web-search.ts#25-77) <!-- id: 0 -->
+    - [ ] Rename [WebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/web-search.ts#25-77) to `GoogleWebSearchTool` <!-- id: 1 -->
+    - [ ] Implement `ExaWebSearchTool` (based on opencode) <!-- id: 2 -->
+    - [ ] Create `exa-web-search.md` documentation <!-- id: 3 -->
+    - [ ] Register new tools in [config.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/core/src/config/config.ts) and [prompts.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/core/prompts.ts) <!-- id: 4 -->
+    - [ ] Add tests for `ExaWebSearchTool` <!-- id: 5 -->
+    - [ ] Verify and Commit <!-- id: 6 -->

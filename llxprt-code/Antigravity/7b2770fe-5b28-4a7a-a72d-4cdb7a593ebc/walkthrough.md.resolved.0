@@ -1,0 +1,23 @@
+# Fix MouseContext Error Walkthrough
+
+## Problem
+The application was crashing with the error: `Error: useMouseContext must be used within a MouseProvider`.
+This happened because UI components like [ScrollableList](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/shared/ScrollableList.tsx#44-248) rely on [MouseContext](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#38-45), but the [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167) was missing from the component tree in `llxprt-code-3`.
+
+## Solution
+We added [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167) and [ScrollProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/ScrollProvider.tsx#76-350) to the [AppWrapper](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/gemini.tsx#206-239) component in [packages/cli/src/ui/App.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/App.tsx), mirroring the structure in `gemini-cli`.
+
+### Changes
+
+#### [packages/cli/src/ui/App.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/App.tsx)
+- Imported [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167), [ScrollProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/ScrollProvider.tsx#76-350), and [isAlternateBufferEnabled](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/hooks/useAlternateBuffer.ts#10-12).
+- Wrapped the application context stack with [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167) and [ScrollProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/ScrollProvider.tsx#76-350).
+- Configured `mouseEventsEnabled` based on settings and screen reader status.
+
+## Verification
+Ran `npm run test` in `packages/cli` and all 132 tests passed.
+
+```bash
+Test Files  132 passed | 1 skipped (133) 
+Tests  1559 passed | 11 skipped (1570)
+```

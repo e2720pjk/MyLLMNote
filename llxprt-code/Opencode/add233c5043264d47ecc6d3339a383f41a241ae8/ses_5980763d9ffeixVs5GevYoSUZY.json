@@ -1,0 +1,16 @@
+{
+  "id": "ses_5980763d9ffeixVs5GevYoSUZY",
+  "version": "1.0.45",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "title": "Analyzing generateLegacyChatCompletionImpl changes",
+  "time": {
+    "created": 1762680937510,
+    "updated": 1762687625654
+  },
+  "summary": {
+    "additions": 32,
+    "deletions": 0,
+    "files": 1
+  }
+}

@@ -1,0 +1,64 @@
+# Performance Optimization for SettingsDialog (Scheme 3)
+
+## Goal Description
+Optimize `SettingsDialog.tsx` to prevent unnecessary re-execution of `generateDynamicToolSettings` on every render. We will use **Scheme 3**, which separates the expensive dynamic settings generation from the UI item generation, ensuring that the expensive operation is only performed when `config` or the relevant mode changes, and not when other state (like `pendingSettings`) changes.
+
+## Proposed Changes
+
+### packages/cli/src/ui/components
+#### [MODIFY] [SettingsDialog.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/SettingsDialog.tsx)
+- Import `useMemo` from 'react'.
+- Implement `dynamicToolSettings` memoization:
+```typescript
+  const dynamicToolSettings = useMemo(() => {
+    if (subSettingsMode.isActive && subSettingsMode.parentKey === 'coreToolSettings' && config) {
+      return generateDynamicToolSettings(config);
+    }
+    return {};
+  }, [subSettingsMode.isActive, subSettingsMode.parentKey, config]);
+```
+- Update `generateSubSettingsItems` to use the memoized `dynamicToolSettings` instead of calling `generateDynamicToolSettings` directly.
+- Update `generateSettingsItems` (or the `items` generation logic) to use `generateSubSettingsItems` which now uses the cached value.
+- Note: We also need to update the `hasSubSettings` check in the `return`/`space` key handler (around line 725) to use the memoized value or logic that doesn't re-compute if possible, OR just accept that it computes there (it's on keypress, so less critical than render loop, but better to use the memoized value if available).
+    - Actually, `dynamicToolSettings` is computed at the top level of the component. We can use it everywhere!
+    - In the key handler:
+      ```typescript
+      // ...
+      } else if (currentItem?.value === 'coreToolSettings' && config) {
+        // Use memoized value if we are already in the mode? No, we are NOT in the mode yet when we click it.
+        // So we might need to compute it here, OR we can memoize it based on config regardless of mode?
+        // But we only want to compute it if we need it.
+        // The original code computed it inside the handler.
+        // If we want to avoid computing it in the handler, we could memoize it globally, but that might be wasteful if we never open it.
+        // However, the user's issue was about the RENDER LOOP. The key handler is an event.
+        // So leaving it in the key handler is fine.
+        // BUT, the `items` generation happens on render.
+      }
+      ```
+    - Wait, `generateSubSettingsItems` is called during render.
+    - So `generateSubSettingsItems` MUST use the memoized `dynamicToolSettings`.
+
+- **Refined Implementation Details**:
+    1. Define `dynamicToolSettings` with `useMemo` at the top level.
+       - *Correction*: The user's Scheme 3 had `if (subSettingsMode.isActive ...`. This means it's only computed when we are IN the sub-settings.
+       - This is correct for `generateSubSettingsItems`.
+    2. Modify `generateSubSettingsItems`:
+       ```typescript
+       const generateSubSettingsItems = (parentKey: string) => {
+         const parentDefinition = getSettingDefinition(parentKey);
+         let subSettings = parentDefinition?.subSettings || {};
+
+         // If this is the coreToolSettings, use the memoized dynamic settings
+         if (parentKey === 'coreToolSettings') {
+           subSettings = { ...subSettings, ...dynamicToolSettings };
+         }
+         // ...
+       };
+       ```
+
+## Verification Plan
+1.  **Automated Verification via `llxprt`**:
+    - We will ask `llxprt` to apply the change.
+    - We will verify the file content to ensure `useMemo` is correctly implemented.
+2.  **Manual Logic Check**:
+    - Confirm `generateDynamicToolSettings` is removed from the direct render path in `generateSubSettingsItems`.

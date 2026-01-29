@@ -1,0 +1,44 @@
+# Address PR #22 Nitpick Comments
+
+## Goal Description
+Address the remaining "nitpick" comments from the CodeRabbit review on PR #22 to improve code quality, type safety, and consistency with `gemini-cli`.
+
+## User Review Required
+None. These are minor improvements and fixes.
+
+## Proposed Changes
+
+### UI Utils
+#### [MODIFY] [color-utils.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/color-utils.ts)
+- Add input validation to [interpolateColor](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/themes/color-utils.ts#236-254) (hex format and factor range).
+
+### UI Components
+#### [MODIFY] [ToolMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/messages/ToolMessage.tsx)
+- Remove `@ts-expect-error` by fixing [Config](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/core/src/config/config.ts#309-1537) interface.
+
+### Config
+#### [MODIFY] [config.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/config/config.ts)
+- Add [getEnableInteractiveShell](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/core/src/config/config.ts#1266-1269) method to [Config](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/core/src/config/config.ts#309-1537) interface.
+
+#### [MODIFY] [settingsSchema.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/config/settingsSchema.ts)
+- Identify duplicate `preferredEditor` setting. (Deferred removal due to build dependency, added TODO).
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run lint` to ensure no linting errors.
+- Run `npm run build` to ensure compilation passes.
+- Run `npm run test` to verify no regressions.
+
+## Input UI Alignment Fixes
+- **[InputPrompt.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/InputPrompt.tsx)**: Update [calculatePromptWidths](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.tsx#81-105) to remove internal width fraction logic and align with `gemini-cli`.
+- **[AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/AppContainer.tsx)**: Use [calculateMainAreaWidth](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/utils/ui-sizing.ts#26-38) and the updated [calculatePromptWidths](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.tsx#81-105) to determine input dimensions.
+- **[Composer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/Composer.tsx)**: Apply `width={uiState.mainAreaWidth}` to the root `Box` for consistent layout.
+
+### Manual Verification
+- Verify UI stability and functionality after changes.
+
+## UI Fixes Resolution
+- **History Persistence**: Reverted `Static` key change in [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx) as user confirmed disappearing history on resize is expected.
+- **ToolGroupMessage Layout**: Added `width={terminalWidth}` to [ToolGroupMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx) to fix dynamic rendering overflow/growing frame issues, aligning with `gemini-cli`.
+- **Test Configuration**: Reverted changes to [vitest.config.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/vitest.config.ts) as per user instruction.

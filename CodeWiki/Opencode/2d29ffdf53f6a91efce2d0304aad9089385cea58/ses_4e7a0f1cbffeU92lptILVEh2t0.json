@@ -1,0 +1,17 @@
+{
+  "id": "ses_4e7a0f1cbffeU92lptILVEh2t0",
+  "version": "1.0.150",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "parentID": "ses_4e7a1022bffeEXoeR3ao0Grx0e",
+  "title": "Analyze codebase structure (@explore subagent)",
+  "time": {
+    "created": 1765640441396,
+    "updated": 1765640525646
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

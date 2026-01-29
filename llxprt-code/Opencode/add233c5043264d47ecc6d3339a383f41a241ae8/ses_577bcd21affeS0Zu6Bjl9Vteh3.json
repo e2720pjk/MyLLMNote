@@ -1,0 +1,17 @@
+{
+  "id": "ses_577bcd21affeS0Zu6Bjl9Vteh3",
+  "version": "1.0.65",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_577be0389ffeZ27crx0Jr7wnF2",
+  "title": "Analyze input handling issues (@general subagent)",
+  "time": {
+    "created": 1763222695397,
+    "updated": 1763222856626
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

@@ -1,0 +1,42 @@
+# Implementation Plan - Optimize ASTReadFileTool (Phase 1)
+
+## Goal Description
+The [ASTReadFileTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1619-1700) suffers from severe performance issues due to full workspace indexing on every execution. This plan implements "Phase 1" of the optimization strategy: removing the in-memory symbol index and relying on on-demand, limited `findInFiles` queries.
+
+## User Review Required
+> [!NOTE]
+> **Architecture Change**: We are moving from a "build index then query" model to a "query on demand" model.
+> **Breaking Change**: The tool will no longer index the entire workspace. Deep symbol relationships might be missed if they aren't caught by the `findInFiles` pattern matching, but this is a necessary trade-off for performance.
+> **Limits**: We will strictly limit the number of symbol lookups (e.g., max 5-10 concurrent searches) to prevent flooding the system with `rg` processes.
+
+## Proposed Changes
+
+### packages/core
+
+#### [MODIFY] [ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts)
+
+1.  **Refactor [CrossFileRelationshipAnalyzer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#668-944)**:
+    *   [DELETE] Remove `symbolIndex` property.
+    *   [DELETE] Remove [buildSymbolIndex](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#671-722) method.
+    *   [MODIFY] Update [findRelatedSymbols](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#723-828):
+        *   Remove the fallback to `this.symbolIndex`.
+        *   Ensure it purely returns results from `findInFiles`.
+        *   Add a parameter or logic to limit the number of results returned (e.g., `slice(0, 20)`).
+
+2.  **Refactor [ASTContextCollector](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1036-1462)**:
+    *   [MODIFY] [collectEnhancedContext](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1065-1144):
+        *   **Remove** the call to `this.relationshipAnalyzer.buildSymbolIndex(workspaceFiles)`.
+        *   **Optimize** the `relatedSymbols` collection:
+            *   Instead of searching for *all* symbols found in the file, filter for "important" symbols (function/class definitions, imports).
+            *   Limit the number of symbols searched (e.g., top 5).
+            *   (Optional) Use `p-limit` or similar logic if many queries are needed, but strict slicing is better for now.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm test packages/core/src/tools/ast-edit.test.ts`.
+
+### Manual Verification
+- **Performance Test**: Run [ASTReadFile](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1619-1700) on the current file ([ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts)) and ensure it feels instantaneous (no multi-second delay for indexing).
+- **Crash Test**: Verify the CLI does not crash/exit unexpectedly.
+- **Context Check**: Verify that *some* related symbols are still returned (via `findInFiles`), confirming the feature isn't broken, just optimized.

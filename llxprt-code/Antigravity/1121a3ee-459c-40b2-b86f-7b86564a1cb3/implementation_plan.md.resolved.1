@@ -1,0 +1,41 @@
+# Phase 1: Static Component Architecture
+
+## Goal Description
+Implement a hybrid rendering architecture that uses `Static` components for historical messages and `VirtualizedList` for the alternate buffer or when specifically required. This is expected to provide a ~50% performance improvement in rendering speed and reduce CPU usage.
+
+## User Review Required
+> [!IMPORTANT]
+> This change introduces a new `useRenderMode` hook and modifies `MainContent.tsx` significantly. It relies on the `@jrichman/ink` version verified in Phase 0.
+
+## Proposed Changes
+
+### UI Components
+#### [MODIFY] [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/MainContent.tsx)
+- Refactor to support dual rendering modes:
+    - **Static Mode**: Uses `<Static>` for history items (default for normal buffer).
+    - **Virtualized Mode**: Uses `<ScrollableList>` (existing logic) for alternate buffer or screen reader mode.
+- Implement `useRenderMode` hook integration.
+
+#### [NEW] [useRenderMode.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/hooks/useRenderMode.ts)
+- Logic to determine whether to use `static` or `virtualized` rendering based on:
+    - `useAlternateBuffer()`
+    - `useIsScreenReaderEnabled()`
+    - Settings/Feature flags
+
+### State Management
+#### [MODIFY] [UIStateContext.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/contexts/UIStateContext.tsx)
+- **State Split**: Explicitly separate `history` (completed messages, static) from `pendingHistory` (streaming messages, dynamic).
+- **Action**: Add `incrementHistoryRemountKey` to force re-rendering of the Static block when necessary (e.g., theme change, clear history).
+- **Reducer Logic**: Ensure `ADD_HISTORY_ITEM` correctly routes items to `history` or `pendingHistory` based on completion status.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run test` to ensure no regressions in existing UI logic.
+- Run `npm run test` to ensure no regressions in existing UI logic.
+- **Performance Baseline**: Run `packages/cli/src/__tests__/performance/baseline.test.ts` BEFORE and AFTER changes to quantify improvement (Target: >30% faster rendering).
+
+### Manual Verification
+- Verify normal chat flow (Static mode).
+- Verify alternate buffer (e.g., using a tool that triggers it) (Virtualized mode).
+- Verify screen reader mode (if possible).

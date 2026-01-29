@@ -1,0 +1,22 @@
+# Debugging UI Instability in llxprt-code-4
+
+- [x] **Problem Understanding & Code Analysis**
+    - [x] Analyze changes in `llxprt-code-4` vs `main` to identify the "Tabs" implementation.
+    - [x] Locate `MainChat` and `Tabs` components in `llxprt-code-4`.
+    - [x] Compare `Tabs` and `MainChat` implementation with `gemini-cli`.
+- [x] **Initial Fix (Hybrid Rendering)**
+    - [x] **Investigation of Infinite Loop**: Found failure with `display: none` on `VirtualizedList`.
+    - [x] **Implementation**: Applied hybrid strategy (Conditional for Virtualized, Visibility for Static).
+    - [x] **Verification**: Passed E2E tests for Tab Cycling and Todo Verification.
+- [x] **Refining UI Stability (Regressions)**
+    - [x] **Issue 1: Tool Output Repaint**: Fixed by forcing repaint on active tab.
+    - [x] **Issue 2: Virtualized Scrolling**: Restored by handling `display: none` in `VirtualizedList`.
+    - [x] **Issue 3: Debug Output**: Stabilized by unified mounting strategy.
+- [x] **Fiber Recorder Integration**
+    - [x] Install `fiber-recorder` and integrate into `gemini.tsx`.
+    - [x] Build and verify initial recording.
+- [x] **Fiber Log Analysis & Stability Audit**
+    - [x] Create tmux test script for Tab cycling and Debug mode [Step: 1]
+    - [x] Run recording with `ENABLE_FIBER_LOGGER=true` and `DEBUG=true` [Step: 2]
+    - [x] Parse and analyze `fiber-log.jsonl` for reconciliation issues [Step: 3]
+    - [x] Final stability report [Step: 4]

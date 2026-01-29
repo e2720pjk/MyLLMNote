@@ -1,0 +1,36 @@
+# Result Comparison and Optimization of Joern Integration
+
+The user observed that the Joern-enhanced output (`wiki`) contains significantly less content (fewer files and components) compared to the AST-only output (`raw-Wiki`). This plan addresses the root causes and enhancesJoern's integration to provide more value.
+
+## Root Cause Analysis
+
+1.  **Hardcoded File Limit**: [DependencyGraphBuilder](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/builder_joern.py#16-131) currently hardcodes `max_files=100` when invoking the hybrid analysis service. The standard AST parser (used for `raw-Wiki`) likely had no such limit or a much higher one.
+2.  **Identifier Inconsistency**: [AnalysisService](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/analysis/analysis_service.py#32-405) (used in hybrid mode) sometimes uses short names or different ID formats compared to the more detailed [DependencyParser](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/ast_parser.py#18-146), which affects how [cluster_modules](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/cluster_modules.py#44-114) groups components hierarchically.
+3.  **Redundant Analysis**: [HybridAnalysisService](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/hybrid_analysis_service.py#23-398) currently uses Joern to re-verify AST relationships but doesn't fully leverage Joern's ability to find cross-module relationships that AST missed.
+
+## Proposed Changes
+
+### Component: Dependency Analyzer
+
+#### [MODIFY] [dependency_graphs_builder.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/dependency_graphs_builder.py)
+- Remove the hardcoded `max_files=100` for hybrid analysis. Default to a much higher value (e.g., 1000) or use a configuration setting.
+- Ensure that the `can_fit_in_context` logic respects the actual content size when Joern data is added.
+
+#### [MODIFY] [hybrid_analysis_service.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/hybrid_analysis_service.py)
+- Update [_merge_analysis_results](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/hybrid_analysis_service.py#306-356) to ensure node IDs are harmonized between AST and Joern.
+- Improve [_run_joern_enhancement](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/hybrid_analysis_service.py#136-176) to actively look for calls in Joern that are NOT present in the AST result, truly enhancing the graph.
+- (Optional) Implement basic data flow insights if time permits, or at least document why they are valuable.
+
+#### [MODIFY] [analysis_service.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/analysis/analysis_service.py)
+- Ensure consistently high-quality identifiers (full-qualified names) are used so that clustering produces a rich hierarchy similar to `raw-Wiki`.
+
+## Verification Plan
+
+### Automated Tests
+- Run `codewiki generate --use-joern --output wiki_new` on the current repo.
+- Compare [metadata.json](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/wiki/metadata.json) of `wiki_new` with `raw-Wiki` to ensure `total_components` is comparable (around 400).
+- Verify that the generated documentation files in `wiki_new` cover all core modules (CLI, Frontend, Backend, etc.) and have hierarchies.
+
+### Manual Verification
+- Check `wiki_new/module_tree.json` for a nested structure (similar to `raw-Wiki`) instead of a flat one.
+- Verify that Joern-specific metadata (e.g., cross-module calls) is visible in the generated Markdown files.

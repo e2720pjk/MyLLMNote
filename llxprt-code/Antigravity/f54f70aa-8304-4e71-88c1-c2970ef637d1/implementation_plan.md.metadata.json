@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan to remove `filterMcpConfig` from `packages/cli/src/config/extension.ts` to restore the `trust` property in MCP server configurations, which is suspected to be the cause of the `smart-tree` disconnection.",
+  "updatedAt": "2025-11-29T17:15:59.537752Z"
+}

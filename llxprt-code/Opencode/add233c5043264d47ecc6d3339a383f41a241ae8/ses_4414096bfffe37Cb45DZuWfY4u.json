@@ -1,0 +1,16 @@
+{
+  "id": "ses_4414096bfffe37Cb45DZuWfY4u",
+  "version": "1.1.10",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Ast-Grep as Tree-sitter substitute for TabbyEdit evaluation",
+  "time": {
+    "created": 1768431774016,
+    "updated": 1768433039806
+  },
+  "summary": {
+    "additions": 330,
+    "deletions": 0,
+    "files": 1
+  }
+}

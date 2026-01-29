@@ -1,0 +1,6 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_TASK",
+  "summary":  "Update task list with implementation steps for ast-grep migration.",
+  "updatedAt":  "2026-01-14T23:33:54.303323Z",
+  "version":  "2"
+}

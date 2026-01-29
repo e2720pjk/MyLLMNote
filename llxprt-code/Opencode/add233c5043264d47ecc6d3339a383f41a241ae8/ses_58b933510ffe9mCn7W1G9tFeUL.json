@@ -1,0 +1,16 @@
+{
+  "id": "ses_58b933510ffe9mCn7W1G9tFeUL",
+  "version": "1.0.55",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "title": "Debugging npm run test issues",
+  "time": {
+    "created": 1762889878255,
+    "updated": 1762892885906
+  },
+  "summary": {
+    "additions": 106,
+    "deletions": 47,
+    "files": 1
+  }
+}

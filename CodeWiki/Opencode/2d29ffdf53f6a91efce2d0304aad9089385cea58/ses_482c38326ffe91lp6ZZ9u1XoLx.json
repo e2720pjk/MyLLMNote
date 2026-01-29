@@ -1,0 +1,17 @@
+{
+  "id": "ses_482c38326ffe91lp6ZZ9u1XoLx",
+  "version": "1.0.134",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/var/folders/8m/309xc4vn3737_yftd2xz73l40000gn/T/vibe-kanban/worktrees/bd85-joern-integratio/CodeWiki",
+  "parentID": "ses_482c39c6cffekU5idFrbjnTR5i",
+  "title": "Explore codebase structure (@explore subagent)",
+  "time": {
+    "created": 1767332674777,
+    "updated": 1767332820627
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

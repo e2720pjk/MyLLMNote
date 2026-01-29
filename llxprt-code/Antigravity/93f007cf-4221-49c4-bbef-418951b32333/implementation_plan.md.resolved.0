@@ -1,0 +1,39 @@
+# Fix Terminal Corruption in Kitty Protocol Detector
+
+## Goal Description
+Prevent terminal corruption when the application exits, specifically addressing the user-reported scenario of using CTRL+C. The fix involves ensuring the Kitty keyboard protocol is properly disabled using synchronous writes and robust signal handling (SIGINT).
+
+## User Review Required
+> [!IMPORTANT]
+> This change introduces a `SIGINT` handler in [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/utils/kittyProtocolDetector.ts) which will explicitly call `process.exit(0)`. This ensures the application exits on CTRL+C and cleans up the terminal state. This might change behavior if there were other SIGINT handlers expecting to prevent exit, but for a CLI tool, exiting on CTRL+C is standard.
+
+## Proposed Changes
+
+### packages/cli/src/ui/utils
+
+#### [MODIFY] [terminalSequences.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/terminalSequences.ts)
+- Add `writeToStdoutSync(content: string): void` helper function using `fs.writeSync`.
+
+#### [MODIFY] [bracketedPaste.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/bracketedPaste.ts)
+- Update [enableBracketedPaste](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/bracketedPaste.ts#10-13) and [disableBracketedPaste](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/bracketedPaste.ts#14-17) to use `writeToStdoutSync`.
+
+#### [MODIFY] [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts)
+- Import `writeToStdoutSync`.
+- Add `SIGINT` handler to call [disableProtocol()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#118-133) and `process.exit(0)`.
+- Update [disableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#118-133) to use `writeToStdoutSync` (replacing direct `fs.writeSync` for consistency).
+- Ensure `SIGTERM`, `uncaughtException`, and `unhandledRejection` handlers are present and correct.
+
+## Verification Plan
+
+### Manual Verification
+1.  **CTRL+C Test**:
+    - Start the application.
+    - Press `CTRL+C`.
+    - **Pass Criteria**: Terminal should return to normal immediately (no raw escape codes visible, cursor visible).
+2.  **Crash Test**:
+    - Introduce a temporary `throw new Error()` in the code.
+    - Run the app.
+    - **Pass Criteria**: Terminal should be restored cleanly.
+3.  **Rapid CTRL+C**:
+    - Press `CTRL+C` multiple times quickly.
+    - **Pass Criteria**: No errors printed, terminal restored cleanly.

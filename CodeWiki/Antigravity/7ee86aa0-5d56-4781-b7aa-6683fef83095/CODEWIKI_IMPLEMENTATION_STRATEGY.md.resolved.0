@@ -1,0 +1,112 @@
+# CodeWiki Implementation Strategy: SOLID & Scalable
+
+This document defines **HOW** to implement the North Star vision while maintaining backward compatibility and solving the context explosion issue.
+
+---
+
+## 1. Architectural Principles (SOLID)
+
+To add the new "Semantic History" and "Recursive Context" features without breaking the existing [AgentOrchestrator](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py#34-167), we will apply:
+
+*   **S (Single Responsibility):**
+    *   `DependencyGraphBuilder`: Only builds the Structure (Level 1).
+    *   `GitSemanticAnalyzer`: Only builds the History (Level 3).
+    *   `ContextReducer`: Only prepares the *minimal* context for the LLM.
+*   **O (Open/Closed):**
+    *   The [AgentOrchestrator](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py#34-167) should accept any `AnalysisProvider`. We can extend it with `GitEnrichedAnalysisProvider` without modifying the core orchestrator logic deeply.
+*   **D (Dependency Inversion):**
+    *   High-level modules (Doc Generator) should not depend on low-level details (GraphDB vs. JSON vs. Git CLI). They depend on abstractions (`AnalysisResult`).
+
+---
+
+## 2. Solving Context Explosion: The "Summary Projector"
+
+**The Problem:**
+In the current code ([agent_orchestrator.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py)), `deps` (Dependencies) loads the `module_tree` and components. For a parent module, this includes *everything* below it.
+
+**The Solution: Bottom-Up Summary Projection**
+Instead of passing the *full children content* to the Parent Agent, we pass a *projected summary*.
+
+**Refactoring [AgentOrchestrator](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py#34-167):**
+
+```python
+# Interface Definition
+class ContextProjector(Protocol):
+    def project(self, module_tree: Dict, current_path: List[str]) -> str:
+        """Returns the specific context string for this module."""
+
+# Implementation 1: Leaf Node (Context = Source Code)
+class LeafContextProjector(ContextProjector):
+    def project(self, ...):
+        return source_code  # Full detail
+
+# Implementation 2: Parent Node (Context = Children Signatures + Summaries + Intents)
+class ParentContextProjector(ContextProjector):
+    def project(self, ...):
+        # 1. Signatures (Strict)
+        signatures = extract_public_api(children_components)
+        # 2. Doc Summaries (From generated .md files of children)
+        doc_summaries = read_generated_summaries(children_outputs)
+        # 3. Git Intents (From Graph)
+        git_intents = graph.query_intents(children_paths)
+
+        return format(signatures, doc_summaries, git_intents)
+```
+
+**Workflow Change:**
+When generating `ParentModule`, the Agent **only** sees the output of `ParentContextProjector`. It physically *cannot* see the raw implementation of grandchildren, preventing context explosion.
+
+---
+
+## 3. Integrating Git History (The "Sidecar" Pattern)
+
+You correctly identified that History should be separate from Logic.
+
+**Data Flow:**
+1.  **Ingestion:** `GitSemanticAnalyzer` runs (Batch). It produces `history_index.json`:
+    ```json
+    {
+      "src/auth/login.py": {
+        "churn": "high",
+        "last_intent": "Fix CVE-2024-123",
+        "semantic_log": ["Added 2FA", "Refactored Session"]
+      }
+    }
+    ```
+2.  **Generation:** The `DocGenerator` reads this sidecar file.
+    *   It appends a `## Evolution` section to the Markdown.
+    *   **Crucially:** It does *not* let the LLM "analyze" the history to guess functionality. It only *formats* the pre-computed history for display.
+
+---
+
+## 4. Implementation Roadmap (Backward Compatible)
+
+### Phase 1: The Abstraction Layer (Refactoring)
+*   **Goal:** Break [AgentOrchestrator](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py#34-167)'s direct dependency on `DependencyGraphBuilder`.
+*   **Action:**
+    1.  Extract `IAnalysisProvider` interface.
+    2.  Make `DependencyGraphBuilder` implement it.
+    3.  Update [AgentOrchestrator](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py#34-167) to use the interface.
+    4.  *Result:* No functional change, but ready for extension.
+
+### Phase 2: The Context Reducer (Fixing Scale)
+*   **Goal:** Solve the "Context Explosion".
+*   **Action:**
+    1.  Implement `ParentContextProjector`.
+    2.  Modify [process_module](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py#68-167) to use the projector instead of raw `module_tree`.
+    3.  *Test:* Run on a large repo. Verify Parent Docs are generated using < 8k tokens even if children are huge.
+
+### Phase 3: The Git Sidecar (Adding History)
+*   **Goal:** Add the "Time Dimension".
+*   **Action:**
+    1.  Create `GitSemanticAnalyzer` (standalone script/tool).
+    2.  Update `ParentContextProjector` to read `history_index.json` if present.
+    3.  *Result:* Docs now appear with "Recent Changes" sections.
+
+---
+
+## 5. Conclusion
+This strategy:
+1.  **Respects SOLID:** Implementation details are hidden behind Projectors and Providers.
+2.  **Solves Scale:** Parent nodes only see what they *need* to see (Summaries), not the whole tree.
+3.  **Adds Value:** Git history is injected as a first-class citizen, but computed efficiently offline.

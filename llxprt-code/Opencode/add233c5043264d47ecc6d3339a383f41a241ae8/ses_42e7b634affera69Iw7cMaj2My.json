@@ -1,0 +1,17 @@
+{
+  "id": "ses_42e7b634affera69Iw7cMaj2My",
+  "slug": "happy-comet",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Conflict review and rebase strategy for e2720pjk:feat/ast-tool onto upstream main",
+  "time": {
+    "created": 1768746687669,
+    "updated": 1768747023052
+  },
+  "summary": {
+    "additions": 3159,
+    "deletions": 251,
+    "files": 10
+  }
+}

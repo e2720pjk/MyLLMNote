@@ -1,0 +1,16 @@
+{
+  "id": "ses_560061a6bffe1ZqQqzqzyLA5Ls",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Auditing latest commit, removing unintended git add .",
+  "time": {
+    "created": 1763620545940,
+    "updated": 1763620701679
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

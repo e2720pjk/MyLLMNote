@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Strategy document for 'Structural Reasoning RAG'. Defines how to feed CPG Structure + ASTChunk Content into PageIndex to create a reasoning engine that navigates code hierarchy.",
+  "updatedAt": "2026-01-24T01:34:05.381388Z"
+}

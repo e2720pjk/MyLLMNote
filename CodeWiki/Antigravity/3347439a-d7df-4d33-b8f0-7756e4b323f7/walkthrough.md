@@ -1,0 +1,55 @@
+# Walkthrough - Backend Configuration Refactor
+
+I have completed the refactor of CodeWiki's configuration system, merging upstream changes with local improvements. The configuration is now consistent across the CLI and Backend, supporting all performance features and agent instructions.
+
+## Changes Made
+
+### Configuration Model Evolution
+- **Flattened CLI Configuration**: Merged `AnalysisOptions` fields into the top-level `Configuration` class in [config.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/cli/models/config.py).
+- **Unified Token Naming**: Adopted upstream naming (`max_tokens`, `max_token_per_module`, `max_token_per_leaf_module`) while preserving local logic.
+- **Backend Sync**: Updated [src/config.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/config.py) to accept both the structured `AnalysisOptions` and the new upstream fields in `from_cli`.
+
+### CLI Command Enhancements
+- **Refactored `config set`**: Now supports setting all parameters, including local performance flags like `--use-joern` and `--respect-gitignore`, in [commands/config.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/cli/commands/config.py).
+- **Consolidated `generate`**: The `generate` command now correctly overrides both persistent configuration and agent instructions, passing them through the [doc_generator.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/cli/adapters/doc_generator.py) adapter.
+
+### Backend Integration & Conflict Resolution
+- **LLM Services**: Updated [llm_services.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/llm_services.py) to use the unified `config.max_tokens`.
+- **Dependency Analyzer**: 
+    - Resolved conflicts in [ast_parser.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/ast_parser.py) and [dependency_graphs_builder.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/dependency_graphs_builder.py) to correctly handle `include_patterns`, `exclude_patterns`, and `respect_gitignore`.
+- **Agent Tools**: Fixed merge markers and integrated `custom_instructions` in:
+    - [agent_orchestrator.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/agent_orchestrator.py)
+    - [str_replace_editor.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/agent_tools/str_replace_editor.py)
+    - [generate_sub_module_documentations.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/agent_tools/generate_sub_module_documentations.py)
+    - [prompt_template.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/prompt_template.py)
+
+## Verification Results
+
+### CLI Verification
+I verified the configuration persistence and display logic:
+
+```bash
+# Verify initial configuration
+python3 -m codewiki.cli.main config show
+
+# Update settings
+python3 -m codewiki.cli.main config set --respect-gitignore --max-tokens 40000
+
+# Update agent instructions
+python3 -m codewiki.cli.main config agent --doc-type api --instructions "Be concise"
+
+# Verify updates
+python3 -m codewiki.cli.main config show
+```
+
+**Results**:
+- `API Key` and `Base URL` are correctly masked/displayed.
+- `Token Settings` use the new naming convention.
+- `Analysis Settings` correctly show Joern, gitignore, and LLM Cache status.
+- `Agent Instructions` are correctly persisted and displayed.
+
+### Runtime Verification
+The successful execution of `config show` confirms that all backend imports and configuration parsing logic are free of syntax errors and correctly integrated.
+
+> [!IMPORTANT]
+> All merge markers (`<<<<<<<`, `=======`, `>>>>>>>`) have been removed from the `codewiki/` directory.

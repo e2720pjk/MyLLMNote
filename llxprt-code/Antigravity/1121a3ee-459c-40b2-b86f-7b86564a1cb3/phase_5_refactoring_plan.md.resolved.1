@@ -1,0 +1,58 @@
+# Phase 5: Simplified 4-Tab Structure Refactoring Plan
+
+## 🎯 Core Objective
+Refactor the UI to a simplified 4-Tab structure (`chat`, `debug`, `todo`, `system`), removing legacy overlay components ([DetailedMessagesDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/DetailedMessagesDisplay.tsx#21-83)) and integrating their functionality into the dedicated tabs. This aligns with the "Simplified 4-Tab Structure" proposal.
+
+## 📊 Feature Consolidation Strategy
+
+| Tab | Primary Function | New Integration |
+|-----|------------------|-----------------|
+| **chat** | Chat Interface | Maintain existing; display MCP tool outputs inline |
+| **debug** | Logs & Debug Info | **Integrate `SHOW_ERROR_DETAILS`** functionality; Add MCP Error Status |
+| **todo** | Task Management | Show tool execution progress; pending task states |
+| **system** | System Info | Add MCP Server Configuration & Statistics |
+
+## 🔧 Implementation Plan
+
+### Stage 1: Basic Cleanup & Event Management
+**Goal**: Resolve key binding conflicts and unify navigation.
+1.  **Fix TabBar Hint**: Update copy to [(Ctrl+O to switch)](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/contexts/UIStateContext.tsx#35-36).
+2.  **Resolve Key Conflicts**:
+    - repurpose `Ctrl+O` from `SHOW_ERROR_DETAILS` to `TAB_CYCLE`.
+    - ensuring `TAB_CYCLE` is the sole owner of `Ctrl+O`.
+3.  **Unified Event Management**:
+    - Move `useKeypress` for tab cycling from [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/TabBar.tsx#25-85) to [AppContainer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/AppContainer.tsx#160-1822) (or a high-level manager) to ensure it works globally.
+
+### Stage 2: State Migration & DebugTab Enhancement
+**Goal**: Complete replacement for the legacy "Error Details" overlay.
+1.  **State Migration**:
+    - Create `consoleMessages` filter logic in [DebugTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/DebugTab.tsx#13-82) to show ALL logs (including debug/error) that were previously hidden or filtered.
+    - *Correction*: Ensure [DebugTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/DebugTab.tsx#13-82) does NOT filter out helpful debug info.
+2.  **Migrate Functionality**: Port the nice visual formatting (border, colors) from [DetailedMessagesDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/DetailedMessagesDisplay.tsx#21-83) to [DebugTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/DebugTab.tsx#13-82).
+3.  **MCP Status**: Add a section for MCP Server Status (Connected/Disconnected/Error).
+
+### Stage 3: MCP & System Integration & Real-time Updates
+**Goal**: Surface dynamic MCP information.
+1.  **System Tab**: Add "MCP Statistics" section.
+2.  **Real-time Updates**:
+    - Ensure [UIState](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/contexts/UIStateContext.tsx#42-201) updates `mcpStatus` or `errorCount` trigger re-renders in [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/TabBar.tsx#25-85) indicators.
+    - Add listener for MCP connection events if not present.
+
+### Stage 4: Tab Status Indicators
+**Goal**: Visual cues for tabs requiring attention.
+1.  **Logic**:
+    - `debug`: Active if `errorCount > 0`.
+    - `system`: Active if MCP issues or system warnings exist.
+    - `todo`: Active if pending tasks exist.
+2.  **Implementation**: Update [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/TabBar.tsx#25-85) to render these indicators (e.g., `*` or color change).
+
+### Stage 5: Code Cleanup
+**Goal**: Remove obsolete code.
+1.  **Delete**: [packages/cli/src/ui/components/DetailedMessagesDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/DetailedMessagesDisplay.tsx).
+2.  **Remove**: `SHOW_ERROR_DETAILS` command and related state (`showErrorDetails`) from [AppContainer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/AppContainer.tsx#160-1822).
+3.  **Clean**: Remove unused imports and types.
+
+## ⚠️ Risk Assessment
+- **Debug Info Loss**: Critical to ensure [DebugTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/DebugTab.tsx#13-82) captures ALL info that [DetailedMessagesDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/DetailedMessagesDisplay.tsx#21-83) did before deleting the latter.
+- **User Habit**: Key binding change for `Ctrl+O` (from "Toggle Logs" to "Cycle Tabs") needs clear UI hint.
+

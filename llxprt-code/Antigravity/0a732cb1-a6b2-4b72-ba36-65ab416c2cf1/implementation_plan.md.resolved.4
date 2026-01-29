@@ -1,0 +1,45 @@
+# Fix Deadlock in /quit Command
+
+## Goal Description
+Fix the deadlock that occurs when running `/quit`. The issue is caused by the cleanup handler waiting for `instance.waitUntilExit()` (which waits for unmount) *before* calling `instance.unmount()`. Additionally, we want to prevent future hangs by adding a timeout.
+
+## User Review Required
+> [!IMPORTANT]
+> This change reorders the cleanup operations and adds a safety timeout. We call `instance.unmount()` first, then wait for it to complete with a **100ms** timeout (reduced from 5s).
+> **Reason**: Investigation showed that `waitUntilExit` often fails to resolve during explicit exit, causing the full timeout to be hit. 100ms is sufficient for Ink to perform its cleanup without causing a noticeable delay.
+
+## Proposed Changes
+
+### CLI
+#### [MODIFY] [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)
+- Update the [registerCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#14-17) callback to use `unmount()`, `Promise.race()` with a **100ms** timeout, and `try-catch`.
+- Remove debug logging.
+
+```typescript
+  registerCleanup(async () => {
+    try {
+      instance.unmount();
+      // Wait for exit or timeout after 100ms to prevent deadlocks
+      await Promise.race([
+        instance.waitUntilExit(),
+        new Promise((resolve) => setTimeout(resolve, 100))
+      ]);
+      instance.clear();
+    } catch (error) {
+      // Fallback if cleanup fails
+      console.error('Cleanup error:', error);
+    }
+  });
+```
+
+## Verification Plan
+
+### Manual Verification
+1.  **Command Quit Test**:
+    -   Launch the CLI.
+    -   Run `/quit`.
+    -   **Expected Result**: The CLI should exit **immediately** (within 100ms).
+2.  **Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Press `Ctrl+C`.
+    -   **Expected Result**: Clean exit.

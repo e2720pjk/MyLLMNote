@@ -1,0 +1,40 @@
+- Logs and debug messages: English
+--- End of Context from: ../../../.llxprt/LLXPRT.md ---
+
+--- Context from: ../../LLXPRT.md ---
+# bd - Beads Issue Tracker
+
+BEFORE ANYTHING ELSE: run 'bd onboard' and follow the instructions
+--- End of Context from: ../../LLXPRT.md ---...
+Current heap size 4144.00 MB
+
+╭───────────╮
+│  > /quit  │
+╰───────────╯
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                      │
+│  Agent powering down. Goodbye!                                                                                       │
+│                                                                                                                      │
+│  Interaction Summary                                                                                                 │
+│  Session ID:                 session-1766242059382-5frx51wnb                                                         │
+│  Tool Calls:                 1 ( ✓ 1 x 0 )                                                                           │
+│  Success Rate:               100.0%                                                                                  │
+│                                                                                                                      │
+│  Performance                                                                                                         │
+│  Wall Time:                  18.1s                                                                                   │
+│  Agent Active:               180ms                                                                                   │
+│    » API Time:               0s (0.0%)                                                                               │
+│    » Tool Time:              180ms (100.0%)                                                                          │
+│                                                                                                                      │
+│  Token Tracking                                                                                                      │
+│  Tokens Per Minute:          974.5390693590869                                                                       │
+│  Throttle Wait Time:         0ms                                                                                     │
+│    » Session Token Usage:   Session Tokens - Input: 15,680, Output: 37, Cache: 7,852, Tool: 0, Thought: 0, Total:    │
+│                             23,569                                                                                   │
+│                                                                                                                      │
+│                                                                                                                      │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+
+Pane is dead (status 0, Sat Dec 20 22:47:57 2025)

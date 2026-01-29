@@ -1,0 +1,13 @@
+# AST Tool Code Review Task List
+
+- [x] **Context Understanding & Exploration** <!-- id: 0 -->
+    - [x] Locate AST tool implementations (ASTReadFile, ASTEdit, etc.) <!-- id: 1 -->
+    - [ ] Read and understand the implementation of [ASTReadFile](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1619-1700). <!-- id: 2 -->
+    - [ ] Identify dependencies and potential resource-heavy operations (e.g., loading large files, repetitive parsing). <!-- id: 3 -->
+- [ ] **Deep Dive: Performance & Stability** <!-- id: 4 -->
+    - [ ] Analyze [ASTReadFile](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1619-1700) for memory leaks (undisposed resources, large object retention). <!-- id: 5 -->
+    - [ ] Analyze [ASTReadFile](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1619-1700) for performance bottlenecks (synchronous heavy ops, redundant work). <!-- id: 6 -->
+    - [ ] Review error handling and timeouts. <!-- id: 7 -->
+- [ ] **Report & Refine** <!-- id: 8 -->
+    - [ ] Document findings using the Code Review Agent format. <!-- id: 9 -->
+    - [ ] Propose fixes for identified issues. <!-- id: 10 -->

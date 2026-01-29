@@ -1,0 +1,6 @@
+# Task: Create Code Comment Reinforcement Rule
+
+- [ ] Design the rule content (Chinese instructions, English output requirements) <!-- id: 0 -->
+- [ ] Create the rule artifact or file (e.g., `.agent/rules/code-comment-reinforcement.md`) <!-- id: 1 -->
+- [ ] Provide an example of the rule in action <!-- id: 2 -->
+- [ ] Verify the rule meets all user requirements <!-- id: 3 -->

@@ -1,0 +1,38 @@
+# Task: Analyze and Compare Tools
+
+- [ ] Explore tool directories <!-- id: 0 -->
+    - [x] List contents of `opencode/packages/opencode/src/tool` <!-- id: 1 -->
+    - [x] List contents of `llxprt-code-2/packages/core/src/tools` <!-- id: 2 -->
+- [ ] Analyze tool implementations <!-- id: 3 -->
+    - [x] Read files in `opencode` tool directory <!-- id: 4 -->
+    - [x] Read files in `llxprt-code-2` tool directory <!-- id: 5 -->
+- [ ] Compare and Report <!-- id: 6 -->
+    - [x] Draft comparison report <!-- id: 7 -->
+
+- [ ] Analyze `tabby-edit.ts` <!-- id: 8 -->
+    - [ ] Read `~/Shopify/cli-tool/llxprt-code/packages/core/src/tools/tabby-edit.ts` <!-- id: 9 -->
+    - [ ] Compare with `opencode/edit.ts` and `llxprt-code-2/smart-edit.ts` <!-- id: 10 -->
+    - [x] Report on quality and usability <!-- id: 11 -->
+- [ ] Plan `opencode` Integrations <!-- id: 12 -->
+    - [x] Create plan for New Tools (Search, WebFetch) <!-- id: 13 -->
+    - [x] Create plan for Tool Enhancements (Shell, Edit) <!-- id: 14 -->
+
+- [ ] Implement Integrations (Target: `llxprt-code-2`) <!-- id: 15 -->
+    - [x] Verify `llxprt-code-2` state and dependencies <!-- id: 23 -->
+    - [x] Port [CodeSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/codesearch.ts#52-92) to `llxprt-code-2` <!-- id: 17 -->
+    - [x] Port [WebFetchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/core/src/tools/webfetch.ts#29-70) to `llxprt-code-2` <!-- id: 18 -->
+    - [x] Register new tools in `llxprt-code-2/tool-registry.ts` <!-- id: 21 -->
+    - [x] Check [ShellTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/shell.ts#637-730) and [SmartEditTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/smart-edit.ts#798-1001) in `llxprt-code-2` (Analysis only) <!-- id: 24 -->
+    - [x] Verify implementations (Code review and registration check) <!-- id: 22 -->
+
+- [ ] Review Commit and Gap Analysis <!-- id: 25 -->
+    - [x] Inspect commit `fbf628ec6894ec03e4b329ba163d9fed46d1a306` in `llxprt-code` <!-- id: 26 -->
+    - [x] Analyze tool addition steps (Config, Registry, Tests, etc.) <!-- id: 27 -->
+    - [x] Compare with `llxprt-code-2` implementation <!-- id: 28 -->
+    - [x] Identify and report gaps <!-- id: 29 -->
+    - [x] Implement missing unit tests ([codesearch.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/codesearch.test.ts), [webfetch.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/webfetch.test.ts)) <!-- id: 30 -->
+
+- [ ] Refining Tool Integration and Sanitization <!-- id: 31 -->
+    - [x] Locate and implement `TOOL_DEFAULTS` logic <!-- id: 32 -->
+    - [x] Sanitize "opencode" references in code and docs <!-- id: 33 -->
+    - [x] Verify changes <!-- id: 34 -->

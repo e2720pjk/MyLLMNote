@@ -1,0 +1,16 @@
+{
+  "id": "ses_4aea183d1ffeHtI1P9hKNAKRB5",
+  "version": "1.0.193",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "title": "Reviewing PR#8, branch opencode/issue4-20251224154752, testing status",
+  "time": {
+    "created": 1766596705326,
+    "updated": 1766596842543
+  },
+  "summary": {
+    "additions": 367,
+    "deletions": 13,
+    "files": 3
+  }
+}

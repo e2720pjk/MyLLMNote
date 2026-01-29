@@ -1,0 +1,26 @@
+# Fix Terminal Corruption in Kitty Protocol Detector
+
+## Goal Description
+The goal is to prevent terminal corruption when the application crashes or exits unexpectedly while the Kitty keyboard protocol is enabled. Currently, the cleanup is asynchronous (`process.stdout.write`), which may not complete if the process terminates abruptly. We will switch to synchronous cleanup using `fs.writeSync` and add more robust signal handling.
+
+## User Review Required
+> [!IMPORTANT]
+> This change introduces synchronous I/O during process exit. This is generally safe and recommended for cleanup handlers, but it's worth noting.
+
+## Proposed Changes
+
+### CLI Package
+#### [MODIFY] [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts)
+- Import `fs` module.
+- Update [disableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101) function to use `fs.writeSync(process.stdout.fd, ...)` wrapped in a try-catch block.
+- Add event listeners for `uncaughtException`, `unhandledRejection`, and `SIGINT` to trigger [disableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101).
+- Ensure [disableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101) checks `protocolEnabled` to avoid redundant writes.
+
+## Verification Plan
+
+### Manual Verification
+1.  **Normal Exit**: Run the CLI and exit normally. Verify terminal input/output is normal.
+2.  **Simulated Crash**:
+    - Create a temporary script that enables the protocol and then throws an error or calls `process.exit(1)`.
+    - Verify that the terminal is restored correctly (no "bell" characters or raw escape codes visible).
+    - *Note*: Since I cannot easily interact with the real terminal to see "corruption" in this headless environment, I will rely on the code correctness and user verification if possible.

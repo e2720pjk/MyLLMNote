@@ -1,0 +1,23 @@
+- [x] Explore CodeWiki-2 clustering logic <!-- id: 0 -->
+- [x] Explore code-graph-rag graph schema <!-- id: 1 -->
+- [x] Analyze Joern POC integration in CodeWiki-2 <!-- id: 2 -->
+- [x] Synthesize findings and answer user questions <!-- id: 3 -->
+- [x] Define CodeWiki North Star Vision (Dual Views, Git Integration) <!-- id: 4 -->
+- [x] Design Recursive Context & SOLID Implementation Strategy <!-- id: 5 -->
+- [x] Refine Strategy for Backward Compatibility & CLI Feature Flags <!-- id: 6 -->
+- [x] Refine Git Strategy: Evidence-Based History & Verification <!-- id: 7 -->
+- [x] Synthesize Strategic Vision & Future Applications Report <!-- id: 8 -->
+- [x] Analyze ASTChunk codebase and paper value <!-- id: 9 -->
+- [x] Integrate ASTChunk into Recursive Strategy logic <!-- id: 10 -->
+- [x] Define Data Assets & Evolution Strategy <!-- id: 11 -->
+- [x] Design Resilience Strategy (Resume, Rate Limits, Incremental) <!-- id: 12 -->
+- [x] Analyze AutoMem methodology and integration value <!-- id: 13 -->
+- [x] Define RAG & Data Separation Strategy (Semantics vs Structure) <!-- id: 14 -->
+- [x] Evaluate CodeWiki Data Structure POC Draft <!-- id: 15 -->
+- [x] Design PR Analysis Pipeline POC (The Spotlight Strategy) <!-- id: 16 -->
+- [x] Define CodeWiki Application Ecosystem (The 4 Pillars) <!-- id: 17 -->
+- [x] Analyze PageIndex methodology and schema effectiveness <!-- id: 18 -->
+- [x] Define Structural Reasoning RAG Strategy <!-- id: 19 -->
+- [x] Define Minimum Viable POC Path (Option 2: Data-First) <!-- id: 20 -->
+- [x] Validate POC against 'Migration/Templating' Failure Case <!-- id: 21 -->
+- [ ] Define POC for Generation Quality & Deterministic Verification <!-- id: 22 -->

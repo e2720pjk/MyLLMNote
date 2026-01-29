@@ -1,0 +1,35 @@
+{
+  "id": "ses_431901245ffeMrPcJcCo35dWtv",
+  "slug": "quiet-wizard",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "parentID": "ses_431903c4bffeb7DLnnI67jK4Xc",
+  "title": "Verify core implementation files (@explore subagent)",
+  "permission": [
+    {
+      "permission": "todowrite",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "todoread",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "task",
+      "action": "deny",
+      "pattern": "*"
+    }
+  ],
+  "time": {
+    "created": 1768695000506,
+    "updated": 1768695001293
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

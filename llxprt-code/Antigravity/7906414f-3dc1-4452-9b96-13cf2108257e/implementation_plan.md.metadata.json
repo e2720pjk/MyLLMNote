@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Refined the distinction between Template and Business Logic. Explicitly listed components for each.",
+  "updatedAt": "2025-11-25T21:43:08.695087Z",
+  "version": "3"
+}

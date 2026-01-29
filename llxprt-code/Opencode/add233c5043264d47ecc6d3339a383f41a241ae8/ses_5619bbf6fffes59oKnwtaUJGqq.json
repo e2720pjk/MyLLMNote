@@ -1,0 +1,16 @@
+{
+  "id": "ses_5619bbf6fffes59oKnwtaUJGqq",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing coretoolsettings diffing, reviewing, committing",
+  "time": {
+    "created": 1763593961617,
+    "updated": 1763595335789
+  },
+  "summary": {
+    "additions": 17,
+    "deletions": 1,
+    "files": 1
+  }
+}

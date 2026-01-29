@@ -1,0 +1,14 @@
+# Task: Refine TODO Tab and Fix Redraw Logic
+
+- [ ] Investigate and Refine TODO Tab Integration
+    - [ ] Compare current [TodoTab.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/tabs/TodoTab.tsx) with [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/config/config.ts#673-681) tab styling and functionality
+    - [ ] Migrate [TodoPanel](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx#26-29) logic into [MainContent](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/MainContent.tsx#57-395) tabbed architecture (ScrollableList/Static)
+    - [ ] Fix the "pushing up" layout issue in the TODO tab by ensuring proper height constraints
+- [ ] Debug and Fix Redraw Logic
+    - [ ] Ensure [setActiveTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/AppContainer.tsx#1827-1834) in [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/AppContainer.tsx) triggers `refreshStatic()`
+    - [ ] Verify tool call redraws when switching back to Chat tab
+    - [ ] Investigate if tool call windows need explicit redraw triggers in virtualized mode
+- [ ] Verification
+    - [ ] Verify TODO tab styling and layout stability
+    - [ ] Verify tool call windows redraw correctly when switching back to Chat tab
+    - [ ] Run full preflight check

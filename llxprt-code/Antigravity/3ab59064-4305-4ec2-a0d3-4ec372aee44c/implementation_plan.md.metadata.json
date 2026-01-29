@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Implementation plan for refining AST tools and build configuration.\n- Update esbuild.config.js and core package.json with missing ast-grep externals.\n- Add type guards in zedIntegration.ts for tool result content.\n- Implement cross-platform file discovery in ast-edit.ts using fast-glob.\n- Enhance import path resolution in ast-edit.ts to support multiple extensions.",
+  "updatedAt": "2026-01-15T06:30:10.210850Z"
+}

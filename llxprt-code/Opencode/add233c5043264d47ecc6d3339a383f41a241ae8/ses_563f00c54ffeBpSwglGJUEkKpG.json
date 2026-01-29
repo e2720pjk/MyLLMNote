@@ -1,0 +1,16 @@
+{
+  "id": "ses_563f00c54ffeBpSwglGJUEkKpG",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing report authenticity review progress",
+  "time": {
+    "created": 1763554882475,
+    "updated": 1763556397247
+  },
+  "summary": {
+    "additions": 180,
+    "deletions": 4040,
+    "files": 16
+  }
+}

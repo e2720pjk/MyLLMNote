@@ -1,0 +1,16 @@
+{
+  "id": "ses_5621272f2ffeuVq22qmmC0lqzv",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing generateDynamicToolSettings validity and proposing system tools listing",
+  "time": {
+    "created": 1763586182413,
+    "updated": 1763588302148
+  },
+  "summary": {
+    "additions": 868,
+    "deletions": 85,
+    "files": 4
+  }
+}

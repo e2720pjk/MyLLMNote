@@ -1,0 +1,56 @@
+# Task: Investigate llxprt for Agent Workflow
+
+- [x] Run `llxprt --help` to understand CLI options <!-- id: 0 -->
+- [x] Investigate Interactive vs Non-interactive modes <!-- id: 1 -->
+    - [x] Test non-interactive command execution
+    - [x] Check if interactive-only features (slash commands) are accessible via flags
+- [x] Analyze codebase for CLI argument parsing and mode handling <!-- id: 2 -->
+- [x] Design `llxprt` Agent Workflow Template <!-- id: 3 -->
+    - [x] Define recommended mode (Interactive vs Non-interactive)
+    - [x] Outline workflow steps
+- [x] Create [llxprt_workflow_proposal.md](file:///Users/caishanghong/.gemini/antigravity/brain/19b78f8b-44be-402c-97f7-e713e5c9f6c9/llxprt_workflow_proposal.md) with findings and recommendations <!-- id: 4 -->
+- [x] Deep dive into Slash Command Handling <!-- id: 5 -->
+    - [x] Explore `/Users/caishanghong/Shopify/cli-tool/llxprt-code-2` codebase
+    - [x] Identify CLI entry point and argument parsing logic
+    - [x] Determine how slash commands are routed in interactive vs non-interactive modes
+    - [x] Verify if `llxprt "/cmd"` sends prompt to LLM instead of executing local handler
+- [x] Revise `llxprt_workflow_proposal.md` based on code analysis <!-- id: 6 -->
+- [x] Verify `@filename` support in non-interactive mode <!-- id: 7 -->
+    - [x] Analyze `handleAtCommand` in `packages/cli/src/ui/hooks/atCommandProcessor.ts`
+    - [x] Confirm if file content is resolved locally before LLM request
+- [x] Create `llxprt_agent_guide.md` (Context for LLM) <!-- id: 8 -->
+    - [x] Document correct usage (Non-interactive mode)
+    - [x] Document limitations (No slash commands)
+    - [x] Document context provision (`@filename` vs flags)
+    - [x] Provide example prompts for the Agent
+- [x] Refine `llxprt_agent_guide.md` based on user feedback <!-- id: 9 -->
+    - [x] Remove configuration/flag details (assume defaults)
+    - [x] Adopt "Delegation Decision Tree" style from reference
+    - [x] Focus on "When to delegate" (Code writing) vs "Self-handle" (Read/Plan)
+- [x] Adjust workflow for "Plan Delegation & Review" <!-- id: 10 -->
+    - [x] Update Roles: Agent (Architect/Reviewer) vs LLxprt (Builder)
+    - [x] Update Decision Tree: Plan -> Delegate -> Review
+    - [x] Emphasize "Complete Plan" in prompt construction
+    - [x] Add "Review Phase" instructions
+- [x] Clarify `llxprt` command availability <!-- id: 11 -->
+    - [x] Add "Environment & Availability" section
+    - [x] Explicitly state `llxprt` is a system binary, not a project file
+    - [x] Add instruction to verify via `which llxprt`
+- [x] Update guide for `Opencode` Workflow <!-- id: 12 -->
+    - [x] Rename/Rebrand to Opencode Agent Interface
+    - [x] Implement "Plan -> Walkthrough -> Review -> Execute" workflow
+    - [x] Add mandatory `opencode run "Review Plan..."` step
+    - [x] Update Delegation Decision Tree and Protocol
+- [x] Restrict Opencode role to "Pure Reviewer" <!-- id: 13 -->
+    - [x] Keep "Environment & Availability"
+    - [x] Remove Execution/Builder roles
+    - [x] Define Opencode as "Senior Technical Reviewer"
+    - [x] Define Workflow: Draft -> Review -> Refine -> Agent Executes
+- [x] Correct Workflow Logic (Plan vs Walkthrough) <!-- id: 14 -->
+    - [x] Explain standard Agent Flow (Plan -> Exec -> Verify)
+    - [x] Update Guide: Opencode reviews `implementation_plan.md` ONLY in Phase 1
+    - [x] Update Guide: Opencode reviews `walkthrough.md` ONLY in Phase 4 (Post-Verification)
+- [ ] Simplify `opencode run` command syntax <!-- id: 15 -->
+    - [ ] Remove "Role/Task/Focus" structured blocks
+    - [ ] Use simple, direct prompts (e.g., "Review this plan: ...")
+    - [ ] Ensure commands are easy to execute without parsing issues

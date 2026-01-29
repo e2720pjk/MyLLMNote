@@ -1,0 +1,12 @@
+# Task: Review ASTEdit Tool Refactoring
+
+- [ ] Analyze codebase context and changes <!-- id: 0 -->
+    - [ ] Read `packages/core/src/tools/ast-edit.ts`
+    - [ ] Read `packages/core/src/tools/ast-edit.test.ts`
+- [ ] Perform Code Review <!-- id: 1 -->
+    - [ ] Check Correctness (Freshness check, Git working set logic)
+    - [ ] Check Security (Input validation)
+    - [ ] Check Performance (Token budget, Git commands)
+    - [ ] Check Code Quality & Architecture
+    - [ ] Check Testing (Coverage of new features)
+- [ ] Generate Review Report <!-- id: 2 -->

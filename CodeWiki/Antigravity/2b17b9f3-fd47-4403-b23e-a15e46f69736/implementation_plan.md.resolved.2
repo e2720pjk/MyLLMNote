@@ -1,0 +1,41 @@
+# Create Version-Change-report.md
+
+Create a new file `Version-Change-report.md` summarizing changes since `v0.1.0` on the `opencode-dev` branch, following the TLDR and Dive Deeper format.
+
+## Proposed Changes
+
+### Documentation
+
+#### [NEW] [Version-Change-report.md](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/Version-Change-report.md)
+Create the file with the following structure:
+
+- **TLDR**: Overall summary of performance, robustness, and configuration improvements.
+- **Dive Deeper**: Detailed list of categorized changes.
+
+**功能 (Features)**
+- Added actual API timing measurement for agent performance tracking (`bd119a2`).
+- Added token usage tracking for agent operations (`2bf0003`).
+- Implemented token tracking for LLM API calls (`5c5ddf8`).
+- Added comprehensive configuration validation (`363dafd`).
+- Parallel processing for documentation generation (`6c3f332`).
+- Configurable file limits functionality (`b3a5ba4`).
+- Added `--respect-gitignore` option (`861cb8e`).
+- Added GitHub templates and opencode workflow (`790464b`).
+
+**調整 (Adjustments)**
+- Improved robustness and error handling in core components (`aedf4e7`).
+- Converted cache concurrency tests from threading to async (`a71b16b`).
+- Optimized module processing and performance tracking (`47f8f14`).
+- Fix: resolve async locking, exception handling, and magic number issues (`96f2162`).
+- Corrected `working_dir` default to 'docs' (`d13dd15`).
+- Refactored AnalysisOptions and GenerationOptions (`06893d6`).
+- Reformatted codebase for consistency (`436545b`).
+- Standardized string quoting and formatting (`db4ecca`).
+- CI update: switched model to glm-4.7-free (`cab22ae`).
+- Various fixes for thread safety, type validation, and uninitialized variables.
+
+## Verification Plan
+
+### Manual Verification
+- Review the new `Version-Change-report.md` to ensure it follows the requested format.
+- Confirm that upstream merges and unmerged branches are excluded.

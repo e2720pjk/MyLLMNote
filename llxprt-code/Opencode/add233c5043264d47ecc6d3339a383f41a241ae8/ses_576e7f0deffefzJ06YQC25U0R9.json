@@ -1,0 +1,17 @@
+{
+  "id": "ses_576e7f0deffefzJ06YQC25U0R9",
+  "version": "1.0.65",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_576e818e6ffe2ysosxMv1TBQFp",
+  "title": "Read report and analyze branch (@general subagent)",
+  "time": {
+    "created": 1763236646689,
+    "updated": 1763236787750
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

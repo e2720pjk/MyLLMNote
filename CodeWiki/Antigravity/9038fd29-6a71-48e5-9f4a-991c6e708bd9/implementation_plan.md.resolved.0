@@ -1,0 +1,45 @@
+# Implementation Plan - Fix Rebase-Related Lint Errors
+
+This plan addresses three lint errors discovered after a recent rebase/conflict resolution. These issues are confirmed to be side effects of "half-baked" merges or incomplete cleanups.
+
+## Proposed Changes
+
+### [Component: Dependency Analyzer]
+
+#### [MODIFY] [dependency_graphs_builder.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/dependency_analyzer/dependency_graphs_builder.py)
+- Remove unused variable `filtered_folders_path` (lines 51-53).
+- Remove commented-out code (lines 54-63) that was previously using this variable.
+
+---
+
+### [Component: Core Config]
+
+#### [MODIFY] [config.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/config.py)
+- Update [from_cli](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/config.py#93-145) class method signature (line 95) to include `fallback_model: str = FALLBACK_MODEL_1`.
+- This ensures it matches the return statement at line 138.
+
+---
+
+### [Component: Utilities]
+
+#### [MODIFY] [utils.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/utils.py)
+- Restore missing `@staticmethod def save_json(data: Any, filepath: str) -> None:` header above line 19.
+- Fix indentation of the function body (lines 19-27) to be a member of [FileManager](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/utils.py#11-49).
+
+## Verification Plan
+
+### Automated Tests
+- Run [flake8](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_tools/str_replace_editor.py#203-213) on the modified files to ensure the specific lint errors (F841, F821) are resolved.
+  ```bash
+  flake8 codewiki/src/be/dependency_analyzer/dependency_graphs_builder.py
+  flake8 codewiki/src/config.py
+  flake8 codewiki/src/utils.py
+  ```
+- Run a basic CLI command to verify that `Config.from_cli` and `file_manager.save_json` Still work as expected.
+  ```bash
+  # Example dry run or help command if available, or a small test script
+  python3 -c "from codewiki.src.utils import file_manager; file_manager.save_json({'test': 1}, 'test.json')"
+  ```
+
+### Manual Verification
+- Verify that [dependency_graphs_builder.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/dependency_analyzer/dependency_graphs_builder.py) still builds graphs correctly without the old folder filtering logic.

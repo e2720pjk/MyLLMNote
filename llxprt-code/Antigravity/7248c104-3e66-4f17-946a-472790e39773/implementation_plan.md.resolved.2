@@ -1,0 +1,34 @@
+# Implementation Plan: Code Comment Reinforcement (CCR) - Refined
+
+Refine the rule to support "Segmented" (Paragraph-style) explanations for complex logic blocks and provide strategic advice.
+
+## Proposed Changes
+
+### Configuration Layer
+
+#### [MODIFY] [.agent-rules.md](file:///Users/caishanghong/.gemini/antigravity/playground/distant-intergalactic/.agent-rules.md)
+Update the rule to support "Logical Segments".
+
+- **Objective**: Treat code changes like an article with distinct "paragraphs" of explanation.
+- **Rules**:
+    - **Segmented Explanations**: Use block comments or multiple inline markers for different logical sections.
+    - **Contextual Anchors**: Comments should appear precisely where the logic changes, explaining that specific context.
+    - **Language**: English output required.
+
+## Strategic Advice & Direction
+
+> [!TIP]
+> **1. 建立「邏輯快照 (Logical Snapshot)」概念**
+> 您的方向非常正確。對於 AI 而言，過於頻繁的微小註解會干擾閱讀，但「分段落」的註解能模仿人類架構師的心智模型。建議將更動視為多個「策略區塊」，每個區塊由一組 CCR 標記引導。
+> 
+> **2. 結合版本控制**
+> 建議在 CCR 註解中加入時間戳或版本編號，這能協助「定期審核」時快速過濾掉過時的邏輯解釋。
+> 
+> **3. 自動化摘要**
+> 這種結構化的註解非常適合用來自動生成 `CHANGELOG.md` 或技術負債報告。
+
+## Verification Plan
+
+### Manual Verification
+- Review the updated [.agent-rules.md](file:///Users/caishanghong/.gemini/antigravity/playground/distant-intergalactic/.agent-rules.md) for the "Segmented" logic.
+- Provide a "Paragraph-style" code example.

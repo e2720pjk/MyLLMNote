@@ -1,0 +1,16 @@
+{
+  "id": "ses_55963167dffew6qB51j31UMZls",
+  "version": "1.0.85",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing config parsing error in branch adjustments",
+  "time": {
+    "created": 1763731892610,
+    "updated": 1763732325748
+  },
+  "summary": {
+    "additions": 6,
+    "deletions": 3,
+    "files": 1
+  }
+}

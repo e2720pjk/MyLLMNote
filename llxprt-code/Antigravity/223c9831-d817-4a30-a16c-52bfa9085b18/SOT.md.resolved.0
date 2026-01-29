@@ -1,0 +1,42 @@
+# Single Source of Truth: Fiber Recorder Integration
+
+> **Status**: 🟢 Verified Library / 🟡 Integration Pending  
+> **Last Updated**: 2025-12-20
+
+## 1. Traceability (溯源)
+This project aims to provide "video-like" playback of the CLI execution for LLM analysis.
+- **Phase 0 (Concept)**: Decision to use React Fiber Tree serialization instead of raw text recording to capture semantic meaning (props, state, component hierarchy).
+- **Phase 1 (Library Enhancement)**: `fiber-recorder` was improved to handle Ink-specific structures.
+    - **Evidence**: [fiber-recorder/src/lib/serializer.ts](file:///Users/caishanghong/Shopify/cli-tool/fiber-recorder/src/lib/serializer.ts) confirms:
+        - Recursive [serializeFiber](file:///Users/caishanghong/Shopify/cli-tool/fiber-recorder/src/lib/serializer.ts#25-103) function.
+        - `stateNode` inspection capturing `_style`, `_text`, `nodeName`, and `_layout` (YogaNode).
+        - `WeakSet` visited tracking for circular reference protection.
+        - Configurable depths (`maxDepth`, `maxPropsSize`).
+
+- **Phase 2 (Integration Attempt)**: Integration into `llxprt-code-4` (Ink CLI).
+    - **Challenge**: Ink's internal `react-devtools-core` initialization overwrites the global hook, preventing `fiber-recorder` from attaching if loaded late.
+    - **Current Fix**: Pre-initialization of `__REACT_DEVTOOLS_GLOBAL_HOOK__` at the very top of [packages/cli/index.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/index.ts).
+
+## 2. Alignment (架構對齊)
+| Original Goal | Current Implementation | Gap |
+| :--- | :--- | :--- |
+| **"Video-like" Playback** | Serialized Fiber snapshots in [fiber-log.jsonl](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/fiber-log.jsonl) | **None** (Data layer is ready). Needs a player/visualizer (out of scope for CLI integration). |
+| **Integrate with Ink** | [packages/cli/index.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/index.ts) hook injection | **Minor**: Import hoisting caused valid code to fail. Moving to [setup-hook.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/setup-hook.ts) fixes this. |
+| **E2E Testing** | [TestRig](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/integration-tests/test-helper.ts#116-1072) environment configuration | **None**: `DEV=true` and `ENABLE_FIBER_LOGGER=true` are correctly wired. |
+
+## 3. Rationales & Technical Debt (決策紀錄)
+- **Why Fiber vs rrweb?**: `rrweb` requires a DOM. Ink has no DOM. We simulate the DOM by capturing the Fiber `stateNode`, which in Ink holds the Layout and Style data. This allows reconstructing the visual representation.
+- **Why Global Hook Patching?**: There is no public API to attach multiple DevTools in React < 17 (Ink uses 16-ish logic). We must manually patch the global hook to support "Multicasting" events to both Ink's DevTools and our Recorder.
+    - **Debt**: This relies on internal React/Ink details (`__REACT_DEVTOOLS_GLOBAL_HOOK__`), but it is the only way to achieve zero-config observability.
+
+## 4. Roadmap (剩餘任務)
+The library is **verified**. The only remaining task is the **final wiring** into the CLI.
+
+- [ ] **Finalize Hook Injection**: 
+    - Move hook setup to [packages/cli/src/setup-hook.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/setup-hook.ts).
+    - Import it as the *first line* of [packages/cli/index.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/index.ts).
+- [ ] **Verify CLI Integration**:
+    - Run `npm run build`.
+    - Run `llxprt "test"` (using positional args, **not** `--prompt`).
+    - Verify [fiber-log.jsonl](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/fiber-log.jsonl) contains `stateNode` data.
+- [ ] **Close Task**: Mark "E2E Testing Migration" as complete.

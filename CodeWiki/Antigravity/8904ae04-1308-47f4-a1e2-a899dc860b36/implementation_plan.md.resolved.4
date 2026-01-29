@@ -1,0 +1,48 @@
+> [!TIP]
+> **Why Hybrid (AST + Joern)?**
+> Technically, Joern's CPG **subsumes** AST. However, the current AST parser is highly optimized and stable for CodeWiki's specific documentation needs. 
+> To achieve a **Quick Win**, we use a "Enhancement" strategy:
+> 1. **AST**: Provides the stable skeleton (Repository structure, files, methods).
+> 2. **Joern**: Infuses "Superpowers" (Data flow, cross-module tagging) that AST alone cannot provide.
+> This prevents a "high-risk replacement" and allows for incremental migration.
+
+---
+
+## 🚀 Execution Phases
+
+### **Phase 1: Joern PoC & Baseline** 🎯
+**Goal:** Verify Joern environment and establish performance/accuracy baselines.
+- **Environment**: Install Joern v2.1.0 and verify `joern --version`.
+- **Baseline**: Record AST analysis time for 10/100/500 files.
+- **PoC**: Generate a raw CPG for a test repo and visualize a call graph.
+- **Artifacts**: `joern_test_output.json`, `performance_baseline.md`.
+
+### **Phase 2: Hybrid Data Flow Visualization** 📊
+**Goal:** Introduce Data Flow analysis as a "Plugin" to existing results.
+- **Hybrid Service**: Create `HybridAnalysisService` that merges AST call graphs + Joern data dependencies.
+- **Model Extension**: Add `DataDependency` to the relationship set (discriminated union).
+- **Enrichment**: Generate sample documentation containing "Data Flow Annotations".
+- **Artifacts**: `hybrid_analysis_service.py`, Sample documentation with data flows.
+
+### **Phase 3: Production Integration & Safety** 🏭
+**Goal:** Robust integration with caching and automatic fallback.
+- **Feature Flag**: Add `--use-joern` flag (default=False).
+- **Caching**: Implement simple pickle-based CPG caching with SHA256 invalidation.
+- **Fallback**: Implement "AST-as-Safety-Net" logic (if Joern fails/times out, use default AST results).
+- **Artifacts**: Integrated feature toggle, `JOERN_USER_GUIDE.md`.
+
+---
+
+## **Verification Plan**
+
+### Phase 1 Acceptance
+- [ ] Joern generates CPG successfully on a 5-file Python project.
+- [ ] Baseline metrics recorded and comparable.
+
+### Phase 2 Acceptance
+- [ ] `HybridAnalysisService` produces a merged JSON containing both AST edges and Joern dataflows.
+- [ ] LLM successfully interprets data-flow context in documentation prompts.
+
+### Phase 3 Acceptance
+- [ ] System automatically switches to AST when `joern` command is intentionally broken.
+- [ ] Cache hits reduce subsequent analysis time by > 80%.

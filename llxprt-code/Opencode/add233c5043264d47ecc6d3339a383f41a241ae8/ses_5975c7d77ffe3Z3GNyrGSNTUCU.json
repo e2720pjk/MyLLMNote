@@ -1,0 +1,16 @@
+{
+  "id": "ses_5975c7d77ffe3Z3GNyrGSNTUCU",
+  "version": "1.0.45",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "title": "Analyzing ToolCallPipeline.test.ts content",
+  "time": {
+    "created": 1762692137608,
+    "updated": 1762695660353
+  },
+  "summary": {
+    "additions": 2047,
+    "deletions": 1481,
+    "files": 5
+  }
+}

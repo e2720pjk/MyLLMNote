@@ -1,0 +1,16 @@
+{
+  "id": "ses_55389f339ffehrvCD0triJBgP1",
+  "version": "1.0.97",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing excludeTools restart-persistence logic",
+  "time": {
+    "created": 1763830009030,
+    "updated": 1763836386406
+  },
+  "summary": {
+    "additions": 371,
+    "deletions": 0,
+    "files": 1
+  }
+}

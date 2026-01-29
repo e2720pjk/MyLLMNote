@@ -1,0 +1,16 @@
+{
+  "id": "ses_4621f4241ffeJuswVSv364xFpN",
+  "version": "1.0.220",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "title": "Analyzing git rebase status after 0.1.0-github conflicts",
+  "time": {
+    "created": 1767880310206,
+    "updated": 1767883923743
+  },
+  "summary": {
+    "additions": 9077,
+    "deletions": 5574,
+    "files": 105
+  }
+}

@@ -1,0 +1,19 @@
+# Task: Fix Terminal Corruption in Kitty Protocol Detector
+
+- [x] Analyze and Compare Signal Handling <!-- id: 0 -->
+    - [x] Locate and read [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/utils/kittyProtocolDetector.ts) in `llxprt-code` and `gemini-cli`
+    - [x] Locate and read [terminalSequences.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/terminalSequences.ts) and [bracketedPaste.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/utils/bracketedPaste.ts) in both
+    - [x] Check entry points ([gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/gemini.tsx) / `index.ts`) for global signal handlers
+    - [x] Compare implementations and identify gaps in `llxprt-code`
+- [x] Formulate Improvement Plan <!-- id: 1 -->
+    - [x] Design a robust signal handling strategy (SIGINT, SIGTERM, exit)
+    - [x] Address synchronous writing requirements
+    - [x] Resolve potential conflicts with existing handlers
+- [x] Implement Fixes <!-- id: 2 -->
+    - [x] Create [packages/cli/src/utils/signalManager.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/utils/signalManager.ts)
+    - [x] Update [packages/cli/src/utils/cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/utils/cleanup.ts) to use SignalManager
+    - [x] Update [bracketedPaste.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/utils/bracketedPaste.ts) to use `fs.writeSync`
+    - [x] Update [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/utils/kittyProtocolDetector.ts) to use SignalManager
+    - [x] Update [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/gemini.tsx) to initialize SignalManager
+- [x] Verify Fixes <!-- id: 3 -->
+    - [x] Manual verification (CTRL+C, Crash, Rapid CTRL+C)

@@ -1,0 +1,50 @@
+# Walkthrough: Upstream Porting & E2E Verification of Tabs Feature
+
+The Tabs feature has been successfully ported from the local codebase to the upstream `llxprt-code-4` branch and **verified via a tmux-based E2E test**.
+
+## 1. Porting Summary
+Key components ported: [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx), [TabBar.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/TabBar.tsx), [AppHeader.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/AppHeader.tsx), [TodoTab.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/TodoTab.tsx), [SystemTab.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/SystemTab.tsx), and state management updates in [UIStateContext.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/contexts/UIStateContext.tsx), [appReducer.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/reducers/appReducer.ts), [UIActionsContext.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/contexts/UIActionsContext.tsx).
+
+## 2. Critical Bug Fixes
+During porting, a **runtime crash** occurred in [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx) because [useAppContext()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/contexts/AppContext.tsx#16-23) was called without the `AppContext.Provider` being in the React component tree.
+
+**Fix Applied in [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/AppContainer.tsx):**
+-   Imported [AppContext](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/contexts/AppContext.tsx#16-23) from `./contexts/AppContext.js`.
+-   Created `appContextValue` useMemo providing `{ version: props.version, startupWarnings }`.
+-   Wrapped the entire return tree with `<AppContext.Provider value={appContextValue}>`.
+
+## 3. E2E Test: Tabs Cycling
+
+Created [oldui-tmux-script.tabs-cycling.llxprt.json](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/oldui-tmux-script.tabs-cycling.llxprt.json) to automate testing of the `Ctrl+O` tab cycle keybinding.
+
+### Test Steps:
+1.  Start CLI in tmux session.
+2.  Wait for UI to render.
+3.  Assert 4 tab labels are visible: [Chat](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/ChatTab.tsx#48-317), [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/DebugTab.tsx#17-108), [Todo](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/TodoTab.tsx#14-27), [System](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/SystemTab.tsx#14-123).
+4.  Press `Ctrl+O` and verify focus shifts to [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/DebugTab.tsx#17-108).
+5.  Press `Ctrl+O` and verify focus shifts to [Todo](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/TodoTab.tsx#14-27).
+6.  Press `Ctrl+O` and verify focus shifts to [System](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/SystemTab.tsx#14-123).
+7.  Press `Ctrl+O` and verify focus wraps back to [Chat](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/ChatTab.tsx#48-317).
+8.  `/quit` the application.
+
+### Results:
+**TEST PASSED ✅**
+
+Screen captures confirmed correct tab cycling:
+| Capture | Active Tab |
+|---------|------------|
+| initial | `[Chat]`   |
+| 1st C-o | `[Debug]`  |
+| 2nd C-o | `[Todo]`   |
+| 3rd C-o | `[System]` |
+| 4th C-o | `[Chat]` (wrap) |
+
+## 4. Verification Commands
+All passed without errors:
+
+| Command | Result |
+|---------|--------|
+| `npm run lint` | ✅ Passed |
+| `npm run typecheck` | ✅ Passed |
+| `npm run build` | ✅ Passed |
+| `node scripts/oldui-tmux-harness.js --script scripts/oldui-tmux-script.tabs-cycling.llxprt.json --assert` | ✅ Passed |

@@ -1,0 +1,16 @@
+{
+  "id": "ses_56c4f0a51ffeO23NKwmYC1GJit",
+  "version": "1.0.68",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Reviewing old-branch 20251116-kitty-complete-fix-v4 and finding new CTRL+C handling on current br...",
+  "time": {
+    "created": 1763414439343,
+    "updated": 1763414907708
+  },
+  "summary": {
+    "additions": 91,
+    "deletions": 18,
+    "files": 1
+  }
+}

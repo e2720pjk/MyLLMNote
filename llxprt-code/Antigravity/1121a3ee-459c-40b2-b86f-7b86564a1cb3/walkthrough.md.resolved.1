@@ -1,0 +1,41 @@
+# Walkthrough: Upstream Porting of Tabs Feature
+
+The Tabs feature has been successfully ported from the local codebase to the upstream base directory `llxprt-code-4`. This included integrating the latest upstream UI improvements while maintaining the tabbed navigation and system status views.
+
+## 1. Component Porting & UI Integration
+I migrated and updated the following key UI components to the target directory:
+- [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx): Refactored to handle tab-based rendering ([Chat](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/ChatTab.tsx#48-317), [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/DebugTab.tsx#17-108), [Todo](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/TodoTab.tsx#14-27), [System](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/SystemTab.tsx#21-169)).
+- [TabBar.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/TabBar.tsx): Integrated to manage tab switching and update indicators.
+- [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/layouts/DefaultAppLayout.tsx): Updated to use the new [MainContent](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/MainContent.tsx#57-395) structure and removed redundant monolithic UI logic.
+- [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/AppContainer.tsx): Updated to orchestrate tab state and handle global keybindings.
+
+## 2. State Management & Actions
+Updated the core UI state to support multi-tab operations:
+- **UIState**: Added `activeTab`, [tabs](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs), `tabsWithUpdates`, `version`, and `nightly`.
+- **AppReducer**: Added `SET_ACTIVE_TAB` and `SET_TAB_HAS_UPDATES` actions.
+- **UIActions**: Exposed [setActiveTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/AppContainer.tsx#1790-1794) to components.
+
+## 3. Keybindings
+Remapped `Ctrl+O` to `Command.TAB_CYCLE` to support seamless tab switching. The previous binding for `SHOW_ERROR_DETAILS` was removed as error details are now integrated into the [Chat](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/ChatTab.tsx#48-317) or [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/DebugTab.tsx#17-108) tabs.
+
+## 4. Verification & Type Safety
+Resolved over 18 TypeScript errors across the codebase:
+- Fixed missing props in [ScreenReaderAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/layouts/ScreenReaderAppLayout.tsx).
+- Updated test mocks in `keyMatchers.test.ts` and [appReducer.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/reducers/appReducer.test.ts).
+- Resolved `RenderOptions` discrepancies in [ink](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/colors.ts#242-245) v6 custom build.
+- Fixed missing module imports by copying `AppContext.tsx`, [useRenderMode.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/hooks/useRenderMode.ts), `ConfigContext.tsx`, and `useAlternateBuffer.ts`.
+
+### Automated Checks
+- `npm run lint`: ✅ Passed
+- `npm run typecheck`: ✅ Passed
+- `npm run build`: ✅ Passed
+- `node dist/index.js --help`: ✅ Passed
+
+## 5. Summary of Modified Files
+- [llxprt-code-4/packages/cli/src/ui/AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/AppContainer.tsx)
+- [llxprt-code-4/packages/cli/src/ui/layouts/DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/layouts/DefaultAppLayout.tsx)
+- [llxprt-code-4/packages/cli/src/ui/layouts/ScreenReaderAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/layouts/ScreenReaderAppLayout.tsx)
+- [llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx)
+- [llxprt-code-4/packages/cli/src/ui/contexts/UIStateContext.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/contexts/UIStateContext.tsx)
+- [llxprt-code-4/packages/cli/src/ui/reducers/appReducer.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/reducers/appReducer.ts)
+- [llxprt-code-4/packages/cli/src/config/keyBindings.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/config/keyBindings.ts)

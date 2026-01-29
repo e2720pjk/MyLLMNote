@@ -1,0 +1,16 @@
+{
+  "id": "ses_56c29255cffeDFdn7uAwH8lCwY",
+  "version": "1.0.68",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Reviewing branch changes and evaluating latest review authenticity on PR #9",
+  "time": {
+    "created": 1763416922788,
+    "updated": 1763418094284
+  },
+  "summary": {
+    "additions": 46,
+    "deletions": 48,
+    "files": 1
+  }
+}

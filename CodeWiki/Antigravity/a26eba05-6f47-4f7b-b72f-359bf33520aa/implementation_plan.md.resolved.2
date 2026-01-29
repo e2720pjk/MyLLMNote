@@ -1,0 +1,41 @@
+# Implementation Plan - Fix Terminal Corruption (Issue #26)
+
+## Problem Analysis
+The terminal corruption is caused by a race condition between manual terminal resets and Ink's internal cleanup process.
+1.  **[gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)**: The `SIGINT`/`SIGTERM` handlers explicitly call `process.stdin.setRawMode(wasRaw)` (disabling raw mode) **BEFORE** calling [runExitCleanup()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#18-32).
+2.  **[cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts)**: [runExitCleanup()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#18-32) executes registered cleanup functions, including Ink's `instance.unmount()`.
+3.  **Conflict**: Ink expects the terminal to be in raw mode to properly calculate layout and restore the screen during unmount. Disabling raw mode *before* Ink unmounts causes it to miscalculate, leading to "stair-stepping" and artifacts, especially when an active OpenAI stream is updating the UI.
+
+## Proposed Changes
+
+### CLI Package
+
+#### [MODIFY] [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)
+
+- **Remove Early Reset**: Delete the `process.stdin.setRawMode(wasRaw)` calls from the `SIGINT` and `SIGTERM` handlers.
+    - Let [runExitCleanup()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#18-32) handle the terminal state restoration.
+
+#### [MODIFY] [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts)
+
+- **Consolidate Reset Logic**: Ensure [runExitCleanup()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#18-32) handles the terminal reset (disabling raw mode, showing cursor) at the **END** of the cleanup sequence.
+    - This ensures Ink finishes its unmount process (while raw mode is still active) before we finally reset the terminal.
+    - Move the existing reset logic (if any remains from previous edits) to after the cleanup loop.
+
+## User Review Required
+
+> [!IMPORTANT]
+> This fix addresses the root cause in the signal handlers ([gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)) which was preemptively disabling raw mode. It ensures Ink has full control during its cleanup phase.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run preflight`.
+
+### Manual Verification
+- **Test 1: OpenAI Stream Exit**
+    1. Start CLI with OpenAI provider.
+    2. Trigger a long response.
+    3. Press `Ctrl+C` mid-stream.
+    4. Verify clean exit (no artifacts).
+- **Test 2: Normal Exit**
+    1. Verify `/exit` still works cleanly.

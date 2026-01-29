@@ -1,0 +1,7 @@
+- [x] Verify performance issue in `SettingsDialog.tsx` <!-- id: 0 -->
+- [x] Create implementation plan (Scheme 3) <!-- id: 1 -->
+- [x] Delegate fix to `llxprt` CLI (Failed: `replace` tool disabled in profile) <!-- id: 2 -->
+- [x] Apply fix manually <!-- id: 4 -->
+- [x] Verify fix <!-- id: 3 -->
+- [x] Create GitHub issue <!-- id: 5 -->
+- [x] Create Pull Request <!-- id: 6 -->

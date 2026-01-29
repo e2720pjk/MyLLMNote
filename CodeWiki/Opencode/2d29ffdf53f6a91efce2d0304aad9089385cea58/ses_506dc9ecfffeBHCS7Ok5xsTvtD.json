@@ -1,0 +1,17 @@
+{
+  "id": "ses_506dc9ecfffeBHCS7Ok5xsTvtD",
+  "version": "1.0.134",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "parentID": "ses_506dd0983ffebHR9PGAjMwqr6P",
+  "title": "Explore performance bottlenecks (@explore subagent)",
+  "time": {
+    "created": 1765116436784,
+    "updated": 1765116547274
+  },
+  "summary": {
+    "additions": 316,
+    "deletions": 0,
+    "files": 2
+  }
+}

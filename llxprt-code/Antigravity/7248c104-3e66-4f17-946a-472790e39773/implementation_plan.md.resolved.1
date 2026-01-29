@@ -1,0 +1,22 @@
+# Implementation Plan: Code Comment Reinforcement (CCR)
+
+Create a concise rule to force AI agents to justify code changes via English comments.
+
+## Proposed Changes
+
+### Configuration Layer
+
+#### [NEW] [code-comment-reinforcement.md](file:///Users/caishanghong/.gemini/antigravity/playground/distant-intergalactic/.agent/rules/code-comment-reinforcement.md)
+A rule file containing structured instructions for code commentary.
+
+- **Objective**: Use structured comments (Relation/Reason) for all logic changes.
+- **Rules**:
+    - Every logical modification must have a comment.
+    - Comments must explain: 1. **Why** (Reason) and 2. **Relation** to core logic.
+    - **Language**: Rule is in Chinese, but **Output Comments MUST be English**.
+
+## Verification Plan
+
+### Manual Verification
+- Verify the rule file exists and reflects the concise bullet points.
+- Provide a usage example in the walkthrough.

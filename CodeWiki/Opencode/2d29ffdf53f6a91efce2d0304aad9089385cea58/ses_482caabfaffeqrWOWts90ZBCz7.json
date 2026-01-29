@@ -1,0 +1,17 @@
+{
+  "id": "ses_482caabfaffeqrWOWts90ZBCz7",
+  "version": "1.0.134",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/var/folders/8m/309xc4vn3737_yftd2xz73l40000gn/T/vibe-kanban/worktrees/a9bb-joern-integratio/CodeWiki",
+  "parentID": "ses_482caba71ffez4xkNgD16cU5pg",
+  "title": "探索現有代碼結構 (@explore subagent)",
+  "time": {
+    "created": 1767332205573,
+    "updated": 1767332233759
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

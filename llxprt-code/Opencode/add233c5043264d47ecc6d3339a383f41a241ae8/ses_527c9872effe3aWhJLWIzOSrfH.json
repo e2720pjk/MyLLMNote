@@ -1,0 +1,17 @@
+{
+  "id": "ses_527c9872effe3aWhJLWIzOSrfH",
+  "version": "1.0.107",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_527c9a52cffeJK6aY1e5TtH2vS",
+  "title": "Analyze terminal leakage plan (@general subagent)",
+  "time": {
+    "created": 1764564039889,
+    "updated": 1764564084719
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

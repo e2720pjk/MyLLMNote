@@ -1,0 +1,9 @@
+# Task: Fix Missing Dependencies in llxprt-code-4
+
+- [ ] Verify issue in `llxprt-code-4` <!-- id: 0 -->
+    - [ ] Check root `package.json` for misplaced dependencies
+    - [ ] Check `packages/core/package.json` for missing dependencies
+- [x] Move dependencies <!-- id: 1 -->
+    - [x] Remove from root `package.json`
+    - [x] Add to `packages/core/package.json`
+- [x] Verify changes <!-- id: 2 -->

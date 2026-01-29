@@ -1,0 +1,16 @@
+{
+  "id": "ses_4cd576e3bffes853aQQoeipJYw",
+  "version": "1.0.166",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4",
+  "title": "Verifying llxprt-code-4 after UI refinements and running build/test",
+  "time": {
+    "created": 1766081466820,
+    "updated": 1766082699675
+  },
+  "summary": {
+    "additions": 53,
+    "deletions": 48,
+    "files": 6
+  }
+}

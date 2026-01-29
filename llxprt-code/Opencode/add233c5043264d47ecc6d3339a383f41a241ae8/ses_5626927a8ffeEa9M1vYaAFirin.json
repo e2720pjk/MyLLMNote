@@ -1,0 +1,17 @@
+{
+  "id": "ses_5626927a8ffeEa9M1vYaAFirin",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_5626e6476ffeUOvF6coVOLFkjO",
+  "title": "Fix settings test structure (@general subagent)",
+  "time": {
+    "created": 1763580500055,
+    "updated": 1763581494742
+  },
+  "summary": {
+    "additions": 421,
+    "deletions": 875,
+    "files": 7
+  }
+}

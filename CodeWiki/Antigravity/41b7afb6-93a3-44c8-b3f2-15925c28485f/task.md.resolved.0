@@ -1,0 +1,10 @@
+# Task: Generate Progress Report
+
+- [ ] Extract Opencode Data <!-- id: 0 -->
+    - [ ] List projects in `~/.local/share/opencode/storage/project` <!-- id: 1 -->
+    - [ ] List recent sessions in `~/.local/share/opencode/storage/session` <!-- id: 2 -->
+    - [ ] Map sessions to projects and todos <!-- id: 3 -->
+- [ ] Extract Antigravity Data <!-- id: 4 -->
+    - [ ] Summarize recent conversation history <!-- id: 5 -->
+- [ ] Compile Report <!-- id: 6 -->
+    - [ ] Create `progress_report.md` <!-- id: 7 -->

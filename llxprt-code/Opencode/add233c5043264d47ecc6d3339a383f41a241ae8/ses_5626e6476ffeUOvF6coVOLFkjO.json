@@ -1,0 +1,16 @@
+{
+  "id": "ses_5626e6476ffeUOvF6coVOLFkjO",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Reviewing REPAIR_PLAN_REPORT.md before fixes",
+  "time": {
+    "created": 1763580156809,
+    "updated": 1763585611272
+  },
+  "summary": {
+    "additions": 888,
+    "deletions": 901,
+    "files": 24
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "ses_5641c4effffe4g0VCdyuKyyMlS",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing report verification results",
+  "time": {
+    "created": 1763551981824,
+    "updated": 1763579190089
+  },
+  "summary": {
+    "additions": 35,
+    "deletions": 765,
+    "files": 17
+  }
+}

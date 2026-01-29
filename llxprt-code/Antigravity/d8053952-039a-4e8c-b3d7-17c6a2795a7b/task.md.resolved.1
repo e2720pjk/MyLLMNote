@@ -1,0 +1,22 @@
+#- [x] **Verify & Address Issues**: Check [ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts) for BM25, Git info, and Freshness.
+    - [x] Read [packages/core/src/tools/ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts).
+    - [x] Confirm BM25 is single-file only (stateless).
+    - [x] Confirm Git info is collected but unused.
+    - [x] Confirm `fileFreshness` is collected but unused.
+    - [x] Analyze original Tabby implementation (`tabby/clients/tabby-agent/src`) to understand intended design.
+- [x] **Adjust Implementation Plan**:
+    - [x] **Freshness Check**: Add `last_modified` param and validation logic.
+    - [x] **Context Optimization**: Replace BM25 with Git-based "Working Set" (modified/recent files) + Skeleton View.
+    - [x] **Discovery**: Use `git ls-files` for workspace file discovery.
+    - [x] Update `implementation_plan.md`.
+- [x] **Refactor `ast-edit.ts`**:
+    - [x] Remove `BM25SearchEngine`.
+    - [x] Implement `RepositoryContextProvider.getWorkingSetFiles` (using `git log`, `diff`).
+    - [x] Update `ASTContextCollector` to use `getWorkingSetFiles`.
+    - [x] Implement "Skeleton View" (extract declarations only from working set).
+    - [x] Implement `calculateEdit` freshness check (return `FILE_MODIFIED_CONFLICT` on mismatch).
+    - [x] Update interfaces (`ASTEditToolParams`, etc.).
+- [x] **Verification**:
+    - [x] Run existing tests (`npm test packages/core`).
+    - [x] Create `walkthrough.md`.n Git Info usage (Low Priority) <!-- id: 8 -->
+- [x] Verification <!-- id: 9 -->

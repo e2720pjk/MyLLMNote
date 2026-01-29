@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Integrate upstream PR #845 to gain UI stability improvements (smooth scrolling) and a robust tmux-based test harness. Consists of updating shared components and porting test scripts.",
+  "updatedAt": "2025-12-18T03:03:46.129902Z"
+}

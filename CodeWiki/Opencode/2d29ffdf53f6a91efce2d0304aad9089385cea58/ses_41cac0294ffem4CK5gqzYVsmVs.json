@@ -1,0 +1,17 @@
+{
+  "id": "ses_41cac0294ffem4CK5gqzYVsmVs",
+  "slug": "crisp-wizard",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "Gitignore verification tests review and design assessment",
+  "time": {
+    "created": 1769045491051,
+    "updated": 1769046313570
+  },
+  "summary": {
+    "additions": 49,
+    "deletions": 21,
+    "files": 2
+  }
+}

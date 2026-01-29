@@ -1,0 +1,50 @@
+# Single Source of Truth: Fiber Recorder Integration
+
+> **Status**: 🟢 Library Verified (Isolated) / 🟡 CLI Integration Pending Final Validation  
+> **Last Updated**: 2025-12-20
+
+## 1. Traceability & Context (溯源)
+This project enables "video-like" playback of the CLI execution for LLM analysis by capturing the React Fiber tree semantic state.
+
+- **Phase 0 (Concept)**: Decision to serialize React Fiber Tree for semantic richness (props, state) over raw text.
+- **Phase 1 (Library Verification)**: 
+    - **Previous Blockers**: Confusion over whether the library worked.
+    - **Resolution**: Verified `fiber-recorder` in isolation using `examples/verify-ink-state.tsx`.
+    - **Critical Fix**: Identified that standard Ink (v3/v5) uses `style`/`nodeValue`, while our specific fork/environment might use `_style`/`_text`. 
+    - **Action**: Updated `serializer.ts` to support **both** naming conventions. The library is now robust.
+- **Phase 2 (CLI Integration)**: 
+    - **Hook Injection**: Implemented robust `__REACT_DEVTOOLS_GLOBAL_HOOK__` patching in `packages/cli/src/setup-hook.ts`.
+    - **Entry Point**: Wired into `packages/cli/index.ts` at the very top (fix verified) to prevent import hoisting issues.
+
+## 2. Alignment (架構對齊)
+| Component | Status | Alignment Note |
+| :--- | :--- | :--- |
+| **Fiber Recorder Lib** | 🟢 **Ready** | Recursive capture & `stateNode` inspection (Layout/Style) are verified. Enhanced for compatibility. |
+| **CLI Entry Point** | 🟢 **Ready** | `index.ts` is clean. Hook injection is ordered correctly. |
+| **E2E Tests** | 🟡 **Unstable** | `ui-regression-fiber.e2e.test.ts` logic is correct, but local execution environment reported file access issues. Needs clean run. |
+| **Use Case** | 🔵 **Pending** | "Video" playback requires a visualizer consuming the `fiber-log.jsonl`. We are only building the *Recorder*. |
+
+## 3. Rationales & Technical Debt (決策紀錄)
+- **Support for multuple Ink versions**: Modified `serializer.ts` to check `sn._style || sn.style` and `sn._text ?? sn.nodeValue`. This ensures the recorder works regardless of whether it's running against the `llxprt` fork or standard dependencies.
+- **Hook Patching Strategy**: We deliberately overwrite/proxy `onCommitFiberRoot` in `setup-hook.ts`. This is necessary to coexist with Ink's built-in DevTools.
+- **Debt**: `examples/verify-ink-state.tsx` was added for verification; it can be kept as a regression test.
+
+## 4. Roadmap for Next Executor (接手執行清單)
+The system is theoretically complete. The next steps are purely to confirm the integration `Whole = Parts`.
+
+1.  **Rebuild Library**:
+    - Go to `fiber-recorder/` (sibling directory).
+    - Run `npm run build` to ensure the `serializer.ts` fix is compiled to `dist/`.
+    - *Note*: `llxprt-code` references this via `"file:../../../fiber-recorder"`, so no `npm link` is needed.
+2.  **Rebuild CLI**:
+    - Go to `llxprt-code-4/`.
+    - Run `npm run build` (ensure it picks up the updated `fiber-recorder` if symlinked, or reinstall/update dependency if not).
+3.  **Final Verification**:
+    - Run the manual test **strictly** without deprecated flags:
+      ```bash
+      ENABLE_FIBER_LOGGER=true FIBER_LOG_PATH=$(pwd)/final-test.jsonl ./packages/cli/dist/index.js "hello"
+      ```
+    - Check `final-test.jsonl`.
+    - **Success Criteria**: Log contains `"stateNode": { "style": ... }` entries (proving the serializer fix propagated).
+
+**Current State**: Code is correct. Artifacts are aligned. Just need the final "integration build & run".

@@ -1,0 +1,14 @@
+# Verification: Restore nextSpeakerChecker
+
+## Changes
+- Created [packages/core/src/utils/nextSpeakerChecker.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/core/src/utils/nextSpeakerChecker.ts).
+- Modified [packages/core/src/core/client.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/core/src/core/client.ts) to integrate [checkNextSpeaker](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/core/client.ts#1496-1528).
+- Modified [packages/core/src/config/config.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/config/config.ts) to add `quotaErrorOccurred`.
+
+## Verification Steps
+### Automated Tests
+- [x] Run `npm run typecheck` in `packages/core`.
+- [ ] Run `npm test` in `packages/core` (optional, focused on client/checker).
+
+### Manual Verification
+- [ ] Verify that [checkNextSpeaker](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/core/client.ts#1496-1528) is called when appropriate (can be checked via logs or debugger if possible, but static analysis/tests are preferred).

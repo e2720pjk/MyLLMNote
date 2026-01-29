@@ -1,0 +1,60 @@
+# Implementation Plan - Tree-Sitter to ast-grep Migration
+
+## Goal Description
+Migrate the `TabbyEdit` tool in `packages/core` from using the external `tree-sitter` CLI to the internal `@ast-grep/napi` library. This will simplify dependency management, improve cross-platform compatibility, and increase the robustness of code analysis.
+
+## User Review Required
+> [!IMPORTANT]
+> **Verification Strategy**: We will create a temporary "Golden Master" test suite that captures the output of the current `extractDeclarations` method on sample files. This ensures we don't regress on currently supported feature extraction during the migration.
+
+> [!NOTE]
+> **Language Support**: We are verifying support for all 15 currently listed languages. `ast-grep` has broad support, but we will ensure the NAPI package covers our specific needs.
+
+## Proposed Changes
+
+### 1. Preparation & Safety
+#### [NEW] [packages/core/src/tools/tabby-edit.safety.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/tabby-edit.safety.test.ts)
+- Create a new test file solely for validaling migration parity.
+- **Content**:
+    - Define sample code snippets for TypeScript and Python (primary targets).
+    - Run `TabbyEditTool.prototype.extractDeclarations` (or equivalent accessible method) and snapshot the output.
+
+### 2. Dependency Management
+#### [MODIFY] [packages/core/package.json](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/package.json)
+- Add dependency: `@ast-grep/napi`
+- (Optional) Remove `tree-sitter-cli` if not used elsewhere (check `package.json` scripts).
+
+### 3. Core Logic Migration
+#### [MODIFY] [packages/core/src/tools/tabby-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/tabby-edit.ts)
+- **Imports**: Remove `spawnSync` (if no longer needed) and add `@ast-grep/napi`.
+- **Class `TreeSitterQueryExtractor`**:
+    - Remove `spawnSync` calls for `tree-sitter`.
+    - Refactor `extractDeclarations` to use `ast-grep`'s `parse()` and `findAll()`.
+    - Implement the mapping from file extension `Lang` enum.
+    - Re-implement declaration extraction using SGM (Structural Search/Replace) patterns or AST traversal.
+- **Method `validateASTSyntax`**:
+    - Replace `tree-sitter parse` CLI call with `ast-grep`'s `parse(lang, content)`.
+- **Method `findRelatedSymbols`**:
+    - Replace logic with `findInFiles` from `@ast-grep/napi`.
+
+## Verification Plan
+
+### Automated Tests
+1. **Run Golden Master Test (Before)**: Capture state.
+   ```bash
+   npm run test -- packages/core/src/tools/tabby-edit.safety.test.ts
+   ```
+2. **Run Golden Master Test (After)**: Verify output matches or is strictly better (more accurate).
+   - *Note: If ast-grep is more accurate than the regex fallback, the snapshot might change. We will manually verify these improvements.*
+3. **Existing Tests**:
+   ```bash
+   npm run test -- packages/core/src/tools/tabby-edit.test.ts
+   ```
+4. **Build & Typecheck**:
+   ```bash
+   npm run typecheck && npm run build
+   ```
+
+### Manual Verification
+- Run the tool on a sample file with known syntax errors to verify `validateASTSyntax` catches them.
+- Run the tool to extract symbols from a file in the workspace.

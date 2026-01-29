@@ -1,0 +1,57 @@
+# Implementation Plan - Fix Rebase-Related Lint Errors
+
+This plan addresses three lint errors discovered after a recent rebase/conflict resolution. These issues are confirmed to be side effects of "half-baked" merges or incomplete cleanups during the rebase with `opencode-dev`.
+
+## Relationship with opencode-dev
+
+- **Issue 1 (`dependency_graphs_builder.py`)**: The `filtered_folders` logic seems to have been bypassed in latest updates. Cleaning up the unused path variable is necessary to resolve the lint error without re-enabling deprecated logic.
+- **Issue 2 (`config.py`)**: The `opencode-dev` CLI adapter (`doc_generator.py`) explicitly passes `fallback_model` to `Config.from_cli`. The backend implementation simply missed the signature update during the merge.
+- **Issue 3 (`utils.py`)**: A pure merge conflict resolution error where a function header was lost.
+
+### [Component: Dependency Analyzer]
+
+#### [MODIFY] [dependency_graphs_builder.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/dependency_analyzer/dependency_graphs_builder.py)
+- Remove unused variable `filtered_folders_path` (lines 51-53).
+- Remove commented-out code (lines 54-63) that was previously using this variable.
+
+---
+
+### [Component: Core Config]
+
+#### [MODIFY] [config.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/config.py)
+- Update `from_cli` class method signature (line 95) to include `fallback_model: str = FALLBACK_MODEL_1`.
+- This ensures it matches the return statement at line 138.
+
+---
+
+### [Component: Utilities]
+
+#### [MODIFY] [utils.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/utils.py)
+- Restore missing `@staticmethod def save_json(data: Any, filepath: str) -> None:` header above line 19.
+- Fix indentation of the function body (lines 19-27) to be a member of `FileManager`.
+
+---
+
+### [Component: Analysis Service]
+
+#### [MODIFY] [analysis_service.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/dependency_analyzer/analysis/analysis_service.py)
+- Fix `analyze_repository_hybrid` (line 167) to pass `languages` as a keyword argument or in the correct positional order to `analyze_local_repository`.
+- Recommended fix: `return self.analyze_local_repository(repo_path, max_files=max_files, languages=languages)`
+
+## Verification Plan
+
+### Automated Tests
+- Run `flake8` on the modified files to ensure the specific lint errors (F841, F821) are resolved.
+  ```bash
+  flake8 codewiki/src/be/dependency_analyzer/dependency_graphs_builder.py
+  flake8 codewiki/src/config.py
+  flake8 codewiki/src/utils.py
+  ```
+- Run a basic CLI command to verify that `Config.from_cli` and `file_manager.save_json` Still work as expected.
+  ```bash
+  # Example dry run or help command if available, or a small test script
+  python3 -c "from codewiki.src.utils import file_manager; file_manager.save_json({'test': 1}, 'test.json')"
+  ```
+
+### Manual Verification
+- Verify that `dependency_graphs_builder.py` still builds graphs correctly without the old folder filtering logic.

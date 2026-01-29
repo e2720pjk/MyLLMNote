@@ -1,0 +1,23 @@
+# Fix MCP Server Disconnection by Restoring `trust` Property
+
+## Goal Description
+The `smart-tree` MCP server fails to connect in the new version of `llxprt-code` but works in the old version. Investigation revealed that the new version explicitly strips the `trust` property from the MCP server configuration using a `filterMcpConfig` function in `packages/cli/src/config/extension.ts`. This plan proposes removing this filtering logic to restore the `trust` property and allow the server to connect correctly.
+
+## User Review Required
+> [!IMPORTANT]
+> This change removes the filtering of the `trust` property from MCP server configurations loaded from extensions. This reverts a security hardening measure introduced in the new version. Please confirm if this is acceptable.
+
+## Proposed Changes
+
+### CLI Configuration
+
+#### [MODIFY] [extension.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/config/extension.ts)
+- Remove the usage of `filterMcpConfig` when loading extension configurations.
+- Remove the `filterMcpConfig` function definition.
+
+## Verification Plan
+
+### Manual Verification
+1.  **Build the CLI**: Run `npm run build` in `packages/cli`.
+2.  **List MCP Servers**: Run `llxprt mcp list` and verify that `smart-tree` shows as `[READY]` instead of `[DISCONNECTED]`.
+3.  **Verify Functionality**: Attempt to use a tool from `smart-tree` to ensure it works as expected.

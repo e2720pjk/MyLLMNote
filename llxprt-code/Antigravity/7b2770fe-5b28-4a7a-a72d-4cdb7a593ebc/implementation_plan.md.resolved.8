@@ -1,0 +1,22 @@
+# Revert to Stable Height Calculation Strategy
+
+## Goal Description
+Revert the dynamic height calculation in [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/AppContainer.tsx) to the strategy used in `llxprt-code-2` (commit `80a6c94`). This prioritizes UI stability (preventing jitter) over precise dynamic height constraints.
+
+## User Review Required
+> [!IMPORTANT]
+> This change means `availableTerminalHeight` will **not** update when the footer height changes (e.g., toggling TodoPanel). This may cause temporary layout overflow, but eliminates the jitter/flickering issues observed with the dynamic approach.
+
+## Proposed Changes
+
+### UI Layer
+
+#### [MODIFY] [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/AppContainer.tsx)
+- Revert `useLayoutEffect` dependency array to `[terminalHeight]`.
+- Remove the `eslint-disable` comment.
+
+## Verification Plan
+
+### Manual Verification
+- Verify that the UI no longer jitters when typing or toggling panels.
+- Verify that resizing the terminal still updates the height correctly.

@@ -1,0 +1,55 @@
+# TabbyEdit Refactoring Plan
+
+## Goal Description
+Refactor [ASTEditTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1477-1630) ([ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts)) to address critical issues identified in a recent code review. The goals are to implement missing concurrency safeguards (freshness check), remove redundant/broken functionality (BM25), and improve context gathering (Git integration).
+
+## User Review Required
+> [!IMPORTANT]
+> **Breaking Change**: The [ASTEditToolParams](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#185-209) will be updated to include an optional `latest_modified` parameter. Clients/Agents should ideally pass this timestamp from the preview step to the execution step to ensure safe writes.
+
+> [!WARNING]
+> **Removal of Feature**: [BM25SearchEngine](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#416-612) will be completely removed as it currently only searches the file being edited (which is redundant) and adds unnecessary overhead.
+
+## Proposed Changes
+All changes are within [packages/core/src/tools/ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts).
+
+### 1. Implement File Freshness Check (High Priority)
+- **Modify** [ASTEditToolParams](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#185-209): Add `last_modified?: number`.
+- **Modify** `ASTEditToolInvocation.calculateEdit`:
+    - Retrieve current file `mtime`.
+    - If `params.last_modified` is provided, compare it with current `mtime`.
+    - If they differ, return a `ToolErrorType.FILE_MODIFIED_CONFLICT` error (need to define this if not exists, or allow generic conflict error).
+- **Update** `ASTEditToolInvocation.executePreview`: Ensure the returned preview includes the current `last_modified` timestamp so the user/agent can pass it back.
+
+### 2. Remove BM25 Search Engine (Medium Priority)
+- **Delete** [BM25SearchEngine](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#416-612) class.
+- **Modify** [ASTContextCollector](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1004-1475):
+    - Remove `searchEngine` property.
+    - Remove [indexDocument](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#454-476) and [searchWithBudget](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#501-523) calls.
+    - Remove `searchResults` from [EnhancedASTContext](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#163-170).
+    - Remove related [ASTConfig](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#382-414) constants (`BM25_K1`, `BM25_B`, etc.).
+
+### 3. Improve Workspace File Discovery (Low Priority)
+- **Modify** `ASTContextCollector.getWorkspaceFiles`:
+    - Instead of using [find](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#784-807) (which ignores [.gitignore](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/.gitignore)), check if [RepositoryContext](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#122-128) is available.
+    - If yes, use `git ls-files` to get the list of files.
+    - Fallback to [find](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#784-807) only if not a git repo.
+
+## Verification Plan
+
+### Automated Tests
+- **Existing Tests**: Run `npm test` in `packages/core` to ensure no regressions.
+- **New Test Case**:
+    1.  Create a test that reads a file and gets its `mtime`.
+    2.  Simulate an external modification (touch the file or write to it).
+    3.  Attempt to call `ast_edit` with `force: true` and the *old* `mtime`.
+    4.  Verify that the tool returns an error indicating the file has changed.
+
+### Manual Verification
+1.  **Freshness Check**:
+    - Use `ast_read_file` to read a file.
+    - Manually edit the file (e.g. via terminal `echo "change" >> file`).
+    - Attempt to use `ast_edit` with the `fileFreshness` timestamp from the read step (simulating a delayed agent action).
+    - Expect failure.
+2.  **BM25 Removal**:
+    - Verify `ast_edit` preview still works and produces context (declarations, snippets) without the search section.

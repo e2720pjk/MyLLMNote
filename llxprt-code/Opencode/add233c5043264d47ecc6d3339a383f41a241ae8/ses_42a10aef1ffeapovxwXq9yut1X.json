@@ -1,0 +1,17 @@
+{
+  "id": "ses_42a10aef1ffeapovxwXq9yut1X",
+  "slug": "swift-wizard",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Exhaustive ASTEdit preview normalization for LF handling",
+  "time": {
+    "created": 1768820789518,
+    "updated": 1768821232063
+  },
+  "summary": {
+    "additions": 9,
+    "deletions": 3,
+    "files": 1
+  }
+}

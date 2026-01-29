@@ -1,0 +1,32 @@
+# UI Layout Restoration and Log Preservation Plan
+
+The user is unsatisfied with the current tabbed layout, citing missing early logs, a simplified footer (missing status), and incorrect tab positioning. This plan aims to restore these features while maintaining the benefits of the tabbed architecture where appropriate.
+
+## Proposed Changes
+
+### 1. Console Log Preservation (Early Logs)
+Logs captured by `earlyLogBuffer` before the UI starts should be clearly visible.
+- **[MODIFY] [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx)**: 
+    - In the [Chat](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/types.ts#181-185) tab, render `LOG_MESSAGE` items that occur before the first user interaction inside the `Static` section.
+    - These logs should appear **BEFORE** the [AppHeader](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/AppHeader.tsx#18-33).
+
+### 2. TabBar Positioning (Bottom)
+Reposition the [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TabBar.tsx#19-61) to the bottom of the main content area, as requested by the user.
+- **[MODIFY] [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx)**:
+    - Move the [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TabBar.tsx#19-61) (or Screen Reader tab indicator) to the bottom of the component's render tree.
+    - Ensure stability by adjusting `flexDirection` and `Box` wrapping.
+
+### 3. Footer and Live Logs Restoration
+Ensure the main view still provides immediate feedback for errors and console output, matching the monolithic [main](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/oldui-tmux-harness.js#951-1202) branch behavior.
+- **[MODIFY] [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/layouts/DefaultAppLayout.tsx)**:
+    - Restore `DetailedMessagesDisplay` to the [DefaultAppLayout](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/layouts/DefaultAppLayout.tsx#45-302) (outside of tabs) so it is visible in the [Chat](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/types.ts#181-185) view as it was in the [main](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/oldui-tmux-harness.js#951-1202) branch.
+    - Ensure the [Footer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/Footer.tsx#27-51) props correctly capture and display `errorCount` and [ConsoleSummaryDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/ConsoleSummaryDisplay.tsx#16-36).
+
+## Verification Plan
+
+### Manual Verification
+- **Visual Inspection**: Launch the CLI and verify:
+    - Early logs appear at the very top, before the Ascii art header.
+    - The [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TabBar.tsx#19-61) is located below the main scrollable area.
+    - The `DetailedMessagesDisplay` (log panel) appears below the main content when logs are present.
+    - The [Footer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/Footer.tsx#27-51) shows all status metrics as in the [main](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/oldui-tmux-harness.js#951-1202) branch.

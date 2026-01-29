@@ -1,0 +1,35 @@
+{
+  "id": "ses_4370f9f14ffem5w4yWK8R6OGJG",
+  "slug": "lucky-canyon",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "parentID": "ses_4370fd074ffetTtla1t0oJuIDr",
+  "title": "Find duplicate constant (@explore subagent)",
+  "permission": [
+    {
+      "permission": "todowrite",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "todoread",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "task",
+      "action": "deny",
+      "pattern": "*"
+    }
+  ],
+  "time": {
+    "created": 1768602755307,
+    "updated": 1768602834762
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

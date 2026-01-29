@@ -1,0 +1,16 @@
+{
+  "id": "ses_56d6a3999ffe6SavM1Qq5xtPMY",
+  "version": "1.0.68",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing DRAG_COMPLETION_TIMEOUT_MS mismatch",
+  "time": {
+    "created": 1763395880550,
+    "updated": 1763397509852
+  },
+  "summary": {
+    "additions": 1,
+    "deletions": 1,
+    "files": 1
+  }
+}

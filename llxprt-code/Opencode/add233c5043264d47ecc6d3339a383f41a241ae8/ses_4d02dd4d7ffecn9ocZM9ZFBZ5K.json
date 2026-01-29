@@ -1,0 +1,16 @@
+{
+  "id": "ses_4d02dd4d7ffecn9ocZM9ZFBZ5K",
+  "version": "1.0.164",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli",
+  "title": "Fixing TypeScript errors in tsc_errors.txt for llxprt-code-4 CLI tool",
+  "time": {
+    "created": 1766033861417,
+    "updated": 1766035768662
+  },
+  "summary": {
+    "additions": 159,
+    "deletions": 35,
+    "files": 14
+  }
+}

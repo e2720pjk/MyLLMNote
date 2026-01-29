@@ -1,0 +1,17 @@
+{
+  "id": "ses_426d746cfffeI0EVR3H3YROs3l",
+  "slug": "curious-rocket",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "Deep Dive: Parallel Codebase Search & Context Synthesis",
+  "time": {
+    "created": 1768874883377,
+    "updated": 1768875799661
+  },
+  "summary": {
+    "additions": 3,
+    "deletions": 77,
+    "files": 1
+  }
+}

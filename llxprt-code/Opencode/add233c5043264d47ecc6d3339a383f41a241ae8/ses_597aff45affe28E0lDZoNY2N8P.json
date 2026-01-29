@@ -1,0 +1,16 @@
+{
+  "id": "ses_597aff45affe28E0lDZoNY2N8P",
+  "version": "1.0.45",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "title": "Analyzing test errors and git diff changes",
+  "time": {
+    "created": 1762686667685,
+    "updated": 1762691713172
+  },
+  "summary": {
+    "additions": 1674,
+    "deletions": 49,
+    "files": 8
+  }
+}

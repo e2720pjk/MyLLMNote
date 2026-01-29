@@ -1,0 +1,16 @@
+{
+  "id": "ses_55dd752c7ffeYR3p7Z9VkkC0T5",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing direct-eval risks & AppDispatchProvider errors",
+  "time": {
+    "created": 1763657166137,
+    "updated": 1763668374175
+  },
+  "summary": {
+    "additions": 4119,
+    "deletions": 854,
+    "files": 64
+  }
+}

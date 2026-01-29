@@ -1,0 +1,14 @@
+# Joern Analysis Discrepancy Resolution & Architecture Refinement
+
+- [x] Integrate Joern 4.x into CodeWiki <!-- id: 0 -->
+- [x] Refine Architecture for Joern-Driven Analysis <!-- id: 1 -->
+    - [x] Analyze `cluster_modules.py` strategy <!-- id: 1.1 -->
+    - [x] Design graph-based clustering approach <!-- id: 1.2 -->
+    - [x] Create `graph_clustering.py` for community detection <!-- id: 1.3 -->
+    - [x] Update `dependency_graphs_builder.py` to remove file limits <!-- id: 1.4 -->
+    - [x] Integrate graph clustering into `cluster_modules.py` <!-- id: 1.5 -->
+- [x] Implement Joern-Driven Analysis <!-- id: 2 -->
+    - [x] Update `AnalyzerFactory` for Joern-First approach <!-- id: 2.1 -->
+    - [x] Modify `documentation_generator.py` to use enriched context <!-- id: 2.2 -->
+- [x] Verify Fix and Generate Improved Documentation <!-- id: 7 -->
+- [x] Document Joern's value proposition for the user <!-- id: 8 -->

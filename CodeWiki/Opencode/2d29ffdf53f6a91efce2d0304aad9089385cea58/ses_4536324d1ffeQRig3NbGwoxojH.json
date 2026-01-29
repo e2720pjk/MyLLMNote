@@ -1,0 +1,16 @@
+{
+  "id": "ses_4536324d1ffeQRig3NbGwoxojH",
+  "version": "1.0.220",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "Analyzing nlohmann/json testing plan for AB tests",
+  "time": {
+    "created": 1768127519534,
+    "updated": 1768140568288
+  },
+  "summary": {
+    "additions": 10001,
+    "deletions": 0,
+    "files": 41
+  }
+}

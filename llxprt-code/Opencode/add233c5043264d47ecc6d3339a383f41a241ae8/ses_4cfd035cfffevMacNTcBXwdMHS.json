@@ -1,0 +1,17 @@
+{
+  "id": "ses_4cfd035cfffevMacNTcBXwdMHS",
+  "version": "1.0.164",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4",
+  "parentID": "ses_4cfe3f91dffenpk04wL8HukfeH",
+  "title": "Analyze AppHeader component changes (@explore subagent)",
+  "time": {
+    "created": 1766039996976,
+    "updated": 1766040371056
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

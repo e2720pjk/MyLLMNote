@@ -1,0 +1,17 @@
+{
+  "id": "ses_561a98361ffeT0fe1exhseCwn1",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_561a9b67fffeyRs9dhAyGPdkFv",
+  "title": "檢查系統工具支援 (@general subagent)",
+  "time": {
+    "created": 1763593059486,
+    "updated": 1763593104948
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

@@ -1,0 +1,65 @@
+# Joern Integration & Architecture Enhancement Plan (v3)
+
+This plan outlines the steps to replace the current AST-based analysis in CodeWiki with Joern's Code Property Graph (CPG) analysis, while enhancing the data models to support advanced features like data-flow documentation.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Joern Version Constraint**: This integration strictly requires `joern >= 2.1.0, < 3.0.0`. Tested version: `2.1.0`.
+> **Performance Baseline**: We will first establish a baseline using the current AST analyzer on 10/100/500 files for comparison.
+> **Breaking Changes to Model**: `EnhancedNode` will introduce nested objects for CFG/DDG data. See "Data Model Specification" below.
+
+## Refined Core Designs
+
+### 1. Data Model Specification
+We will adopt the schemas defined in [JOERN_IMPLEMENTATION_GUIDE.md](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/JOERN_IMPLEMENTATION_GUIDE.md):
+- **`CFGNode` / `CFGEdge`**: To represent control flow junctions and edges within methods.
+- **`DataDependency`**: To track variable-level propagation (direct/indirect).
+- **`EnhancedNode`**: Extends [Node](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#7-44) with `cfg_data`, `ddg_data`, and `joern_metadata`.
+- **[Relationship](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#46-54)**: A union of [CallRelationship](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#46-54), `DataFlowRelationship`, and `InheritanceRelationship`.
+
+### 2. Infrastructure & Caching
+- **`JoernClient`**: Wrapper for `subprocess.run(["joern", ...])`.
+- **Cache Strategy**: SHA256 of all source file [(path:mtime)](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#7-44) pairs + Joern version.
+- **Locking**: Use `filelock` to protect the `.cpg.pkl` cache during multi-process generation.
+- **Error Handling**: `AnalyzerFactory` will detect `FileNotFoundError` (Joern missing) or `TimeoutError` and automatically return a legacy [AnalysisService](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/analysis/analysis_service.py#23-368) instance.
+
+---
+
+## Technical Roadmap
+
+### [Phase 0] Proof of Concept & Baseline
+- **Baseline Measurements**: Record 10/100/500 file analysis times using legacy AST.
+- **Environment Check**: Script to verify `joern --version` and platform (macOS/Linux/Windows).
+
+### [Phase 1] Model & Migration Layer
+#### [MODIFY] [core.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py)
+- Implement `EnhancedNode`, `CFGData`, `DDGData` classes.
+- Add Pydantic discriminators for Relationships.
+#### [NEW] [migration.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/migration.py)
+- `NodeMigration`: Safe conversion between [Node](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#7-44) and `EnhancedNode`.
+
+### [Phase 2] Joern Core & Fallback
+#### [NEW] [joern/client.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/joern/client.py)
+- Joern CLI wrapper with version check and caching logic.
+- `_parse_joern_output()`: Normalize CPG export to Python dicts.
+
+### [Phase 3] Hybrid Clustering & Documentation
+#### [MODIFY] [cluster_modules.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/cluster_modules.py)
+- Integrate NetworkX `louvain_communities` for structural grouping.
+#### [MODIFY] [prompt_template.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/prompt_template.py)
+- Add `<DATA_FLOW_CONTEXT>` block to LLM prompts for deeper insight.
+
+---
+
+## Verification Plan
+
+### Success Metrics
+- **Parity**: F1 Score >= 0.92 on call graph edges compared to AST.
+- **Performance**: Joern overhead <= 3x current AST parsing time.
+- **Reliability**: 100% of "Joern missing" scenarios successfully fall back to AST without crashing.
+
+### Automated Tests
+- `tests/joern_integration/test_parity.py`: Statistical call graph comparison.
+- `tests/joern_integration/test_error_handling.py`: Mocking missing/timed-out Joern.
+- `tests/joern_integration/test_performance.py`: Benchmark against established baselines.

@@ -1,0 +1,64 @@
+# Code Review Report: `llxprt-code-4`
+
+## 1. Context Understanding
+The changes in this branch appear to be a refactoring of the `MainChat` (now `MainContent`) component, specifically aiming to unify the rendering of history, pending items, and logs within a single virtualized list. The goal seems to be improving performance and "stick-to-bottom" behavior by managing everything through `ScrollableList` and `VirtualizedList`.
+
+## 2. Critical Findings
+
+### 🔴 Critical: Broken Virtualization for Pending Items
+**Location**: `packages/cli/src/ui/components/MainContent.tsx` (Lines 102-142, 298-300)
+
+**Issue**:
+While `history` items are correctly flattened and added to the `chatVirtualizedData` array as individual items (lines 204-206), the **pending items** (active streaming content, tool calls) are grouped into a *single* virtual item.
+
+In `renderItem`:
+```tsx
+if (item.type === 'pending-streaming') {
+  return pendingItems;
+}
+```
+
+And `pendingItems` is a memoized `Box` containing *all* `pendingHistoryItems` mapped out (lines 102-142).
+
+**Why this is a problem**:
+1.  **Virtualization Bypass**: The entire set of pending messages (which can be very large during long tool loops or verbose outputs) is treated as a single "row" by the virtualizer. `react-window` (or your custom `VirtualizedList`) cannot optimize the internals of this single row. It renders *everything* or *nothing*.
+2.  **Performance & Instability**: As the stream grows (typical in "long output" scenarios mentioned in the issue), this single component grows indefinitely. Any update to it forces a re-render of this potentially massive component, causing the "instability" and "jumpiness" reported. The "virtualized sliding window" effectively stops working for the active conversation turn.
+3.  **Layout Calculation**: The virtualizer likely miscalculates the height of this growing item, leading to the "bottom not showing correctly" issue.
+
+**Suggestion**:
+Refactor `chatVirtualizedData` to **flatten** pending items into the list, identical to how stable `history` items are treated.
+-   Remove the monolithic `pendingItems` formatting.
+-   Push individual `pending` items into `chatVirtualizedData` directly.
+-   Ensure `renderItem` handles individual `pending` items with their own unique keys.
+
+### 🟠 Important: Height Estimation Strategy
+**Location**: `packages/cli/src/ui/components/MainContent.tsx` (Line 54)
+
+**Issue**:
+```tsx
+const getEstimatedItemHeight = () => 100;
+```
+A hardcoded legacy constant of `100` is used. For a dynamic chat interface where items can range from 1 line (user "hi") to 500 lines (code block), this poor estimation causes significant scroll jumping when items are materialized.
+
+**Suggestion**:
+Implement a more dynamic estimation if possible, or at least separate estimates for "User messages" (usually short) vs "Model messages" (usually long).
+
+## 3. Correctness Analysis
+
+### 🟡 Logic Gap in `pending-streaming` logic
+**Location**: `packages/cli/src/ui/components/MainContent.tsx` (Lines 213-215)
+```tsx
+if (streamingState === 'responding') {
+  data.push({ type: 'pending-streaming' });
+}
+```
+If the state is NOT 'responding' but there are still `pendingHistoryItems` (e.g., waiting for confirmation, error state, or just finished but not yet moved to history), they might disappear or be rendered differently. The logic should primarily rely on the presence of data (`pendingHistoryItems.length > 0`) rather than just the `streamingState` flag for rendering decisions.
+
+## 4. Recommendations
+
+1.  **Flatten the List**: Rewrite `useMemo` in `MainContent` to map `pendingHistoryItems` directly into the `data` array for `ScrollableList`.
+2.  **Remove `OverflowProvider` Wrapper**: If `OverflowProvider` was intended to handle layout for the *group*, it needs to be re-thought to work with individual items or be removed if it conflicts with virtualization.
+3.  **Fix Virtualization**: Ensure every logical "row" in the UI corresponds to one item in the `virtualizedData` array.
+
+## Summary
+The user-reported instability is confirmed to be caused by the architectural decision to wrap all pending/streaming content into a single list item. This effectively disables virtualization for the most active part of the application.

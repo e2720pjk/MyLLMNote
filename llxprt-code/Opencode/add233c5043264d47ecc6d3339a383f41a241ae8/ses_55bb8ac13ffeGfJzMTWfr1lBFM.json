@@ -1,0 +1,16 @@
+{
+  "id": "ses_55bb8ac13ffeGfJzMTWfr1lBFM",
+  "version": "1.0.82",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing mandatory restart trigger conditions in settings",
+  "time": {
+    "created": 1763692729324,
+    "updated": 1763709245498
+  },
+  "summary": {
+    "additions": 339,
+    "deletions": 0,
+    "files": 1
+  }
+}

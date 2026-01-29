@@ -1,0 +1,17 @@
+{
+  "id": "ses_5709b7d48ffeyobgN8XA23W0x3",
+  "version": "1.0.65",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_5709bcb41ffeUE8AYHrHj0tciX",
+  "title": "檢查文檔狀態一致性 (@general subagent)",
+  "time": {
+    "created": 1763342320311,
+    "updated": 1763342465207
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

@@ -1,0 +1,34 @@
+# Fix Deadlock in /quit Command
+
+## Goal Description
+Fix the deadlock that occurs when running `/quit`. The issue is caused by the cleanup handler waiting for `instance.waitUntilExit()` (which waits for unmount) *before* calling `instance.unmount()`. This creates a cycle where the unmount never happens because we are waiting for it to happen.
+
+## User Review Required
+> [!IMPORTANT]
+> This change reorders the cleanup operations. We now call `instance.unmount()` *first* to trigger the shutdown, and then `await instance.waitUntilExit()` to ensure it completes cleanly before clearing the screen.
+
+## Proposed Changes
+
+### CLI
+#### [MODIFY] [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)
+- Reorder the operations in the [registerCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#14-17) callback.
+
+```typescript
+  registerCleanup(async () => {
+    instance.unmount(); // Trigger unmount first
+    await instance.waitUntilExit(); // Wait for it to complete
+    instance.clear();
+  });
+```
+
+## Verification Plan
+
+### Manual Verification
+1.  **Command Quit Test**:
+    -   Launch the CLI.
+    -   Run `/quit`.
+    -   **Expected Result**: The CLI should exit immediately without hanging.
+2.  **Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Press `Ctrl+C`.
+    -   **Expected Result**: Clean exit.

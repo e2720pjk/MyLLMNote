@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_TASK",
+  "summary": "Task list for refining AST tools and build configuration.\n- Update esbuild externals.\n- Fix zed integration content access.\n- Cross-platform getWorkspaceFiles.\n- Multi-extension resolveImportPath.",
+  "updatedAt": "2026-01-15T06:30:14.118945Z"
+}

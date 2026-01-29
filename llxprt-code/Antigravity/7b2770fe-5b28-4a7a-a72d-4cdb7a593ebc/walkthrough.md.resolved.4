@@ -1,0 +1,89 @@
+# Fix MouseContext Error Walkthrough
+
+## Problem
+The application was crashing with the error: `Error: useMouseContext must be used within a MouseProvider`.
+This happened because UI components like [ScrollableList](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/shared/ScrollableList.tsx#44-248) rely on [MouseContext](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#38-45), but the [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167) was missing from the component tree in `llxprt-code-3`.
+
+## Solution
+We added [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167) and [ScrollProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/ScrollProvider.tsx#76-350) to the [AppWrapper](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/gemini.tsx#206-239) component in [packages/cli/src/ui/App.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/App.tsx), mirroring the structure in `gemini-cli`.
+
+### Changes
+
+#### [packages/cli/src/ui/App.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/App.tsx)
+- Imported [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167), [ScrollProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/ScrollProvider.tsx#76-350), and [isAlternateBufferEnabled](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/hooks/useAlternateBuffer.ts#10-12).
+- Wrapped the application context stack with [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167) and [ScrollProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/ScrollProvider.tsx#76-350).
+- Configured `mouseEventsEnabled` based on settings and screen reader status.
+
+## Verification
+Ran `npm run test` in `packages/cli` and all 132 tests passed.
+
+```bash
+Test Files  132 passed | 1 skipped (133) 
+Tests  1559 passed | 11 skipped (1570)
+```
+
+## Fix: InputPrompt Mouse Interaction and Shell Focus
+
+### Problem
+The [InputPrompt](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.tsx#106-1056) component in `llxprt-code-3` lacked mouse interaction features (right-click paste, click-to-move-cursor) present in `gemini-cli`. Additionally, the `isEmbeddedShellFocused` state was not being passed from [Composer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/Composer.tsx#20-154), causing potential focus management issues.
+
+### Solution
+1.  **[InputPrompt.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/InputPrompt.tsx)**:
+    *   Added `useMouseClick` to handle cursor positioning.
+    *   Added [useMouse](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#46-58) to handle right-click paste.
+    *   Integrated `isEmbeddedShellFocused` prop.
+2.  **`TextBuffer.ts`**:
+    *   Implemented `moveToVisualPosition` to support accurate cursor placement based on visual coordinates (handling wrapped lines).
+    *   Added `set_cursor` action to the reducer.
+3.  **[Composer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/Composer.tsx)**:
+    *   Passed `embeddedShellFocused` from [UIState](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/UIStateContext.tsx#33-177) to [InputPrompt](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.tsx#106-1056).
+
+### Verification
+*   **Lint Checks**: Ran `npm run lint` - Passed.
+*   **Unit Tests**: Created a temporary test file [src/utils/text-buffer-visual.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/text-buffer-visual.test.ts) to verify `moveToVisualPosition` logic, including edge cases like line wrapping and out-of-bounds coordinates. All tests passed.
+
+## Fix: DefaultAppLayout Structure Alignment
+
+### Problem
+[DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) in `llxprt-code-3` used a hardcoded width of `90%`, which could lead to layout inconsistencies and didn't account for the alternate buffer mode used in `gemini-cli`. It also lacked the flicker detection mechanism present in the upstream project.
+
+### Solution
+Updated [packages/cli/src/ui/layouts/DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) to:
+1.  Import and use [useFlickerDetector](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/hooks/useFlickerDetector.ts#11-44) (with `constrainHeight` argument) to monitor UI stability.
+2.  Import and use [useAlternateBuffer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/hooks/useAlternateBuffer.ts#13-17) to determine the correct layout mode.
+3.  Dynamically calculate the `width` prop:
+    *   Use `terminalWidth` when in alternate buffer mode.
+    *   Use `mainAreaWidth` otherwise.
+4.  Adjust the `height` prop to account for the scrollbar in alternate buffer mode.
+
+### Verification
+*   **Lint Checks**: Ran `npm run lint` - Passed.
+*   **Manual Verification**: Verified that the layout adapts correctly and the code compiles without errors.
+
+## Fix: History Persistence on Resize
+
+### Problem
+Chat history was disappearing when the terminal window was resized. This was because the `Static` component in [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx) lacked a [key](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/MainContent.tsx#26-34) prop, causing it to lose its internal state when re-rendered during a resize event.
+
+### Solution
+1.  **[UIStateContext.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/contexts/UIStateContext.tsx)**: Added `staticKey` to the [UIState](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/UIStateContext.tsx#33-177) interface.
+2.  **[AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/AppContainer.tsx)**: Passed `staticKey` (which increments on resize) to the [UIStateProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/UIStateContext.tsx#180-191).
+3.  **[MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx)**: Added `key={uiState.staticKey}` to the `Static` component. This forces the component to re-mount with the correct history items when the key changes.
+
+### Verification
+*   **Lint Checks**: Ran `npm run lint` - Passed.
+*   **Manual Verification**: Confirmed that history persists after resizing the terminal window.
+
+## Fix: InputPrompt Paste Tests
+
+### Problem
+The [InputPrompt.paste.spec.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.paste.spec.tsx) tests were failing with `Error: keypressHandler not initialized`. This was because the [InputPrompt](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.tsx#106-1056) component failed to render in the test environment due to missing providers for [useUIActions](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.paste.spec.tsx#116-119), `useMouseClick`, and [useMouse](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#46-58) hooks. Consequently, the [useKeypress](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.paste.spec.tsx#96-104) hook (which captures the handler for the test) was never executed.
+
+### Solution
+Updated [packages/cli/src/ui/components/InputPrompt.paste.spec.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.paste.spec.tsx) to:
+1.  Mock `../hooks/useKeypress.js` (matching the import extension in the component).
+2.  Mock `../hooks/useMouseClick.js` and `../contexts/MouseContext.js`.
+3.  Mock `../contexts/UIActionsContext.js`.
+
+### Verification
+*   **Unit Tests**: Ran `npm run test src/ui/components/InputPrompt.paste.spec.tsx` - All 5 tests passed.

@@ -1,0 +1,17 @@
+{
+  "id": "ses_5647a15f8ffezZKYjW2JxNaFkc",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_5647b0f7effeE3ZhjGejLrnj6X",
+  "title": "Find coreToolSettings schema definition (@general subagent)",
+  "time": {
+    "created": 1763545836039,
+    "updated": 1763545898454
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "ses_46def911affeK2W08C4ggqQgn3",
+  "version": "1.0.220",
+  "projectID": "d329ad9b8f0c71288c703267547b1008d21a8e86",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWikiBench",
+  "title": "Debugging pip install failure on pydantic_core wheel",
+  "time": {
+    "created": 1767682109158,
+    "updated": 1767682132393
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

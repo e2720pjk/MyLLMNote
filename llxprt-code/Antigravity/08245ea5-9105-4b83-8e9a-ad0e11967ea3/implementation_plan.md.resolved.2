@@ -1,0 +1,55 @@
+# Implementation Plan - Optimize ASTReadFileTool (Phase 1.5)
+
+## Goal Description
+The [ASTReadFileTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1619-1700) suffers from severe performance issues due to full workspace indexing. This plan implements an optimized "Phase 1.5" strategy: removing the in-memory symbol index and relying on on-demand `findInFiles` queries with strict limits and smart prioritization.
+
+## User Review Required
+> [!NOTE]
+> **Architecture Change**: Moving from a "build index then query" model to a "query on demand" model.
+> **Breaking Change**: The tool will no longer index the entire workspace.
+> **Limits**: Strict limits (max 5 symbols, 10 results each) are enforced to prevent resource exhaustion.
+
+## Proposed Changes
+
+### packages/core
+
+#### [MODIFY] [ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts)
+
+1.  **Update [ASTConfig](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#518-545)**:
+    *   Add `MAX_RELATED_SYMBOLS = 5` (Max symbols to query).
+    *   Add `MAX_RESULTS_PER_SYMBOL = 10` (Max results per query).
+    *   Add `FIND_RELATED_TIMEOUT_MS = 3000` (Timeout for queries).
+    *   Add `MIN_SYMBOL_LENGTH = 3`.
+    *   Add `EXCLUDED_SYMBOL_KINDS = ['variable', 'parameter']`.
+
+2.  **Refactor [CrossFileRelationshipAnalyzer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#668-944)**:
+    *   [DELETE] Remove `symbolIndex` and [buildSymbolIndex](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#671-722).
+    *   [MODIFY] [findRelatedSymbols](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#723-828):
+        *   Remove `symbolIndex` fallback.
+        *   Use `findInFiles`.
+        *   **CRITICAL**: Wrap in a timeout promise (`Promise.race`).
+        *   **Limit**: Slice results to `MAX_RESULTS_PER_SYMBOL`.
+        *   **Error Handling**: Catch errors, log warnings, return empty array on failure (graceful degradation).
+
+3.  **Refactor [ASTContextCollector](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1036-1462)**:
+    *   [MODIFY] [extractSymbolsFromContent](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1439-1461) (Rename to `prioritizeSymbolsFromDeclarations`):
+        *   **Input**: Accept `EnhancedDeclaration[]` from [ASTQueryExtractor](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#303-516) instead of raw string content.
+        *   **Logic**: Filter out excluded kinds (variables). Score symbols (exported > class > function). Sort by score.
+        *   **Output**: Return top `MAX_RELATED_SYMBOLS` names.
+    *   [MODIFY] [collectEnhancedContext](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1065-1144):
+        *   Remove [buildSymbolIndex](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#671-722).
+        *   Call `prioritizeSymbolsFromDeclarations` using the already extracted declarations.
+        *   Execute [findRelatedSymbols](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#723-828) for the top N symbols.
+
+## Verification Plan
+
+### Automated Tests
+- **New Tests**:
+    - `should limit the number of related symbols queried` (Mock [findRelatedSymbols](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#723-828) and count calls).
+    - `should prioritize exported classes and functions over variables` (Verify filtering logic).
+    - `should handle timeouts gracefully` (Mock a slow `findInFiles`).
+- **Existing Tests**: Run `npm test packages/core/src/tools/ast-edit.test.ts`.
+
+### Manual Verification
+- **Performance Test**: Run [ASTReadFile](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1619-1700) on [ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts). Verify instant response.
+- **Result Check**: Ensure *some* relevant references (e.g., [ASTConfig](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#518-545) usages) are found, but not excessive local variable noise.

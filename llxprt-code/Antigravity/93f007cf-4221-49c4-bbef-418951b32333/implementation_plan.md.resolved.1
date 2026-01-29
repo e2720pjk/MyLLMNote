@@ -1,0 +1,32 @@
+# Fix Terminal Corruption in Kitty Protocol Detector
+
+## Goal Description
+Prevent terminal corruption when the application exits via CTRL+C. The previous issue was that the application intercepted SIGINT but did not exit, preventing cleanup handlers from running. Additionally, some cleanup operations used asynchronous writes which could be lost during exit.
+
+## User Review Required
+> [!IMPORTANT]
+> This change modifies [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/gemini.tsx) to explicitly call `process.exit(0)` in the `SIGINT` handler. This ensures the application terminates on CTRL+C, triggering the `exit` event which runs necessary cleanup (disabling Kitty protocol, bracketed paste, etc.).
+
+## Proposed Changes
+
+### packages/cli/src
+
+#### [MODIFY] [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/gemini.tsx)
+- Update the `SIGINT` handler in [main()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/gemini.tsx#261-815) to call `process.exit(0)` after resetting raw mode.
+
+### packages/cli/src/ui/utils
+
+#### [MODIFY] [bracketedPaste.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/bracketedPaste.ts)
+- Import `fs`.
+- Update [disableBracketedPaste](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/bracketedPaste.ts#14-17) (and [enable](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/bracketedPaste.ts#10-13) for consistency, though less critical) to use `fs.writeSync(process.stdout.fd, ...)` instead of `process.stdout.write`. This ensures the disable sequence is flushed to the terminal before the process dies.
+
+## Verification Plan
+
+### Manual Verification
+1.  **CTRL+C Test**:
+    - Start the application.
+    - Press `CTRL+C`.
+    - **Pass Criteria**: Application exits immediately. Terminal returns to normal (no raw escape codes, cursor visible).
+2.  **Verify Cleanup**:
+    - Check that `bracketed paste` mode is disabled (can paste without `~0~` wrappers).
+    - Check that `kitty protocol` is disabled (if supported terminal).

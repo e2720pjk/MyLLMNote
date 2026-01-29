@@ -1,0 +1,16 @@
+{
+  "id": "ses_58d01ad8effeVlhL0Q9cphWfKF",
+  "version": "1.0.51",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "title": "New session - 2025-11-11T12:57:41.233Z",
+  "time": {
+    "created": 1762865861233,
+    "updated": 1762878871866
+  },
+  "summary": {
+    "additions": 1077,
+    "deletions": 285,
+    "files": 30
+  }
+}

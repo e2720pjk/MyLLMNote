@@ -1,0 +1,16 @@
+{
+  "id": "ses_4ce68c275ffeMaa70L3Xcw4HUv",
+  "version": "1.0.166",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli",
+  "title": "Verifying UI changes and TS/Lint fixes for Debug tab migration",
+  "time": {
+    "created": 1766063553931,
+    "updated": 1766063614314
+  },
+  "summary": {
+    "additions": 42,
+    "deletions": 38,
+    "files": 4
+  }
+}

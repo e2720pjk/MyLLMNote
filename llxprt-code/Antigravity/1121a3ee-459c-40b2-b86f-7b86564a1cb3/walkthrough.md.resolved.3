@@ -1,0 +1,33 @@
+Created [oldui-tmux-script.tabs-cycling.llxprt.json](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/oldui-tmux-script.tabs-cycling.llxprt.json) to automate testing of the `Ctrl+O` tab cycle keybinding.
+
+### Test Steps:
+1.  Start CLI in tmux session.
+2.  Wait for UI to render.
+3.  Assert 4 tab labels are visible: [Chat](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/ChatTab.tsx#48-317), [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/DebugTab.tsx#17-108), [Todo](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/TodoTab.tsx#12-21), [System](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/SystemTab.tsx#21-169).
+4.  Press `Ctrl+O` and verify focus shifts to [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/DebugTab.tsx#17-108).
+5.  Press `Ctrl+O` and verify focus shifts to [Todo](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/TodoTab.tsx#12-21).
+6.  Press `Ctrl+O` and verify focus shifts to [System](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/SystemTab.tsx#21-169).
+7.  Press `Ctrl+O` and verify focus wraps back to [Chat](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/ChatTab.tsx#48-317).
+8.  `/quit` the application.
+
+### Results:
+**TEST PASSED ✅**
+
+Screen captures confirmed correct tab cycling:
+| Capture | Active Tab |
+|---------|------------|
+| initial | `[Chat]`   |
+| 1st C-o | `[Debug]`  |
+| 2nd C-o | `[Todo]`   |
+| 3rd C-o | `[System]` |
+| 4th C-o | `[Chat]` (wrap) |
+
+## 4. Verification Commands
+All passed without errors:
+
+| Command | Result |
+|---------|--------|
+| `npm run lint` | ✅ Passed |
+| `npm run typecheck` | ✅ Passed |
+| `npm run build` | ✅ Passed |
+| `node scripts/oldui-tmux-harness.js --script scripts/oldui-tmux-script.tabs-cycling.llxprt.json --assert` | ✅ Passed |

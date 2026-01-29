@@ -1,0 +1,17 @@
+{
+  "id": "ses_43c2e54e2ffeq2O9csHsxdmgED",
+  "slug": "jolly-star",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "LicenseType normalization in getStandardLicenseText for notices script",
+  "time": {
+    "created": 1768516856605,
+    "updated": 1768517103321
+  },
+  "summary": {
+    "additions": 1,
+    "deletions": 1,
+    "files": 1
+  }
+}

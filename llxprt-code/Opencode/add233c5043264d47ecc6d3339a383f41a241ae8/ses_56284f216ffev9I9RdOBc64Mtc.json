@@ -1,0 +1,16 @@
+{
+  "id": "ses_56284f216ffev9I9RdOBc64Mtc",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Checking excludeTools UI configuration progress",
+  "time": {
+    "created": 1763578678761,
+    "updated": 1763580729019
+  },
+  "summary": {
+    "additions": 91,
+    "deletions": 398,
+    "files": 1
+  }
+}

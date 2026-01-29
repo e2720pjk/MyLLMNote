@@ -1,0 +1,51 @@
+# Walkthrough - IME Ctrl+C, Deadlock & Terminal Leakage Fix
+
+## Changes
+
+### CLI
+
+#### [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/AppContainer.tsx)
+
+-   Added `await runExitCleanup()` before `process.exit(0)` in the `useEffect` hook that handles `quittingMessages`.
+-   This ensures that when the application exits via the `/quit` command or the IME-mapped `Ctrl+C` path, the terminal is correctly restored.
+
+#### [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)
+
+-   Updated [registerCleanup](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/utils/cleanup.ts#14-17) to fix a deadlock where the cleanup handler waited for the process to exit before unmounting the UI.
+-   **Optimization**: Removed `await instance.waitUntilExit()` entirely as it was found to hang during explicit exit.
+-   Replaced with: `instance.unmount()` -> `await 10ms` (flush) -> `instance.clear()`.
+-   This ensures immediate exit without the 5-second timeout delay.
+
+#### [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts)
+
+-   Updated [runExitCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#25-50) to explicitly write `DISABLE_BRACKETED_PASTE`, `DISABLE_FOCUS_TRACKING`, and `SHOW_CURSOR` sequences to stdout.
+-   Calls [disableProtocol()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101) (Kitty Keyboard Protocol) to reset advanced key handling.
+-   Explicitly calls `process.stdin.setRawMode(false)`.
+-   This fixes the "leakage" issue where control keys were misinterpreted after exit.
+
+#### [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/kittyProtocolDetector.ts)
+
+-   Exported [disableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101) so it can be called from [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/utils/cleanup.ts).
+
+## Verification Results
+
+### Manual Verification
+> [!IMPORTANT]
+> Please perform the following steps to verify the fixes:
+
+1.  **Command Quit Test (Optimization Fix)**:
+    -   Launch the CLI: `npm run dev` (or equivalent).
+    -   Run `/quit`.
+    -   **Expected Result**: The CLI should exit **immediately** (no 5s delay).
+
+2.  **IME Ctrl+C Test (Terminal Corruption & Leakage Fix)**:
+    -   Launch the CLI.
+    -   Enable an IME (e.g., Chinese/Japanese).
+    -   Press `Ctrl+C` (which generates the mapped sequence).
+    -   **Expected Result**: The CLI should exit *cleanly*.
+    -   **Leakage Check**: After exit, type `Ctrl+C` in your terminal. It should generate a new prompt line (SIGINT) or copy text, NOT print `^C` or other characters as input.
+
+3.  **Standard Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Press standard `Ctrl+C`.
+    -   **Expected Result**: Clean exit.

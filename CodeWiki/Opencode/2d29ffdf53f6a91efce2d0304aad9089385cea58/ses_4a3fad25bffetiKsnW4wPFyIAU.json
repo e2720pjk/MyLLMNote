@@ -1,0 +1,16 @@
+{
+  "id": "ses_4a3fad25bffetiKsnW4wPFyIAU",
+  "version": "1.0.203",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "title": "Debugging wiki generation failure: Tool retries exceeded in dependency analysis",
+  "time": {
+    "created": 1766775401892,
+    "updated": 1766776170842
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

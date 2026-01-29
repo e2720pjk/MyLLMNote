@@ -1,0 +1,5 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_OTHER",
+  "summary":  "Review checklist and recommendations for the Tree-sitter to ast-grep migration. Focuses on testing, implementation details, and verifying language support.",
+  "updatedAt":  "2026-01-14T23:29:52.137084Z"
+}

@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan to optimize SettingsDialog.tsx using Scheme 3 (Separated Memoization) on llxprt-code-3",
+  "updatedAt": "2025-11-28T09:36:31.351481Z",
+  "version": "1"
+}

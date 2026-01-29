@@ -1,0 +1,42 @@
+# Fix Terminal Leakage on Exit
+
+## Goal Description
+Fix the issue where terminal state leaks after exit, causing control keys (like Ctrl+C) to be interpreted as input characters, especially when using non-English IMEs. This is likely due to `bracketed paste` or `focus tracking` modes remaining active, or `raw mode` not being fully disabled.
+
+## User Review Required
+> [!IMPORTANT]
+> This change adds explicit terminal reset sequences to the cleanup process. We will write `DISABLE_BRACKETED_PASTE` and `DISABLE_FOCUS_TRACKING` to `process.stdout` and ensure `process.stdin.setRawMode(false)` is called.
+
+## Proposed Changes
+
+### CLI
+#### [MODIFY] [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts)
+- Import `DISABLE_BRACKETED_PASTE` and `DISABLE_FOCUS_TRACKING`.
+- Update [runExitCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#18-32) to explicitly write these sequences and disable raw mode.
+
+```typescript
+import {
+  DISABLE_BRACKETED_PASTE,
+  DISABLE_FOCUS_TRACKING,
+  SHOW_CURSOR,
+} from '../ui/utils/terminalSequences.js';
+
+// ... inside runExitCleanup ...
+
+  // Explicitly reset terminal modes
+  if (process.stdout.isTTY) {
+    process.stdout.write(DISABLE_BRACKETED_PASTE + DISABLE_FOCUS_TRACKING + SHOW_CURSOR);
+  }
+  if (process.stdin.isTTY && process.stdin.setRawMode) {
+    process.stdin.setRawMode(false);
+  }
+```
+
+## Verification Plan
+
+### Manual Verification
+1.  **IME Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Enable non-English IME.
+    -   Run `/quit` or press `Ctrl+C`.
+    -   **Expected Result**: Terminal should behave normally. Typing `Ctrl+C` should generate a SIGINT (or copy), not input characters.

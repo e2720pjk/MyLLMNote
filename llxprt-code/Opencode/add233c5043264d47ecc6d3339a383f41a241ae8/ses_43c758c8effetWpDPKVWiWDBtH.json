@@ -1,0 +1,17 @@
+{
+  "id": "ses_43c758c8effetWpDPKVWiWDBtH",
+  "slug": "happy-cactus",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "AST-edit.test.ts failure: expected content mismatch",
+  "time": {
+    "created": 1768512189298,
+    "updated": 1768512964278
+  },
+  "summary": {
+    "additions": 1,
+    "deletions": 1,
+    "files": 1
+  }
+}

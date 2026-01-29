@@ -1,0 +1,16 @@
+{
+  "id": "ses_55035d223ffeqtA6xaZVvxK2ca",
+  "version": "1.0.97",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing plan for compilation & migration fixes in UI Core",
+  "time": {
+    "created": 1763885854172,
+    "updated": 1763885997297
+  },
+  "summary": {
+    "additions": 5,
+    "deletions": 8,
+    "files": 2
+  }
+}

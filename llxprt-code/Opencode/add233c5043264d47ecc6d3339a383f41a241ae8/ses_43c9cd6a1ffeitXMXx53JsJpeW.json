@@ -1,0 +1,35 @@
+{
+  "id": "ses_43c9cd6a1ffeitXMXx53JsJpeW",
+  "slug": "proud-planet",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_43c9d45d2ffeX6VExQozyTthgJ",
+  "title": "Background: Analyze license generation patterns",
+  "time": {
+    "created": 1768509614430,
+    "updated": 1768509648567
+  },
+  "permission": [
+    {
+      "permission": "task",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "background_task",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "call_omo_agent",
+      "action": "deny",
+      "pattern": "*"
+    }
+  ],
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

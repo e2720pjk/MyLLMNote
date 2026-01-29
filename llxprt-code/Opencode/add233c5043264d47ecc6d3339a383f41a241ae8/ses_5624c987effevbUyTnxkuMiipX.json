@@ -1,0 +1,16 @@
+{
+  "id": "ses_5624c987effevbUyTnxkuMiipX",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing cherry-pick-ui branch status and missing settings",
+  "time": {
+    "created": 1763582371713,
+    "updated": 1763588275854
+  },
+  "summary": {
+    "additions": 306,
+    "deletions": 211,
+    "files": 7
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "ses_5620e78e9ffe7s7TOXacIazY9h",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Reviewing coreToolToggle.test.ts for cheating/design flaws",
+  "time": {
+    "created": 1763586443030,
+    "updated": 1763587783013
+  },
+  "summary": {
+    "additions": 819,
+    "deletions": 85,
+    "files": 4
+  }
+}

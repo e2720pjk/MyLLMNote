@@ -1,0 +1,51 @@
+# Walkthrough - Reviewing Auto-Merged Changes
+
+I have reviewed the auto-merged changes in the `feat/hybrid-ui-architecture` branch to ensure no regressions were introduced.
+
+## Verification Steps
+
+### 1. Version Sourcing
+- **File:** [packages/cli/src/utils/version.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/version.ts)
+- **Verification:** Confirmed that [getCliVersion()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/version.ts#9-13) is the single source of truth, reading from [package.json](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/package.json).
+- **Usage:** Verified usage in [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/gemini.tsx) (via [AppWrapper](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/App.tsx#178-200)) and [aboutCommand.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/commands/aboutCommand.ts).
+
+### 2. UI State & Contexts
+- **File:** [packages/cli/src/ui/contexts/UIStateContext.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/contexts/UIStateContext.tsx)
+- **Verification:** Confirmed [UIState](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/contexts/UIStateContext.tsx#44-139) interface includes all necessary properties, including `confirmationRequest` and `shellConfirmationRequest`.
+- **File:** [packages/cli/src/ui/AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/AppContainer.tsx)
+- **Verification:** Verified correct provider nesting (`UIStateProvider`, `UIActionsProvider`) and state initialization.
+
+### 3. Layout & Components
+- **File:** [packages/cli/src/ui/layouts/DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/layouts/DefaultAppLayout.tsx)
+- **Verification:** Checked that `width` prop respects `isAlternateBuffer` and `mainAreaWidth`, ensuring correct layout in hybrid mode.
+- **File:** [packages/cli/src/ui/components/messages/ToolGroupMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx)
+- **Verification:** Verified layout structure (outer box width, inner box padding) to prevent overflow and misalignment.
+
+### 4. Configuration
+- **File:** [packages/core/src/config/config.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/config/config.ts)
+- **Verification:** Confirmed presence of `getEnableInteractiveShell` method.
+- **File:** [packages/cli/src/config/settings.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/config/settings.test.ts)
+- **Verification:** Verified settings merging logic via tests.
+
+### 5. Automated Checks
+- **Command:** `npm run preflight`
+- **Status:** Passed formatting, linting, and unit tests.
+
+## Conclusion
+The auto-merged changes appear to be correct and do not introduce any obvious regressions. The Hybrid UI architecture is preserved, and custom features are intact.
+
+## Fixes Applied to `llxprt-code-4`
+
+### Dynamic Height Calculation Fix
+- **File:** [packages/cli/src/ui/AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/AppContainer.tsx)
+- **Change:** Updated `useLayoutEffect` for `availableTerminalHeight` to include dependencies that affect the footer/controls height (e.g., `streamingState`, `consoleMessages`, `showTodoPanel`).
+- **Rationale:** Ensures the main content area resizes correctly when the footer content changes dynamically, preventing UI jitter and overflow.
+
+### `isResponding` Regression Fix
+- **File:** [packages/cli/src/ui/hooks/useGeminiStream.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/hooks/useGeminiStream.ts)
+- **Change:** Removed the `if (isResponding) { return; }` check from `handleCompletedTools`.
+- **Rationale:** This check was blocking legitimate tool completions when the system was in a "responding" state (e.g., fast-executing tools). `submitQuery` already handles concurrency via the `isContinuation` flag, making this check redundant and harmful.
+
+### Verification
+- **Command:** `npm run preflight`
+- **Result:** Passed (Lint, Typecheck, Tests).

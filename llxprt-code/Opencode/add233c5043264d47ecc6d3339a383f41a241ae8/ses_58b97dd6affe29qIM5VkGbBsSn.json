@@ -1,0 +1,16 @@
+{
+  "id": "ses_58b97dd6affe29qIM5VkGbBsSn",
+  "version": "1.0.55",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "title": "Fixing ReferenceError describe not defined",
+  "time": {
+    "created": 1762889573014,
+    "updated": 1762901091561
+  },
+  "summary": {
+    "additions": 323,
+    "deletions": 32,
+    "files": 4
+  }
+}

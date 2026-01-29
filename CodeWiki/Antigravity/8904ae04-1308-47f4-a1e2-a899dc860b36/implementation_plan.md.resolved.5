@@ -1,0 +1,59 @@
+> [!TIP]
+> **Why Hybrid (AST + Joern)?**
+> Technically, Joern's CPG **subsumes** AST. However, the current AST parser is highly optimized and stable for CodeWiki's specific documentation needs. 
+> To achieve a **Quick Win**, we use a "Enhancement" strategy:
+> 1. **AST**: Provides the stable skeleton (Repository structure, files, methods).
+> 2. **Joern**: Infuses "Superpowers" (Data flow, cross-module tagging) that AST alone cannot provide.
+> This prevents a "high-risk replacement" and allows for incremental migration.
+
+---
+# Joern Integration - Quick Win Plan (v5)
+
+This plan adopts a **Python-native approach using `pyjoern`**. By leveraging the `pyjoern` wrapper, we gain a direct API for CPG manipulation and automated backend management, while still keeping AST as the stable structural substrate.
+
+## User Review Required
+
+> [!TIP]
+> **Why `pyjoern`?**
+> 1. **Native Python API**: No more complex `subprocess.run` parsing; we get function and CFG objects directly.
+> 2. **Auto-Setup**: `pyjoern --install` manages the Joern binary download and updates.
+> 3. **Deep Analysis**: Specifically optimized for CFG, PDG, and Data Dependency extraction.
+
+> [!IMPORTANT]
+> **System Requirements**: 
+> - **Java 19+** (Required by Joern backend)
+> - **Graphviz** (For visualization/export)
+> - **Python 3.8+**
+
+---
+
+## 🚀 Execution Phases
+
+### **Phase 1: pyjoern PoC & Baseline** 🎯
+**Goal:** Verify `pyjoern` environment and establish performance/accuracy baselines.
+- **Environment**: `pip install pyjoern` followed by `pyjoern --install`.
+- **Baseline**: Record AST analysis time for 10/100/500 files.
+- **PoC**: Use `from pyjoern import parse_source` on a test project and print function CFGs.
+- **Artifacts**: `pyjoern_check.log`, `performance_baseline.md`.
+
+### **Phase 2: Hybrid Data Flow Visualization** 📊
+**Goal:** Introduce Data Flow analysis as a "Plugin" enrichment.
+- **Hybrid Service**: Create `HybridAnalysisService` using `pyjoern`'s traversals to extract data dependencies.
+- **Enrichment**: Add `DataFlowRelationship` (source, target, flow_type) to the analysis result.
+- **Artifacts**: `hybrid_analysis_service.py`, Sample documentation with data flow context.
+
+### **Phase 3: Production Integration & Efficiency** 🏭
+**Goal:** Robust integration with caching and hybrid fallback.
+- **Feature Flag**: Add `--use-joern` flag (default=False).
+- **Caching**: Implement pickle-based caching for `pyjoern` objects (as they are native Python dicts/objects).
+- **Safety Net**: If `pyjoern` fails (missing Java or incompatible file), revert to `ASTParser`.
+- **Artifacts**: Integrated feature toggle, `JOERN_USER_GUIDE.md`.
+
+---
+
+## **Verification Plan**
+
+### Success Metrics
+- **Ease of Use**: No raw CLI parsing errors in `pyjoern` logs.
+- **Parity**: F1 Score >= 0.92 on call graph edges compared to AST.
+- **Performance**: Joern overhead <= 3x current AST parsing (using `fast_cfgs_from_source` where possible).

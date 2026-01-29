@@ -1,0 +1,16 @@
+{
+  "id": "ses_46fb61fe8ffeg3haIplj4TeDPh",
+  "version": "1.0.220",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "協助依照設定審查此分支變動 - Code Review Principles",
+  "time": {
+    "created": 1767652319255,
+    "updated": 1767678924295
+  },
+  "summary": {
+    "additions": 62,
+    "deletions": 18,
+    "files": 7
+  }
+}

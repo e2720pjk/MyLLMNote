@@ -1,0 +1,16 @@
+{
+  "id": "ses_5643e6892ffeVqEUWMaNBvCruG",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Reviewing git diff HEAD for excludeTools",
+  "time": {
+    "created": 1763549747053,
+    "updated": 1763552543900
+  },
+  "summary": {
+    "additions": 60,
+    "deletions": 340,
+    "files": 4
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Walkthrough of the AST Tool Performance Optimization. It details the transition from eager to lazy indexing, the new configuration options, and the verification results.",
+  "updatedAt": "2026-01-19T06:28:43.833536Z"
+}

@@ -1,0 +1,59 @@
+Created [oldui-tmux-script.tabs-cycling.llxprt.json](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/oldui-tmux-script.tabs-cycling.llxprt.json) to automate testing of the `Ctrl+O` tab cycle keybinding.
+
+### Test Steps:
+- **Console Logs Fix**: Implemented [earlyLogBuffer.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/utils/earlyLogBuffer.ts) to capture and display boot logs in the Debug tab that were previously missed due to timing issues in [AppContainer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/AppContainer.tsx#160-1857) mount.
+- **Screen Reader Mode Fix**:
+    - Simplified [ScreenReaderAppLayout](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/layouts/ScreenReaderAppLayout.tsx#19-40) by introducing [ScreenReaderFooter.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/ScreenReaderFooter.tsx).
+    - Removed gradients, complex responsive logic, and high-frequency metrics from the footer in SR mode.
+    - Conditionally hidden the interactive [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TabBar.tsx#19-61) in [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/MainContent.tsx) when a screen reader is detected, replacing it with a simple text indicator: `Current Tab: [activeTab]`.
+- **Layout Investigation**:
+1.  Start CLI in tmux session.
+2.  Wait for UI to render.
+3.  Assert 4 tab labels are visible: [Chat](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/types.ts#181-185), [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/config/config.ts#673-681), [Todo](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/TodoTab.tsx#14-27), [System](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/SystemTab.tsx#14-123).
+4.  Press `Ctrl+O` and verify focus shifts to [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/config/config.ts#673-681).
+5.  Press `Ctrl+O` and verify focus shifts to [Todo](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/TodoTab.tsx#14-27).
+6.  Press `Ctrl+O` and verify focus shifts to [System](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/tabs/SystemTab.tsx#14-123).
+7.  Press `Ctrl+O` and verify focus wraps back to [Chat](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/types.ts#181-185).
+8.  `/quit` the application.
+
+### Results:
+**TEST PASSED ✅**
+
+Screen captures confirmed correct tab cycling:
+| Capture | Active Tab |
+|---------|------------|
+| initial | `[Chat]`   |
+| 1st C-o | `[Debug]`  |
+| 2nd C-o | `[Todo]`   |
+| 3rd C-o | `[System]` |
+| 4th C-o | `[Chat]` (wrap) |
+
+## 4. Verification Commands
+All passed without errors:
+
+| Command | Result |
+|---------|--------|
+| `npm run lint` | ✅ Passed |
+| `npm run typecheck` | ✅ Passed |
+| `npm run build` | ✅ Passed |
+| 
+## 5. Screen Reader Mode Verification
+**Status: PASSED** ✅
+
+Implemented regression fixes for Screen Reader Mode:
+- **Simplified Footer**: Created [ScreenReaderFooter](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/ScreenReaderFooter.tsx#19-86) to display only essential info (Model, Tokens, Error Count) without visual noise.
+- **Conditional Layout**: Updated [ScreenReaderAppLayout](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/layouts/ScreenReaderAppLayout.tsx#19-40) to wrap [MainContent](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/MainContent.tsx#57-395) with `StreamingContext`, fixing a crash.
+- **Accessible Tabs**: Replaced the interactive [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TabBar.tsx#19-61) with a simple "Current Tab: [Name]" text indicator when in SR mode.
+
+**Verification Steps:**
+1. Created [scripts/oldui-tmux-script.screen-reader.llxprt.json](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/oldui-tmux-script.screen-reader.llxprt.json).
+2. Configured test script to launch with `--screen-reader` flag.
+3. Verified the presence of "Current Tab:" text (accessible tab indicator).
+4. Verified the presence of "Error Count:" (simplified footer).
+5. Captured screenshot `screen-reader-mode.txt`.
+
+**Test Command:**
+`node scripts/oldui-tmux-harness.js --script scripts/oldui-tmux-script.screen-reader.llxprt.json`
+
+**Outcome:**
+The test successfully detected the accessible UI elements, confirming the Screen Reader Mode is functional and crash-free.

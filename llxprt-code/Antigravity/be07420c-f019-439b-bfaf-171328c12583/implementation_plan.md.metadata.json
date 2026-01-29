@@ -1,0 +1,5 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary":  "Detailed plan for migrating TabbyEdit from tree-sitter CLI to ast-grep, including safety checks (Golden Master tests) and specific code changes.",
+  "updatedAt":  "2026-01-14T23:33:53.533650Z"
+}

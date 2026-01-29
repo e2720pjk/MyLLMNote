@@ -1,0 +1,35 @@
+# Implement WebSearch Tool
+
+## Goal Description
+Implement [ExaWebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/exa-web-search.ts#64-116) based on the `opencode` implementation and rename the existing [WebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/exa-web-search.ts#64-116) to [GoogleWebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/google-web-search.ts#25-77) to avoid confusion.
+
+## Proposed Changes
+
+### WebSearch Tool
+#### [MODIFY] [google-web-search.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/google-web-search.ts)
+- Rename [WebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/exa-web-search.ts#64-116) to [GoogleWebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/google-web-search.ts#25-77)
+#### [NEW] [exa-web-search.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/exa-web-search.ts)
+- Implement [ExaWebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/exa-web-search.ts#64-116) using Exa.ai API
+#### [NEW] [exa-web-search.md](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/prompt-config/defaults/tools/exa-web-search.md)
+- Documentation for [ExaWebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/exa-web-search.ts#64-116)
+
+### CodeSearch Configuration
+- [x] Refine `tokensNum` logic in [codesearch.ts](file:///Users/caishanghong/Shopify/cli-tool/opencode/packages/opencode/src/tool/codesearch.ts)
+- [x] Add tests for `tokensNum` clamping and settings integration
+
+### DirectWebFetch Refactor
+- [x] Remove `timeout` from [fetch](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/utils/fetch.ts#39-58) options
+- [x] Implement `AbortController` for timeout handling
+- [x] Ensure resource cleanup in `finally` block
+
+### Signal Handling Fixes
+#### [MODIFY] [fetch.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/utils/fetch.ts)
+- Update [fetchWithTimeout](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/utils/fetch.ts#39-58) to accept optional `AbortSignal`
+- Merge external signal with timeout controller
+
+#### [MODIFY] [google-web-fetch.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/google-web-fetch.ts)
+- Pass `signal` to [fetchWithTimeout](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/utils/fetch.ts#39-58) in [executeFallback](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/google-web-fetch.ts#82-129)
+
+## Verification Plan
+### Automated Tests
+- Run `npm run test` to verify all tests pass.

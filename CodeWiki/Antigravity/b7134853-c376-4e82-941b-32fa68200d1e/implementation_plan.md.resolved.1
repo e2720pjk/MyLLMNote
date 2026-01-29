@@ -1,0 +1,24 @@
+# Implement WebSearch Tool
+
+## Goal Description
+Implement [ExaWebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/exa-web-search.ts#64-116) based on the `opencode` implementation and rename the existing [WebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/exa-web-search.ts#64-116) to [GoogleWebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/google-web-search.ts#25-77) to avoid confusion.
+
+## Proposed Changes
+
+### WebSearch Tool
+#### [MODIFY] [google-web-search.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/google-web-search.ts)
+- Rename [WebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/exa-web-search.ts#64-116) to [GoogleWebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/google-web-search.ts#25-77)
+#### [NEW] [exa-web-search.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/exa-web-search.ts)
+- Implement [ExaWebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/exa-web-search.ts#64-116) using Exa.ai API
+#### [NEW] [exa-web-search.md](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/prompt-config/defaults/tools/exa-web-search.md)
+- Documentation for [ExaWebSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/exa-web-search.ts#64-116)
+
+### CodeSearch configuration
+#### [MODIFY] [codesearch.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/codesearch.ts)
+- Add source comment for `tokensNum` limits (1000-50000).
+- Integrate `tool-output-max-tokens` ephemeral setting.
+- Implement clamping logic: `clamp(setting || param || default, 1000, 50000)`.
+
+## Verification Plan
+### Automated Tests
+- Run `npm run test` to verify all tests pass.

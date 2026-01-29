@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_OTHER",
+  "summary": "Conclusive analysis based on direct comparison between gemini-cli and llxprt-code, confirming that pendingHistory field does not exist in gemini-cli and is therefore not needed in llxprt-code either.",
+  "updatedAt": "2025-12-05T02:52:54.978928Z"
+}

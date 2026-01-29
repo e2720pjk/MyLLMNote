@@ -1,0 +1,17 @@
+{
+  "id": "ses_573ab7633ffev1fldCWmeYrwQ5",
+  "version": "1.0.65",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_573fae12cffe4lv5K0CFKcMFOZ",
+  "title": "Research non-CJK IME interference (@general subagent)",
+  "time": {
+    "created": 1763290941901,
+    "updated": 1763290984364
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

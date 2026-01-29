@@ -1,0 +1,17 @@
+{
+  "id": "ses_50cc8e01affezPzjNfGNMjtSuW",
+  "version": "1.0.133",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "parentID": "ses_50cce8d4cffexvljk34ZBkcKkK",
+  "title": "探索按鍵事件架構 (@explore subagent)",
+  "time": {
+    "created": 1765017067493,
+    "updated": 1765017167683
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

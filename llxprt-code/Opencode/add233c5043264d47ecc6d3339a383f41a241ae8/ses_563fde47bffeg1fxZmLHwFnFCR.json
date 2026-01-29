@@ -1,0 +1,16 @@
+{
+  "id": "ses_563fde47bffeg1fxZmLHwFnFCR",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing prior commits for accidental temp files using git add .",
+  "time": {
+    "created": 1763553975172,
+    "updated": 1763554574318
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 751,
+    "files": 4
+  }
+}

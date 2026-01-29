@@ -1,0 +1,16 @@
+{
+  "id": "ses_59036abceffelv2uy77jVpJ8pN",
+  "version": "1.0.51",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "title": "Analyzing subagent tool response format compatibility",
+  "time": {
+    "created": 1762812056625,
+    "updated": 1762863396542
+  },
+  "summary": {
+    "additions": 711,
+    "deletions": 0,
+    "files": 3
+  }
+}

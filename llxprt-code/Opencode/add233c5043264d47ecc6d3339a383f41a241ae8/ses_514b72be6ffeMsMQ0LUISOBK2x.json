@@ -1,0 +1,17 @@
+{
+  "id": "ses_514b72be6ffeMsMQ0LUISOBK2x",
+  "version": "1.0.129",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "parentID": "ses_514bc529fffeLSjJM90mgxxkQS",
+  "title": "Check performance metrics (@explore subagent)",
+  "time": {
+    "created": 1764884010009,
+    "updated": 1764884219941
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

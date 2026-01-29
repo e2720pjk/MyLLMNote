@@ -1,0 +1,11 @@
+# Task List: Code Review for llxprt-code-4
+
+- [/] Analyze file changes in `llxprt-code-4` regarding `MainChat` and virtualization logic <!-- id: 0 -->
+    - [x] Locate `MainChat` component and related files (Found: `MainContent.tsx`, `ScrollableList.tsx`, `ChatList.tsx`) <!-- id: 1 -->
+    - [/] Identify changes related to display logic and virtualization <!-- id: 2 -->
+- [ ] Verify reported issues <!-- id: 3 -->
+    - [/] Analyze virtualization implementation for correctness (Checking `VirtualizedList.tsx`) <!-- id: 4 -->
+    - [ ] Check for potential causes of layout instability (long output, tool calls) <!-- id: 5 -->
+- [ ] generate code review report <!-- id: 6 -->
+    - [ ] Apply Code Review Agent debugging principles <!-- id: 7 -->
+    - [ ] Create detailed feedback using the specified format <!-- id: 8 -->

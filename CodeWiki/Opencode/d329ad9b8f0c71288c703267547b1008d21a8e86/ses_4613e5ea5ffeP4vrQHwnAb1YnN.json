@@ -1,0 +1,17 @@
+{
+  "id": "ses_4613e5ea5ffeP4vrQHwnAb1YnN",
+  "version": "1.0.220",
+  "projectID": "d329ad9b8f0c71288c703267547b1008d21a8e86",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWikiBench",
+  "parentID": "ses_4613e8bf5ffeCKlpVcp2zP0gJA",
+  "title": "Analyze max_tokens error (@explore subagent)",
+  "time": {
+    "created": 1767895048538,
+    "updated": 1767895306623
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

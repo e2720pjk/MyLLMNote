@@ -1,0 +1,17 @@
+{
+  "id": "ses_427c75d70ffeqpNWfXFZdRTK9f",
+  "slug": "kind-otter",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "Testing branch coverage via fixtures in tests/fixtures/",
+  "time": {
+    "created": 1768859148943,
+    "updated": 1768860013779
+  },
+  "summary": {
+    "additions": 815,
+    "deletions": 2,
+    "files": 3
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "ses_54d3ad8c8ffeUqRca9wn5LIyls",
+  "version": "1.0.106",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing pull request comments for truthfulness",
+  "time": {
+    "created": 1763935856439,
+    "updated": 1763935959264
+  },
+  "summary": {
+    "additions": 152,
+    "deletions": 0,
+    "files": 2
+  }
+}

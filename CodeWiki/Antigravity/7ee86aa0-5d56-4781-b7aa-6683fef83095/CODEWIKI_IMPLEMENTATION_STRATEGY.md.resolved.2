@@ -1,0 +1,173 @@
+# CodeWiki Implementation Strategy: SOLID & Scalable
+
+This document defines **HOW** to implement the North Star vision while maintaining backward compatibility and solving the context explosion issue.
+
+---
+
+## 1. Architectural Principles (SOLID)
+
+To add the new "Semantic History" and "Recursive Context" features without breaking the existing [AgentOrchestrator](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py#34-167), we will apply:
+
+*   **S (Single Responsibility):**
+    *   `DependencyGraphBuilder`: Only builds the Structure (Level 1).
+    *   `GitSemanticAnalyzer`: Only builds the History (Level 3).
+    *   `ContextReducer`: Only prepares the *minimal* context for the LLM.
+*   **O (Open/Closed):**
+    *   The [AgentOrchestrator](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py#34-167) should accept any `AnalysisProvider`. We can extend it with `GitEnrichedAnalysisProvider` without modifying the core orchestrator logic deeply.
+*   **D (Dependency Inversion):**
+    *   High-level modules (Doc Generator) should not depend on low-level details (GraphDB vs. JSON vs. Git CLI). They depend on abstractions (`AnalysisResult`).
+
+---
+
+## 2. Solving Context Explosion: The "Summary Projector"
+
+**The Problem:**
+In the current code ([agent_orchestrator.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py)), `deps` (Dependencies) loads the `module_tree` and components. For a parent module, this includes *everything* below it.
+
+**The Solution: Bottom-Up Summary Projection**
+Instead of passing the *full children content* to the Parent Agent, we pass a *projected summary*.
+
+**Refactoring [AgentOrchestrator](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py#34-167):**
+
+```python
+# Interface Definition
+class ContextProjector(Protocol):
+    def project(self, module_tree: Dict, current_path: List[str]) -> str:
+        """Returns the specific context string for this module."""
+
+# Implementation 1: Leaf Node (Context = Source Code)
+class LeafContextProjector(ContextProjector):
+    def project(self, ...):
+        return source_code  # Full detail
+
+# Implementation 2: Parent Node (Context = Children Signatures + Summaries + Intents)
+class ParentContextProjector(ContextProjector):
+    def project(self, ...):
+        # 1. Signatures (Strict)
+        signatures = extract_public_api(children_components)
+        # 2. Doc Summaries (From generated .md files of children)
+        doc_summaries = read_generated_summaries(children_outputs)
+        # 3. Git Intents (From Graph)
+        git_intents = graph.query_intents(children_paths)
+
+        return format(signatures, doc_summaries, git_intents)
+```
+
+**Workflow Change:**
+When generating `ParentModule`, the Agent **only** sees the output of `ParentContextProjector`. It physically *cannot* see the raw implementation of grandchildren, preventing context explosion.
+
+---
+
+## 3. Integrating Git History (The "Sidecar" Pattern)
+
+You correctly identified that History should be separate from Logic.
+
+**Data Flow:**
+1.  **Ingestion:** `GitSemanticAnalyzer` runs (Batch). It produces `history_index.json`:
+    ```json
+    {
+      "src/auth/login.py": {
+        "churn": "high",
+        "last_intent": "Fix CVE-2024-123",
+        "semantic_log": ["Added 2FA", "Refactored Session"]
+      }
+    }
+    ```
+2.  **Generation:** The `DocGenerator` reads this sidecar file.
+    *   It appends a `## Evolution` section to the Markdown.
+    *   **Crucially:** It does *not* let the LLM "analyze" the history to guess functionality. It only *formats* the pre-computed history for display.
+
+---
+
+## 4. Implementation Roadmap (Backward Compatible)
+
+### Phase 1: The Abstraction Layer (Refactoring)
+*   **Goal:** Break [AgentOrchestrator](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py#34-167)'s direct dependency on concrete logic without changing behavior.
+*   **Action:**
+    1.  Define `ContextProjector` interface.
+    2.  Implement `LegacyContextProjector`: **Copy-paste the exact current logic here.** This ensures 100% behavior parity (The "Null Refactoring").
+    3.  Update [AgentOrchestrator](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/agent_orchestrator.py#34-167) to call `self.projector.project()`.
+    4.  *Verification:* Run existing tests. They must pass with zero changes.
+
+### Phase 2: The New Capabilities (Extension)
+*   **Goal:** Add "Smart Context" without touching the Legacy path.
+*   **Action:**
+    1.  Implement `SmartContextProjector`: The new logic (Summaries + Signatures).
+    2.  Add CLI Flag: `--use-smart-context`.
+    3.  Factory Logic:
+        ```python
+        if config.use_smart_context:
+            return SmartContextProjector()
+        else:
+            return LegacyContextProjector() # Default
+        ```
+
+### Phase 3: The Git Evidence Sidecar (Traceability)
+*   **Goal:** Add "Time Dimension" with **Verification Capabilities** (User click-to-verify & LLM evidence-retrieval).
+*   **Strategy:** Do NOT store full diffs (too heavy). Do NOT store only summaries (too vague). Store **Structured Pointers**.
+
+1.  **Ingestion Schema (`history_index.json`):**
+    ```json
+    {
+      "src/auth/login.py": {
+        "churn_score": 0.8,
+        "evolution": [
+          {
+            "commit_id": "a1b2c3d...",  # The "Evidence" Link
+            "date": "2024-03-20",
+            "author": "Alice",
+            "semantic_summary": "Added Rate Limiting to prevent brute-force", 
+            "affected_symbols": ["LoginController.authenticate"]
+          }
+        ]
+      }
+    }
+    ```
+
+2.  **Usage Scenario A: The Human Reader**
+    *   The generated Markdown includes a "History" expandable section.
+    *   Each entry implies a link: `[View Diff](https://github.com/.../commit/a1b2c3d)`.
+    *   **Value:** Instant trust. The summary gives the "Why", the link gives the "Proof".
+
+3.  **Usage Scenario B: The LLM/Agent**
+    *   **Step 1:** Agent sees "Added Rate Limiting (Commit a1b2c3d)".
+    *   **Step 2:** Agent needs to implement a similar fix elsewhere.
+    *   **Step 3:** Agent calls Tool: `git_show(commit_id="a1b2c3d")`.
+    *   **Value:** Precision. The Agent retrieves the *exact* code change only when needed, minimizing context waste.
+
+4.  **Implementation Action:**
+    *   Create `GitEvidenceAnalyzer`.
+    *   Ensure `ParentContextProjector` injects these structured blocks into the "Evolution" metadata section of the doc.
+
+---
+
+## 5. Backward Compatibility & Upstream Merge Strategy
+
+To ensure painless merges with upstream:
+
+1.  **"Add, Don't Modify":**
+    *   Do not edit [cluster_modules.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/be/cluster_modules.py) logic directly.
+    *   Create `cluster_modules_v2.py` or `strategies/smart_clustering.py`.
+    *   In the original file, use a **Hook** or **Factory** that redirects to the new file *only if configured*.
+
+2.  **Configuration as the Gatekeeper:**
+    *   All new features default to **False** (`False` = Identical to Upstream).
+    *   Example [config.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/codewiki/src/config.py):
+        ```python
+        class AnalysisOptions:
+            use_smart_context: bool = False  # Feature Flag
+            enable_git_history: bool = False # Feature Flag
+        ```
+
+3.  **The "Parallel Universe" Directory Structure:**
+    *   Keep `codewiki/src/be/legacy/` for strict upstream code compatibility if needed.
+    *   Put new solid implementations in `codewiki/src/be/strategies/`.
+
+---
+
+## 6. Conclusion
+This strategy:
+1.  **Respects SOLID:** Implementation details are hidden behind Projectors and Providers.
+2.  **Solves Scale:** Parent nodes only see what they *need* to see (Summaries).
+3.  **Guarantees Safety:** By defaulting to `LegacyProjector`, we ensure 0% regression risk.
+4.  **Enables Incremental Adoption:** Users can toggle `--use-smart-context` per run.

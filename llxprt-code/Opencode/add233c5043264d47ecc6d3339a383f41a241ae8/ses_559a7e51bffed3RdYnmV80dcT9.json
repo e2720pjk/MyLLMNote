@@ -1,0 +1,16 @@
+{
+  "id": "ses_559a7e51bffed3RdYnmV80dcT9",
+  "version": "1.0.82",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing cherry-pick for nested settings.test.ts failure",
+  "time": {
+    "created": 1763727383268,
+    "updated": 1763728704916
+  },
+  "summary": {
+    "additions": 80,
+    "deletions": 269,
+    "files": 1
+  }
+}

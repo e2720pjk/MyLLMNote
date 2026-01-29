@@ -1,0 +1,47 @@
+# Fix Terminal Leakage (Wait for Drain)
+
+## Goal Description
+Fix the persistent terminal leakage where control keys are interpreted as input after exit. Investigation suggests that `process.exit(0)` is terminating the process *before* the terminal reset sequences (written to `stdout`) are fully flushed to the terminal. We need to explicitly wait for the `drain` event on `stdout` before exiting.
+
+## User Review Required
+> [!IMPORTANT]
+> This change introduces a `gracefulExit` pattern in [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/utils/cleanup.ts). It modifies [runExitCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#25-51) to wait for `process.stdout.once('drain', ...)` (or a timeout) after writing reset sequences. This ensures the terminal receives the "reset" command before the connection closes.
+
+## Proposed Changes
+
+### CLI
+#### [MODIFY] [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts)
+- Update [runExitCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#25-51) to:
+    1.  Write reset sequences.
+    2.  **Wait for drain** (with a short timeout to prevent hanging).
+    3.  Then proceed with other cleanup.
+
+```typescript
+  // Explicitly reset terminal modes to prevent leakage
+  if (process.stdout.isTTY) {
+    process.stdout.write(
+      DISABLE_BRACKETED_PASTE + DISABLE_FOCUS_TRACKING + SHOW_CURSOR,
+    );
+    disableProtocol(); // Disable Kitty keyboard protocol
+    
+    // Wait for drain to ensure sequences are sent
+    if (!process.stdout.write('\n')) {
+        await new Promise<void>(resolve => {
+            const timeout = setTimeout(resolve, 100); // 100ms safety timeout
+            process.stdout.once('drain', () => {
+                clearTimeout(timeout);
+                resolve();
+            });
+        });
+    }
+  }
+```
+
+## Verification Plan
+
+### Manual Verification
+1.  **IME Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Enable non-English IME.
+    -   Run `/quit` or press `Ctrl+C`.
+    -   **Expected Result**: Terminal should behave normally. Typing `Ctrl+C` should generate a SIGINT (or copy), not input characters.

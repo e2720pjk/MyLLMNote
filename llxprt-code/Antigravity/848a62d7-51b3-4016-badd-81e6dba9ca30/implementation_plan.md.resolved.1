@@ -1,0 +1,37 @@
+# Fix Terminal Corruption in Kitty Protocol Detector
+
+## Goal Description
+The goal is to prevent terminal corruption when the application exits, specifically addressing the user-reported scenario of using `CTRL+C`. Currently, the cleanup logic is missing a handler for `SIGINT` (CTRL+C) and uses asynchronous writes, which causes the terminal to remain in a "protocol enabled" state (showing raw escape codes) after the application exits.
+
+## User Review Required
+> [!IMPORTANT]
+> **Root Cause Confirmed**: The current code listens for `exit` and `SIGTERM` but **ignores `SIGINT`** (CTRL+C). This explains why `CTRL+C` leaves the terminal corrupted.
+>
+> **The Fix**:
+> 1.  **Add `SIGINT` handler**: Ensures cleanup runs on CTRL+C.
+> 2.  **Use `fs.writeSync`**: Ensures the disable sequence `\x1b[<u` is actually flushed to the terminal before the process dies. Asynchronous `process.stdout.write` is unreliable during exit.
+
+## Proposed Changes
+
+### CLI Package
+#### [MODIFY] [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts)
+-   **Import `fs`**: Required for `writeSync`.
+-   **Update [disableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101)**:
+    -   Use `fs.writeSync(process.stdout.fd, '\x1b[<u')` to guarantee execution.
+    -   Wrap in `try/catch` to be safe during crash scenarios.
+-   **Add Missing Handlers**:
+    -   `process.on('SIGINT', disableProtocol)` <--- **Critical for CTRL+C fix**
+    -   `process.on('uncaughtException', disableProtocol)`
+    -   `process.on('unhandledRejection', disableProtocol)`
+-   **Prevent Duplicate Cleanup**: Ensure [disableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101) checks and sets `protocolEnabled = false` atomically/safely to avoid double-writing if multiple signals fire.
+
+## Verification Plan
+
+### Manual Verification
+1.  **CTRL+C Test**:
+    -   Start the application.
+    -   Press `CTRL+C` (once or twice as needed to exit).
+    -   **Pass Criteria**: Terminal should return to normal immediately. No `^[[A` or bell sounds when typing afterwards.
+2.  **Crash Test**:
+    -   Simulate a crash (e.g., throw Error).
+    -   **Pass Criteria**: Terminal should be restored cleanly.

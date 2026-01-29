@@ -1,0 +1,6 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary":  "Add Phase 4 to fix str_replace_editor and TreeSitterTSAnalyzer issues.",
+  "updatedAt":  "2026-01-02T13:17:15.070508Z",
+  "version":  "6"
+}

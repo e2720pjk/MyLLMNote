@@ -1,0 +1,64 @@
+## Build and Lint Fixes Implementation Plan
+
+### Goal Description
+Fix multiple build and lint errors in the `packages/cli` workspace to ensure the project builds and runs correctly.
+
+### Proposed Changes
+
+#### packages/cli
+
+##### [MODIFY] ConfigInitDisplay.tsx
+- Change import `GeminiSpinner` to `GeminiRespondingSpinner`.
+- Ensure `AppEvent.McpClientUpdate` is used correctly (after adding it to [events.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/events.ts)).
+
+##### [MODIFY] DefaultAppLayout.tsx
+- Restrict [ConfigInitDisplay](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/ConfigInitDisplay.tsx#14-46) rendering to only when MCP servers are configured.
+- Retrieve `mcpServers` from `config.getMcpServers()`.
+- Render `<ConfigInitDisplay />` only if `hasMcpServers` is true.
+
+##### [MODIFY] MainContent.tsx
+- Replace `any` type for [config](file:///Users/caishanghong/Shopify/cli-tool/.editorconfig) with [Config](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/config/keyBindings.ts#95-98) from `@vybestack/llxprt-code-core`.
+- Extract arrow functions passed to [ScrollableList](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/ScrollableList.tsx#44-248) props (`estimatedItemHeight`, [keyExtractor](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/MainContent.tsx#26-34)) to `useCallback` or static functions.
+
+##### [MODIFY] MouseContext.tsx
+- Wrap value object in `useMemo`.
+- Remove `debugLogger` import and usage. Use `console.log` if debugKeystrokeLogging is enabled, or create a local logger instance if needed.
+
+##### [MODIFY] VirtualizedList.tsx
+- Remove `overflowY="scroll"` from [Box](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/ink-utils.ts#9-43) component as it's not a valid value for Ink's Box and virtualization is handled manually.
+
+##### [MODIFY] ScrollProvider.tsx
+- Fix [getBoundingBox](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/ink-utils.ts#9-43) import. Since it is missing from Ink, create a local utility [src/ui/utils/ink-utils.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/ink-utils.ts) that exports [getBoundingBox](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/ink-utils.ts#9-43). This utility will use `measureElement` and attempt to determine position if possible, or return a best-effort/mock value to allow compilation, with a TODO to investigate proper Ink layout retrieval.
+
+##### [MODIFY] useMouseClick.ts
+- Fix [getBoundingBox](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/ink-utils.ts#9-43) import to use the new local utility.
+
+##### [NEW] src/ui/utils/ink-utils.ts
+- Create utility file exporting [getBoundingBox](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/ink-utils.ts#9-43).
+
+##### [MODIFY] useAnimatedScrollbar.ts
+- Fix [interpolateColor](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/color-utils.ts#7-32) import (implement in [color-utils.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/color-utils.ts)).
+- Fix `debugState` import (create [debug.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/debug.ts)).
+- Fix `theme.ui.gradient` usage (ensure it exists or provide fallback).
+
+##### [MODIFY] events.ts
+- Add `McpClientUpdate` to `AppEvent` enum.
+
+##### [MODIFY] color-utils.ts
+- Implement and export [interpolateColor](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/color-utils.ts#7-32) function.
+
+##### [NEW] debug.ts
+- Create file with `debugState` export.
+
+##### [MODIFY] keyMatchers.test.ts
+- Add missing keys to `originalMatchers` to match [Command](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/keyMatchers.ts#60-71) enum.
+
+### Verification Plan
+
+#### Automated Tests
+- Run `npm run lint` in `packages/cli` to verify lint fixes.
+- Run `npm run build` in `packages/cli` to verify build fixes.
+- Run `npm test packages/cli/src/ui/keyMatchers.test.ts` to verify test fix.
+
+#### Manual Verification
+- None required if build and lint pass, as these are primarily static analysis issues.

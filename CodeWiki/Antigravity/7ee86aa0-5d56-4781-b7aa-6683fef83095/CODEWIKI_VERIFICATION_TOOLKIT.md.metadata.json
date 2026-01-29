@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Design document for the 'Verification Toolkit'. Defines the workflow where Phase 1 generates context for the LLM, and Phase 2 generates validators for the output, enabling an automated 'Code Gen + Verify' loop.",
+  "updatedAt": "2026-01-24T02:03:42.570439Z"
+}

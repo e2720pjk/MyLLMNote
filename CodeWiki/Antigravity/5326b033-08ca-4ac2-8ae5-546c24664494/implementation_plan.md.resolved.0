@@ -1,0 +1,68 @@
+# Joern Integration Upgrade Plan
+
+## Goal
+To upgrade the current "Quick Win" Joern integration to a robust, production-ready system by implementing the design specifications detailed in [JOERN_IMPLEMENTATION_GUIDE.md](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/JOERN_IMPLEMENTATION_GUIDE.md). This includes adding data models, checking for caching, and implementing proper fallback mechanisms.
+
+## User Review Required
+> [!IMPORTANT]
+> This plan deprecates [simplified_joern.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/simplified_joern.py) in favor of a new [joern/](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/simplified_joern.py#30-53) package structure.
+> Existing [HybridAnalysisService](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/hybrid_analysis_service.py#23-410) will be refactored to use the new `JoernClient`.
+
+## Proposed Changes
+
+### 1. Enhanced Data Models
+Update [codewiki/src/be/dependency_analyzer/models/core.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py) to include rich graph data structures.
+
+#### [MODIFY] [core.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py)
+- **Add**: `ControlFlowData`, `CFGNode`, `CFGEdge`
+- **Add**: `DataFlowData`, `DataDependency`
+- **Add**: `JoernMetadata`
+- **Add**: `EnhancedNode` (inherits from [Node](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#6-43))
+- **Refine**: [DataFlowRelationship](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#55-73) (align with new schema if needed)
+
+### 2. Robust Joern Client
+Create a dedicated [joern](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/simplified_joern.py#30-53) package to handle CLI interactions, caching, and versioning.
+
+#### [NEW] [client.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/joern/client.py)
+- **Implement**: `JoernClient` class
+- **Features**:
+    - CPG Caching (SHA-256 of repo path + mtime check)
+    - `generate_cpg` with timeout and force-refresh options
+    - Joern version validation (`_validate_joern_installed`)
+    - Robust process execution using `subprocess`
+
+### 3. Architecture & Factory
+Implement the Factory pattern to manage analyzer instantiation and fallback logic.
+
+#### [NEW] [analyzer_factory.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/analysis/analyzer_factory.py)
+- **Implement**: `AnalyzerFactory`
+- **Logic**: Try creating `JoernAnalysisService` (wrapper for Client); if failed, fall back to [AnalysisService](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/analysis_service_current.py#27-390) (AST).
+
+#### [MODIFY] [hybrid_analysis_service.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/hybrid_analysis_service.py)
+- **Refactor**: Replace [SimplifiedJoernAnalyzer](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/simplified_joern.py#21-278) usage with `JoernClient`.
+- **Logic**: Update [_run_joern_enhancement](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/hybrid_analysis_service.py#136-181) to use client methods.
+
+### 4. Testing
+Add a dedicated test suite for Joern integration.
+
+#### [NEW] [test_parity.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/tests/joern_integration/test_parity.py)
+- **Test**: `CallGraphParity` (compare AST vs Joern results)
+- **Test**: Performance baseline benchmarks
+- **Test**: Robustness (simulate timeouts, missing JARs)
+
+## Verification Plan
+
+### Automated Tests
+Run the newly created test suite:
+```bash
+pytest tests/joern_integration/test_parity.py
+```
+
+### Manual Verification
+1.  **Cache Verification**: Run analysis twice on a repo.
+    *   Run 1: Should show "Generating CPG".
+    *   Run 2: Should show "Using cached CPG".
+2.  **Fallback Verification**:
+    *   Rename `joern.jar` to something else.
+    *   Run analysis.
+    *   Verify logs show "Joern unavailable, falling back to AST".

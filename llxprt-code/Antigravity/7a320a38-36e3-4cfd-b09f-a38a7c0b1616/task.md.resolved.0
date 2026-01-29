@@ -1,0 +1,6 @@
+- [ ] Locate `GoogleWebFetchTool` and `utils/fetch.ts` in `llxprt-code-2`
+- [ ] Locate `WebFetchTool` and fetch utilities in `gemini-cli`
+- [ ] Compare `fetchWithTimeout` implementations
+- [ ] Compare Tool implementations regarding `AbortSignal` propagation
+- [ ] Report findings
+- [ ] Create Implementation Plan for fixes

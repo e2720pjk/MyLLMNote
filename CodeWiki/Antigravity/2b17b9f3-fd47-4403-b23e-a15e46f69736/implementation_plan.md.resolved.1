@@ -1,0 +1,39 @@
+# Update Change-Report.md
+
+Update the [Change-Report.md](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/Change-Report.md) file to include all relevant changes from the `opencode-dev` branch since version `v0.1.0`. The changes will be categorized into two main sections: **功能 (Features)** and **調整 (Adjustments)**.
+
+## Proposed Changes
+
+### Documentation
+
+#### [MODIFY] [Change-Report.md](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/Change-Report.md)
+Update the content with the following categorizations based on `git log v0.1.0..opencode-dev`:
+
+**功能 (Features)**
+- Added actual API timing measurement for agent performance tracking (`bd119a2`).
+- Added token usage tracking for agent operations (`2bf0003`).
+- Implemented token tracking for LLM API calls (`5c5ddf8`).
+- Added comprehensive configuration validation (`363dafd`).
+- Parallel processing for documentation generation (`6c3f332`).
+- Configurable file limits functionality (`b3a5ba4`).
+- Added `--respect-gitignore` option (`861cb8e`).
+- Added GitHub templates and opencode workflow (`790464b`).
+
+**調整 (Adjustments)**
+- Improved robustness and error handling in core components (`aedf4e7`).
+- Converted cache concurrency tests from threading to async (`a71b16b`).
+- Optimized module processing and performance tracking (`47f8f14`).
+- Fix: resolve async locking, exception handling, and magic number issues (`96f2162`).
+- Corrected `working_dir` default to 'docs' (`d13dd15`).
+- Refactored AnalysisOptions and GenerationOptions (`06893d6`).
+- Reformatted codebase for consistency (`436545b`).
+- Standardized string quoting and formatting (`db4ecca`).
+- CI update: switched model to glm-4.7-free (`cab22ae`).
+- Various fixes for thread safety, type validation, and uninitialized variables.
+- Removed duplicate test enhancement sections.
+
+## Verification Plan
+
+### Manual Verification
+- Review the updated [Change-Report.md](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/Change-Report.md) to ensure it correctly reflects the changes and follows the requested format.
+- Confirm that upstream merges (like `github/main`) and unmerged branches are excluded as requested.

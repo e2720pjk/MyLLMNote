@@ -1,0 +1,16 @@
+{
+  "id": "ses_4b4a7d8c9ffeYRtDpmmb7wzX4C",
+  "version": "1.0.191",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "title": "Debugging pytest failures in investigation",
+  "time": {
+    "created": 1766495627062,
+    "updated": 1766586908951
+  },
+  "summary": {
+    "additions": 1248,
+    "deletions": 1817,
+    "files": 15
+  }
+}

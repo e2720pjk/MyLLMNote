@@ -1,0 +1,17 @@
+# Task: Investigate llxprt for Agent Workflow
+
+- [x] Run `llxprt --help` to understand CLI options <!-- id: 0 -->
+- [x] Investigate Interactive vs Non-interactive modes <!-- id: 1 -->
+    - [x] Test non-interactive command execution
+    - [x] Check if interactive-only features (slash commands) are accessible via flags
+- [x] Analyze codebase for CLI argument parsing and mode handling <!-- id: 2 -->
+- [x] Design `llxprt` Agent Workflow Template <!-- id: 3 -->
+    - [x] Define recommended mode (Interactive vs Non-interactive)
+    - [x] Outline workflow steps
+- [x] Create [llxprt_workflow_proposal.md](file:///Users/caishanghong/.gemini/antigravity/brain/19b78f8b-44be-402c-97f7-e713e5c9f6c9/llxprt_workflow_proposal.md) with findings and recommendations <!-- id: 4 -->
+- [x] Deep dive into Slash Command Handling <!-- id: 5 -->
+    - [x] Explore `/Users/caishanghong/Shopify/cli-tool/llxprt-code-2` codebase
+    - [x] Identify CLI entry point and argument parsing logic
+    - [x] Determine how slash commands are routed in interactive vs non-interactive modes
+    - [x] Verify if `llxprt "/cmd"` sends prompt to LLM instead of executing local handler
+- [ ] Revise `llxprt_workflow_proposal.md` based on code analysis <!-- id: 6 -->

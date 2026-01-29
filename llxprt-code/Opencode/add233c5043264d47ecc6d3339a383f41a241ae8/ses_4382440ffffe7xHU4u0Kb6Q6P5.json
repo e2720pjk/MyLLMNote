@@ -1,0 +1,17 @@
+{
+  "id": "ses_4382440ffffe7xHU4u0Kb6Q6P5",
+  "slug": "swift-island",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "AST Edit getCurrentContent async read fix & ENOENT handling",
+  "time": {
+    "created": 1768584625920,
+    "updated": 1768584751395
+  },
+  "summary": {
+    "additions": 1,
+    "deletions": 1,
+    "files": 1
+  }
+}

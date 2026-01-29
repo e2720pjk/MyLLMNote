@@ -1,0 +1,37 @@
+### What happened?
+
+1.  Start `llxprt` in interactive mode.
+2.  Engage in a conversation (e.g., send a message like "hi").
+3.  After the conversation completes, press `CTRL+C` twice to exit the application.
+4.  The terminal is left in a corrupted state.
+
+Symptoms include:
+-   The "bell" icon or sound appearing when typing.
+-   Raw input escape codes (e.g., `^[[A`) being displayed instead of executing commands.
+-   The terminal becoming unresponsive or behaving erratically.
+
+This issue persists even after the application has exited, requiring a manual terminal reset (e.g., `reset` or `stty sane`) to restore normal functionality.
+
+### What did you expect to happen?
+
+The application should clean up its terminal state gracefully upon exit, regardless of how it was terminated (normal exit, `CTRL+C`, or crash). The terminal should be restored to its original state, with no residual artifacts or input issues.
+
+### Client information
+
+<details>
+
+```console
+$ llxprt /about
+Platform: macOS
+Version: 0.6.1
+```
+
+</details>
+
+### Login information
+
+N/A
+
+### Anything else we need to know?
+
+This issue appears to be related to the Kitty keyboard protocol not being properly disabled when the process terminates abruptly. The current cleanup mechanism seems to fail under these conditions.

@@ -1,0 +1,35 @@
+{
+  "id": "ses_41c978bafffealuiX1e4KqsWuv",
+  "slug": "silent-forest",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "parentID": "ses_41c97f8e1ffeEKP1zw27PCl4cA",
+  "title": "Background: Find test files structure",
+  "time": {
+    "created": 1769046832208,
+    "updated": 1769046842347
+  },
+  "permission": [
+    {
+      "permission": "task",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "background_task",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "call_omo_agent",
+      "action": "deny",
+      "pattern": "*"
+    }
+  ],
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

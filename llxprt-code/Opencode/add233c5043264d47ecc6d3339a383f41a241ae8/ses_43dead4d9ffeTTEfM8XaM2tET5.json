@@ -1,0 +1,17 @@
+{
+  "id": "ses_43dead4d9ffeTTEfM8XaM2tET5",
+  "slug": "cosmic-nebula",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "AST edit tool tests, language detection fixes, and NOTICES updates",
+  "time": {
+    "created": 1768487725862,
+    "updated": 1768489702560
+  },
+  "summary": {
+    "additions": 127,
+    "deletions": 37,
+    "files": 3
+  }
+}

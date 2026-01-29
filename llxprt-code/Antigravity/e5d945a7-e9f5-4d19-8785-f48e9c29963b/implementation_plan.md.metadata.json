@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Conditionally render ConfigInitDisplay in DefaultAppLayout based on the presence of MCP servers to prevent persistent \"Initializing...\" message when no servers are configured.",
+  "updatedAt": "2025-11-24T09:59:53.815961Z"
+}

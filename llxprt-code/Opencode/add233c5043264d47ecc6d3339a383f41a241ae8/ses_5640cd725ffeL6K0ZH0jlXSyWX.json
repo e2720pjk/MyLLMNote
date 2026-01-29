@@ -1,0 +1,16 @@
+{
+  "id": "ses_5640cd725ffeL6K0ZH0jlXSyWX",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Adjusting settings page coreToolSettings impact",
+  "time": {
+    "created": 1763552995546,
+    "updated": 1763554535115
+  },
+  "summary": {
+    "additions": 11,
+    "deletions": 8,
+    "files": 2
+  }
+}

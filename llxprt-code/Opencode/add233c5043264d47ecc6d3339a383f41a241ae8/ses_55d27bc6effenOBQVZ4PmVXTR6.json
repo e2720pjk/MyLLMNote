@@ -1,0 +1,16 @@
+{
+  "id": "ses_55d27bc6effenOBQVZ4PmVXTR6",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Reviewing commit history, progress, and auto-merge risks",
+  "time": {
+    "created": 1763668673425,
+    "updated": 1763668999524
+  },
+  "summary": {
+    "additions": 3216,
+    "deletions": 5025,
+    "files": 56
+  }
+}

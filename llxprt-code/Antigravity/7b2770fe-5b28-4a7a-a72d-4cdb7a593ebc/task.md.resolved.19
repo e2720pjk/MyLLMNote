@@ -1,0 +1,13 @@
+# Task: Review UI Alignment between llxprt-code-3 and gemini-cli
+
+## Status
+- [/] List and compare UI component files in both projects <!-- id: 0 -->
+- [ ] Compare [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) structure <!-- id: 1 -->
+- [ ] Compare [App.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/App.tsx) / [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/gemini.tsx) provider stack (re-verify) <!-- id: 2 -->
+- [x] Compare key components ([InputPrompt](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.tsx#106-1056), [HistoryItemDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/HistoryItemDisplay.tsx#44-119), `Tool*Message`) <!-- id: 3 -->
+- [x] Identify missing or mismatched components/logic <!-- id: 4 -->
+- [x] Report findings to user <!-- id: 5 -->
+- [x] Port `useMouseClick` hook if missing (Already exists) <!-- id: 6 -->
+- [x] Update [InputPrompt.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/InputPrompt.tsx) with mouse interaction logic <!-- id: 7 -->
+- [ ] Update [Composer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/Composer.tsx) to pass `isEmbeddedShellFocused` <!-- id: 8 -->
+- [ ] Verify fixes <!-- id: 9 -->

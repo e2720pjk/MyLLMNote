@@ -1,0 +1,16 @@
+{
+  "id": "ses_50dcc8065ffeXMBWrLPq077BlR",
+  "version": "1.0.133",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "ReviewingUnifiedRedraw: old vs new resize logic conflicts",
+  "time": {
+    "created": 1765000052634,
+    "updated": 1765006421827
+  },
+  "summary": {
+    "additions": 110,
+    "deletions": 52,
+    "files": 3
+  }
+}

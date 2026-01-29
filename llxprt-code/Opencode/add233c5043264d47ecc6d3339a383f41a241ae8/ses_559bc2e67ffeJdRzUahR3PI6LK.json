@@ -1,0 +1,21 @@
+{
+  "id": "ses_559bc2e67ffeJdRzUahR3PI6LK",
+  "version": "1.0.82",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing 20251120-coretoolsettings progressing reinvoking restart notifications",
+  "time": {
+    "created": 1763726053796,
+    "updated": 1763726813816
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  },
+  "revert": {
+    "messageID": "msg_aa64cc964001GvyEEEr1fPRVSd",
+    "snapshot": "32edb1792aba1d0e8ab8d22eb30145e152cf5d43",
+    "diff": ""
+  }
+}

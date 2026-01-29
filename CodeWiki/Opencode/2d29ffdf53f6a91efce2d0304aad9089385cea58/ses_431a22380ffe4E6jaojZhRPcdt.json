@@ -1,0 +1,17 @@
+{
+  "id": "ses_431a22380ffe4E6jaojZhRPcdt",
+  "slug": "crisp-engine",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "Gitignore integration plan for repo analyzer tests",
+  "time": {
+    "created": 1768693816447,
+    "updated": 1768694672889
+  },
+  "summary": {
+    "additions": 83,
+    "deletions": 2,
+    "files": 1
+  }
+}

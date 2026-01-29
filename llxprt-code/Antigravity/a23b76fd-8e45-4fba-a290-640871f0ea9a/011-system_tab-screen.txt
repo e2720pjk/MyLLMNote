@@ -1,0 +1,40 @@
+
+     ░██        ░██        ░██    ░██░█████████ ░█████████░██████████
+░██  ░██        ░██         ░██  ░██ ░██     ░██░██     ░██   ░██
+ ░██ ░██        ░██          ░██░██  ░██     ░██░██     ░██   ░██
+  ░██░██        ░██           ░███   ░█████████ ░█████████    ░██
+ ░██ ░██        ░██          ░██░██  ░██        ░██   ░██     ░██
+░██  ░██        ░██         ░██  ░██ ░██        ░██    ░██    ░██
+     ░██████████░██████████░██    ░██░██        ░██     ░██   ░██
+
+3. /help for more information.sults. commands.
+ SYSTEM INFORMATION
+
+ RSS: 206MB | Heap: 95MB/121MB | External: 28MB
+
+ /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+
+ Size: 120x40 | Narrow: No | Time: 10:47:52 PM
+✦
+
+ Vim Mode: Disabled | Errors: 0
+
+ Tokens/min: 974.5390693590869 | Throttle: 0ms | Total: 23569
+
+ Trusted: Yes | Sandbox: None
+
+ Provider: openai | Model: big-pickle
+
+
+┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+└─ Chat  | Debug  | Todo  |[System] (Ctrl+O to switch)─────────────────────────────────────────────────────────────────┘
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ >   Type your message or @path/to/file                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+(feat/ink-tabs*)                                               Memory: 3% | Context: 3.9k/200k | TPM: 31.00k | Wait: 0ms
+~/Shopify/cli-tool/llxprt-code-4  [no sandbox (see /docs)]                                    big-pickle | Tokens: 7,853
+
+
+
+Cache hit: openai:big-pickle:CodeSearch,DeleteLineRange,DirectWebFetch,Edit,ExaWebSearch,Glob,GoogleWebFetch,GoogleWebSt
+

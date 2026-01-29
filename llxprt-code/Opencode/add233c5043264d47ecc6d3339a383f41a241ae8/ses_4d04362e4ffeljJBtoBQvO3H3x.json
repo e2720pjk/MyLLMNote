@@ -1,0 +1,16 @@
+{
+  "id": "ses_4d04362e4ffeljJBtoBQvO3H3x",
+  "version": "1.0.164",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli",
+  "title": "Debugging Tabs port: UIState changes and tsc lint verification",
+  "time": {
+    "created": 1766032448795,
+    "updated": 1766033108539
+  },
+  "summary": {
+    "additions": 141,
+    "deletions": 74,
+    "files": 20
+  }
+}

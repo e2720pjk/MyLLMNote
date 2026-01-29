@@ -1,0 +1,17 @@
+{
+  "id": "ses_50c753f1affeKHnRnkf0RdVB5w",
+  "version": "1.0.133",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "parentID": "ses_50cce8d4cffexvljk34ZBkcKkK",
+  "title": "審查 Ctrl+1-4 相關邏輯清理 (@explore subagent)",
+  "time": {
+    "created": 1765022548197,
+    "updated": 1765022652099
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

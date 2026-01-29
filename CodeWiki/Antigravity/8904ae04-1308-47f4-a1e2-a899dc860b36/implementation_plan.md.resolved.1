@@ -1,0 +1,73 @@
+# Joern Integration & Architecture Enhancement Plan (v2)
+
+This plan outlines the steps to replace the current AST-based analysis in CodeWiki with Joern's Code Property Graph (CPG) analysis, while enhancing the data models to support advanced features like data-flow documentation.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Joern Dependency**: This integration requires `joern >= 2.0.0`. We will implement a automatic fallback to the legacy AST analyzer if `joern` is missing or fails.
+> **Breaking Changes to Model**: We are extending the [Node](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#7-44) model to `EnhancedNode`. While we aim for backward compatibility (legacy [Node](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#7-44) will be a subset), the JSON output format will change.
+> **Infrastructure**: Requires `NetworkX` for hybrid clustering and potentially `leidenalg` for better precision.
+
+## Core Design Enhancements
+
+### 1. Robust Dependency Management
+- **Version Pinning**: Target Joern 2.0.x. Detect version at startup.
+- **Graceful Fallback**: If Joern is missing, times out, or fails on a file, revert to the legacy `ASTParser`.
+
+### 2. CPG Caching Strategy
+- **Location**: `~/.codewiki/cache/cpg/`
+- **Invalidation**: Content-hash based (`SHA-256` of project file list/contents) + `mtime` check.
+- **Concurrency**: Use file-based locking (`.lock` files) to prevent race conditions during CPG generation.
+
+### 3. Data Model Schema
+- **EnhancedNode**: Extends [Node](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#7-44) with:
+    - `cfg_data`: `Optional[Dict[str, Any]]` - Control flow junctions and edges.
+    - `ddg_data`: `Optional[Dict[str, Any]]` - Data dependency chains.
+- **Relationship**: Discriminated union of [CallRelationship](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#46-54) and `DataFlowRelationship`.
+
+---
+
+## Proposed Technical Changes
+
+### [Core Models]
+#### [MODIFY] [core.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py)
+- Introduce `EnhancedNode(Node)` with Pydantic validators for graph data.
+- Generalized [Relationship](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#46-54) model to support inheritance and data-flow types.
+
+---
+
+### [Analysis Layer]
+#### [NEW] [joern_client.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/analysis/joern_client.py)
+- Wrapper using `subprocess.run` for Joern CLI.
+- Implements `generate_cpg(repo_path)` with the caching logic mentioned above.
+
+#### [NEW] [joern_analysis_service.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/analysis/joern_analysis_service.py)
+- Implements [AnalysisService](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/analysis/analysis_service.py#23-368) interface.
+- Normalizes language-specific CPG differences (Python vs Java).
+- Extracts flow data for documentation synthesis.
+
+---
+
+### [Clustering Layer]
+#### [MODIFY] [cluster_modules.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/cluster_modules.py)
+- **Hybrid Algorithm**:
+    1. Construct graph in NetworkX using Joern call edges.
+    2. Runs Louvain community detection.
+    3. Groups are passed to LLM only for semantic naming/summarization.
+
+---
+
+## Verification Plan
+
+### Parity & Accuracy (Acceptance Criteria)
+- **Precision**: > 95% compared to manually verified call graphs.
+- **Recall**: > 90% parity with legacy AST parser on Python projects.
+- **F1 Score**: Min 0.92.
+
+### Performance Benchmarks
+- **Target**: Joern CPG generation + extraction overhead < 3x of AST parsing for medium repos (100 files).
+- **Graceful Degradation**: Test if system switches to AST when Joern process is killed.
+
+### Backward Compatibility
+- Verify that old [Node](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#7-44) objects can be deserialized into `EnhancedNode` with null metadata.

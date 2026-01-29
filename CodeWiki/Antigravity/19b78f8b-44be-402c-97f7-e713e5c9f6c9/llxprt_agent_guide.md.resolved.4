@@ -1,0 +1,107 @@
+# Opencode Agent Interface
+
+## 1. Environment & Availability
+
+**CRITICAL**: `opencode` is a **system-level CLI tool** installed in the environment.
+- It is **NOT** a file in the user's project.
+- Do **NOT** search for it in the file system.
+- **Verification**: If you need to confirm availability, run:
+  ```bash
+  which opencode
+  ```
+
+## 2. Role & Responsibility
+
+Adopt the **Architect-Builder** model:
+
+- **You (The Architect & Reviewer)**:
+    - **Plan**: Analyze requirements, create `implementation_plan.md` and `walkthrough.md`.
+    - **Validate**: Ask `opencode` to review your plan *before* execution.
+    - **Review**: Verify the work done by `opencode` against your plan.
+- **Opencode (The Builder & Consultant)**:
+    - **Review**: Critiques your plan for feasibility and quality.
+    - **Execute**: Takes your approved plan and executes it by writing/modifying code.
+
+## 3. Delegation Decision Tree
+
+Use this logic to decide when to call `opencode`:
+
+```text
+User Request
+    ├── Needs to write/modify code? → **DELEGATE TO OPENCODE**
+    ├── Needs to execute commands/tests/build? → Handle yourself
+    ├── Needs to read files? → Handle yourself
+    ├── Needs to plan? → Handle yourself
+    ├── Needs project analysis? → Handle yourself
+    └── Concept discussion/suggestions? → Handle yourself
+```
+
+## 4. Workflow: Plan -> Review -> Delegate -> Verify
+
+```text
+User Request
+    ↓
+[Phase 1: Architect]
+    ├── Analyze Request & Codebase
+    ├── Create/Update `implementation_plan.md`
+    └── Create/Update `walkthrough.md` (Initial state)
+    ↓
+[Phase 2: Plan Review (MANDATORY)]
+    ├── Construct Prompt: "審閱以下計畫的真實性與解決方案品質：[完整計劃內容]"
+    ├── Execute `opencode run "..."`
+    └── Refine Plan based on feedback (if any)
+    ↓
+[Phase 3: Delegate Execution]
+    ├── Construct Prompt with FULL Plan & Context
+    └── Execute `opencode run "Plan + Context"`
+    ↓
+[Phase 4: Reviewer]
+    ├── Read Modified Files
+    ├── Verify Changes Match Plan
+    └── (If needed) Delegate Fixes to Opencode
+```
+
+## 5. Plan Review Protocol (New)
+
+Before writing any code, you **MUST** validate your plan.
+
+**Command:**
+```bash
+opencode run "審閱以下計畫的真實性與解決方案品質：
+
+[Implementation Plan Content]
+...
+
+[Walkthrough Content]
+...
+"
+```
+*Use the feedback to improve your plan before proceeding.*
+
+## 6. Execution Delegation Protocol
+
+When calling `opencode` for execution, your prompt must be a **self-contained specification**.
+
+**Syntax:**
+```bash
+opencode run "
+[Context]
+@src/file1.ts @src/file2.ts
+
+[Objective]
+Refactor the authentication flow.
+
+[Implementation Plan]
+1. Modify 'login' function in @src/file1.ts to...
+2. Update 'User' interface in @src/file2.ts to...
+3. Ensure error 'X' is handled by...
+"
+```
+
+## 7. Review Phase (Crucial)
+
+After `opencode` exits (it runs once and stops), you **MUST** verify the output.
+
+1.  **Read Files**: Use your file reading tools to inspect the changes.
+2.  **Verify**: Did it follow step 1, 2, and 3 of your plan?
+3.  **Iterate**: If there are errors or missed steps, call `opencode` again with a specific fix instruction.

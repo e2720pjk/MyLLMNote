@@ -1,0 +1,17 @@
+{
+  "id": "ses_437f8f236ffeLVS7OCut3kS0Ff",
+  "slug": "eager-otter",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "JSX Lang mapping fix and shared constant extraction in ast-edit.ts",
+  "time": {
+    "created": 1768587464138,
+    "updated": 1768590580331
+  },
+  "summary": {
+    "additions": 114,
+    "deletions": 91,
+    "files": 1
+  }
+}

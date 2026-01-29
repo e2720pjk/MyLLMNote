@@ -1,0 +1,6 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_OTHER",
+  "summary":  "REVISED Code review report for llxprt-code-4. Identifies critical architectural flaws in virtualization and state logic that were missed in the initial pass. Recommends blocking the merge.",
+  "updatedAt":  "2025-12-20T02:49:16.155086Z",
+  "version":  "1"
+}

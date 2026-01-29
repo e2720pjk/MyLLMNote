@@ -1,0 +1,16 @@
+{
+  "id": "ses_566321634ffenXyC9HX2JyP1p4",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing git diff HEAD, adjusting settings display and dynamic tool options",
+  "time": {
+    "created": 1763517000139,
+    "updated": 1763539523049
+  },
+  "summary": {
+    "additions": 109,
+    "deletions": 88,
+    "files": 5
+  }
+}

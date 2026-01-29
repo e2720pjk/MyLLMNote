@@ -1,0 +1,21 @@
+{
+  "id": "ses_56c22e0faffeiRlgwqwsBDZyNb",
+  "version": "1.0.68",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Reviewing branch changes for authenticity",
+  "time": {
+    "created": 1763417333510,
+    "updated": 1763418801936
+  },
+  "summary": {
+    "additions": 47,
+    "deletions": 3094,
+    "files": 20
+  },
+  "revert": {
+    "messageID": "msg_a93ec0ce9001CzkxQgw001aBje",
+    "snapshot": "9f226c872155d756b9f412127cd2b6ad4c13a0eb",
+    "diff": ""
+  }
+}

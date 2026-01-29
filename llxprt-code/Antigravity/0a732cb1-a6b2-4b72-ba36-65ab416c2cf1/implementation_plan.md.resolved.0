@@ -1,0 +1,46 @@
+# Fix Terminal Corruption on IME Ctrl+C
+
+## Goal Description
+Fix the terminal corruption issue (gh pr #26) caused when using IME-mapped Ctrl+C. The issue stems from `llxprt-code` correctly recognizing the IME Ctrl+C via a mapping table, but the resulting exit path in [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/AppContainer.tsx) calls `process.exit(0)` without performing necessary terminal cleanup (`runExitCleanup()`).
+
+## User Review Required
+> [!IMPORTANT]
+> This change ensures that the explicit exit path (triggered by `/quit` or mapped Ctrl+C) performs the same cleanup as `gemini-cli`.
+
+## Proposed Changes
+
+### CLI
+#### [MODIFY] [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/AppContainer.tsx)
+- Update the `useEffect` hook that watches `quittingMessages` to call `runExitCleanup()` before `process.exit(0)`.
+
+```typescript
+  // Handle process exit when quit command is issued
+  useEffect(() => {
+    if (quittingMessages) {
+      // Allow UI to render the quit message briefly before exiting
+      const timer = setTimeout(async () => {
+        await runExitCleanup(); // Add this line
+        process.exit(0);
+      }, 100); // 100ms delay to show quit screen
+
+      return () => clearTimeout(timer);
+    }
+    return undefined;
+  }, [quittingMessages]);
+```
+
+## Verification Plan
+
+### Manual Verification
+1.  **IME Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Enable an IME (e.g., Chinese/Japanese).
+    -   Press `Ctrl+C` (which generates the mapped sequence).
+    -   Verify the CLI exits *cleanly* without leaving the terminal in a corrupted state (no ghosting, cursor visible, echo enabled).
+2.  **Standard Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Press standard `Ctrl+C`.
+    -   Verify clean exit.
+3.  **Command Quit Test**:
+    -   Run `/quit`.
+    -   Verify clean exit.

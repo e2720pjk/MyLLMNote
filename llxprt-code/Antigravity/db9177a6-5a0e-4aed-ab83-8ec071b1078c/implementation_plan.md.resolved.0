@@ -1,0 +1,66 @@
+# UI Migration Strategy: Gemini CLI to Llxprt Code v3
+
+## Goal Description
+Complete the UI migration by porting the high-performance virtualization architecture and missing feedback components from `gemini-cli` to `llxprt-code-3`. The goal is to replace the current `Static` rendering in `llxprt-code-3` with the robust [VirtualizedList](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/ScrollableList.tsx#29-37) engine, ensuring performance parity for long sessions while preserving `llxprt-code-3`'s new features (TodoPanel, Vim Mode, etc.).
+
+## User Review Required
+> [!IMPORTANT]
+> **Architecture Change**: This plan replaces the simple `Static` rendering in [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) with a complex [VirtualizedList](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/ScrollableList.tsx#29-37) implementation. This is a significant change to how the chat history is rendered.
+
+> [!NOTE]
+> **TodoTray**: As requested, `TodoTray` is excluded from this plan in favor of the existing `TodoPanel`.
+
+## Proposed Changes
+
+### 1. Foundation: Port Virtualization Engine
+Port the core virtualization components and hooks required for performant list rendering.
+
+#### [NEW] packages/cli/src/ui/components/shared/VirtualizedList.tsx
+- Port from `gemini-cli`.
+- Handles efficient rendering of visible items only.
+
+#### [NEW] packages/cli/src/ui/components/shared/ScrollableList.tsx
+- Port from `gemini-cli`.
+- Wraps [VirtualizedList](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/ScrollableList.tsx#29-37) with scroll logic.
+
+#### [NEW] packages/cli/src/ui/hooks/useAnimatedScrollbar.ts
+- Port from `gemini-cli`.
+- Required for visual feedback in scrollable lists.
+
+#### [NEW] packages/cli/src/ui/hooks/useMouse.ts & useMouseClick.ts
+- Port from `gemini-cli`.
+- Restore mouse interaction capabilities for scrolling.
+
+### 2. Component Migration
+Port missing UI components that provide important user feedback.
+
+#### [NEW] packages/cli/src/ui/components/MainContent.tsx
+- Re-introduce [MainContent](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx#23-155) (or equivalent logic) to manage the switching between `Static` (short history) and [ScrollableList](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/ScrollableList.tsx#44-248) (long history/alternate buffer).
+- Adapt it to use `llxprt-code-3`'s `appState` instead of `UIStateContext` where applicable.
+
+#### [NEW] packages/cli/src/ui/components/ConfigInitDisplay.tsx
+- Port from `gemini-cli`.
+- Shows initialization status/errors clearly.
+
+#### [MODIFY] packages/cli/src/ui/components/Composer.tsx
+- Refactor to use `QueuedMessageDisplay` (if ported) or improve the inline queue display to match `gemini-cli`'s fidelity.
+
+### 3. Integration: Refactor Layout
+Update the main layout to use the new components.
+
+#### [MODIFY] packages/cli/src/ui/layouts/DefaultAppLayout.tsx
+- Remove the direct `Static` rendering loop.
+- Integrate the new [MainContent](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx#23-155) component.
+- Ensure `TodoPanel` and `Header` coexist correctly with the virtualized list.
+
+## Verification Plan
+
+### Automated Tests
+- Run existing UI tests to ensure no regressions.
+- Add tests for [VirtualizedList](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/ScrollableList.tsx#29-37) in the new environment.
+
+### Manual Verification
+- **Long Session Test**: Generate 100+ lines of chat history and verify scrolling performance.
+- **Alternate Buffer**: Switch to alternate buffer (e.g., opening an editor) and verify the list renders correctly.
+- **Mouse Support**: Verify mouse wheel scrolling works in the chat list.
+- **Resize**: Resize the terminal and ensure the virtualized list adapts.

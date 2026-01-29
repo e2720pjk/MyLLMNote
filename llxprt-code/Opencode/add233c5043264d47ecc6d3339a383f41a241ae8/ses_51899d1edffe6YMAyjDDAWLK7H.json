@@ -1,0 +1,17 @@
+{
+  "id": "ses_51899d1edffe6YMAyjDDAWLK7H",
+  "version": "1.0.129",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_518dd46a1ffenOoGio7xvc3Wrl",
+  "title": "Check ToolCall Pipeline priority (@explore subagent)",
+  "time": {
+    "created": 1764818824722,
+    "updated": 1764818897706
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

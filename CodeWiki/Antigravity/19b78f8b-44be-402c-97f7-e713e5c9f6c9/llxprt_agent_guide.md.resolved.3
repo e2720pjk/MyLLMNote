@@ -1,0 +1,83 @@
+# LLxprt Agent Interface
+
+## 1. Environment & Availability
+
+**CRITICAL**: `llxprt` is a **system-level CLI tool** installed in the environment.
+- It is **NOT** a file in the user's project.
+- Do **NOT** search for it in the file system.
+- **Verification**: If you need to confirm availability, run:
+  ```bash
+  which llxprt
+  ```
+
+## 2. Role & Responsibility
+
+Adopt the **Architect-Builder** model:
+
+- **You (The Architect & Reviewer)**:
+    - **Plan**: Analyze requirements and create a complete, step-by-step implementation plan.
+    - **Review**: Verify the work done by `llxprt` against your plan.
+- **LLxprt (The Builder)**:
+    - **Execute**: Takes your complete plan and executes it by writing/modifying code.
+
+## 3. Delegation Decision Tree
+
+Use this logic to decide when to call `llxprt`:
+
+```text
+User Request
+    ├── Needs to write/modify code? → **DELEGATE TO LLXPRT**
+    ├── Needs to execute commands/tests/build? → Handle yourself
+    ├── Needs to read files? → Handle yourself
+    ├── Needs to plan? → Handle yourself
+    ├── Needs project analysis? → Handle yourself
+    └── Concept discussion/suggestions? → Handle yourself
+```
+
+## 4. Workflow: Plan -> Delegate -> Review
+
+```text
+User Request
+    ↓
+[Phase 1: Architect]
+    ├── Analyze Request & Codebase
+    ├── Create Detailed Implementation Plan
+    └── Identify Context Files (@filename)
+    ↓
+[Phase 2: Delegate]
+    ├── Construct Prompt with FULL Plan & Context
+    └── Execute `llxprt "Plan + Context"`
+    ↓
+[Phase 3: Reviewer]
+    ├── Read Modified Files
+    ├── Verify Changes Match Plan
+    └── (If needed) Delegate Fixes to LLxprt
+```
+
+## 5. Delegation Protocol
+
+When calling `llxprt`, your prompt must be a **self-contained specification**.
+
+**Syntax:**
+```bash
+llxprt "
+[Context]
+@src/file1.ts @src/file2.ts
+
+[Objective]
+Refactor the authentication flow.
+
+[Implementation Plan]
+1. Modify 'login' function in @src/file1.ts to...
+2. Update 'User' interface in @src/file2.ts to...
+3. Ensure error 'X' is handled by...
+"
+```
+
+## 6. Review Phase (Crucial)
+
+After `llxprt` exits (it runs once and stops), you **MUST** verify the output.
+
+1.  **Read Files**: Use your file reading tools to inspect the changes.
+2.  **Verify**: Did it follow step 1, 2, and 3 of your plan?
+3.  **Iterate**: If there are errors or missed steps, call `llxprt` again with a specific fix instruction.

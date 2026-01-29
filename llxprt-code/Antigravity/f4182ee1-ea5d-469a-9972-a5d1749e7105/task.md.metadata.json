@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_TASK",
+  "summary": "Fix missing dependencies in llxprt-code-4 packages/core.",
+  "updatedAt": "2025-11-29T08:42:44.628728Z",
+  "version": "2"
+}

@@ -1,0 +1,14 @@
+# Issue #26: Terminal Corruption with OpenAI Provider
+
+- [ ] Investigation [/]
+    - [ ] Check available git tags
+    - [ ] Compare `v0.5` vs `v0.6` for `packages/cli/src/utils/cleanup.ts`
+    - [ ] Compare `v0.5` vs `v0.6` for `packages/cli/src/providers/OpenAIProvider.ts` (or similar path)
+    - [ ] Compare `v0.5` vs `v0.6` for `packages/cli/src/gemini.tsx` (lifecycle/entry)
+    - [ ] Analyze `OpenAIProvider` for active resource/stream handling during exit
+- [ ] Planning
+    - [ ] Create `implementation_plan.md`
+- [ ] Execution
+    - [ ] Apply fixes
+- [ ] Verification
+    - [ ] Run `npm run preflight`

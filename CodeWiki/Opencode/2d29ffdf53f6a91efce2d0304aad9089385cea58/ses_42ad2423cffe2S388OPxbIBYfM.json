@@ -1,0 +1,17 @@
+{
+  "id": "ses_42ad2423cffe2S388OPxbIBYfM",
+  "slug": "happy-wolf",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "Robust gitignore handling in CodeWiki: hybrid git check-ignore with pathspec fallback",
+  "time": {
+    "created": 1768808103363,
+    "updated": 1768815740990
+  },
+  "summary": {
+    "additions": 374,
+    "deletions": 72,
+    "files": 5
+  }
+}

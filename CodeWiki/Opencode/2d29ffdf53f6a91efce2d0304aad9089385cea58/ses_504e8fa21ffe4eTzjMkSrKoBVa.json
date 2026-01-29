@@ -1,0 +1,17 @@
+{
+  "id": "ses_504e8fa21ffe4eTzjMkSrKoBVa",
+  "version": "1.0.134",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "parentID": "ses_5051a2fe8ffebRHDhja0Tsd1cb",
+  "title": "檢查向後兼容性和保守策略影響 (@explore subagent)",
+  "time": {
+    "created": 1765149181406,
+    "updated": 1765149342062
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "ses_585ebfb82ffeTBRAh3cRjOpbAj",
+  "version": "1.0.61",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_586123611ffeBBFBkr21kFfkQf",
+  "title": "Find non-streaming error handling differences (@general subagent)",
+  "time": {
+    "created": 1762984723581,
+    "updated": 1762984879530
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

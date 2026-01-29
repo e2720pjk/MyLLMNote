@@ -1,0 +1,7 @@
+fix: terminal corruption on exit by implementing synchronous cleanup and aligning signal handling
+
+- Switched from asynchronous `process.stdout.write` to synchronous `fs.writeSync` in `disableProtocol` to ensure the terminal reset sequence is flushed before the process terminates.
+- Removed conflicting `SIGINT` handlers in `gemini.tsx` and `kittyProtocolDetector.ts` to allow `AppContainer` to handle `CTRL+C` interactions (e.g., double-press to exit) correctly.
+- Added `SIGTERM`, `uncaughtException`, and `unhandledRejection` handlers for comprehensive crash safety.
+- Implemented re-entry protection in `disableProtocol` to prevent infinite loops or duplicate writes during signal handling.
+- Used `process.once` for all handlers to ensure they are registered only once and avoid memory leaks.

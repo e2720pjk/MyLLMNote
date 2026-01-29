@@ -1,0 +1,57 @@
+# Architecture Refinement for Joern-Driven Analysis
+
+The initial integration of Joern was an "additive" enhance to the existing AST system. However, as the user noted, the true power of Joern lies in accurate graph analysis, which allows us to move away from hardcoded limits and heuristic clustering.
+
+## Goals
+
+1.  **Remove Hard Limits**: Replace `max_files=100` with dynamic graph traversal.
+2.  **Joern-Driven Clustering**: Use Joern's Call Graph (CG) and CDG/DDG to perform community detection (clustering) instead of relying solely on LLM intuition.
+3.  **Dynamic Context**: Feed LLMs with graph-enriched context (data flow, callers) rather than just raw code.
+
+## Proposed Architecture Changes
+
+### 1. Unified Graph Construction (Joern-First)
+Instead of running AST and then "enhancing" with Joern, we will make Joern the **primary** source of truth for the dependency graph when enabled.
+
+*   **Logic Change**: In [AnalyzerFactory](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/analysis/analyzer_factory.py#13-52), if `use_joern` is True, instantiate a `JoernPrimaryService` (or refactor [HybridAnalysisService](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/hybrid_analysis_service.py#23-398)) that relies on Joern for the full node list and edge set.
+*   **Fallback**: Only use Python AST if Joern fails or for languages Joern doesn't support well (though Joern supports C/C++, Java, JS/TS, Python, etc.).
+
+### 2. Graph-Based Module Clustering
+The current [cluster_modules.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/cluster_modules.py) asks an LLM "Group these files". This is token-heavy and lacks structural insight.
+
+*   **New Approach**:
+    1.  **Extract Graph**: Get all nodes (functions/classes) and edges (calls/imports) from Joern.
+    2.  **Community Detection**: Use a local algorithm (e.g., Louvain or Leiden via `networkx` or `python-louvain`) to detect "communities" of tightly coupled code.
+    3.  **LLM Refinement**: Feed these *communities* to the LLM and ask: "Here is a cluster of code (Community A). Name this module and describe its responsibility."
+    
+*   **Benefit**: Deterministic, scales to thousands of files without token limits, reflects actual code structure.
+
+### 3. Dynamic Analysis Parameters
+Remove hardcoded `max_files` limits.
+
+*   **New Logic**:
+    *   **Filtering**: Instead of "first 100", filter by "connected components". Remove isolated nodes (dead code) or test files based on graph centrality.
+    *   **Context Window Management**: If a cluster is too large for the context window, auto-partition it using subgraph clustering (recursive community detection).
+
+## Detailed Implementation Steps
+
+### Phase 1: Uncapping & Graph Extraction (Immediate)
+#### [MODIFY] [dependency_graphs_builder.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/dependency_graphs_builder.py)
+*   [x] Remove `max_files` limit.
+*   [ ] Build a complete NetworkX graph from Joern output.
+
+### Phase 2: Graph-Based Clustering (New Feature)
+#### [NEW] [graph_clustering.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/graph_clustering.py)
+*   Implement `cluster_graph(nodes, edges) -> module_tree`.
+*   Use `networkx` or simple connected-components logic first.
+
+#### [MODIFY] [cluster_modules.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/cluster_modules.py)
+*   Update [cluster_modules](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/cluster_modules.py#44-114) to use `graph_clustering` results as the *proposal* for the LLM.
+
+### Phase 3: Enriched Documentation
+#### [MODIFY] [documentation_generator.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/documentation_generator.py)
+*   When prompting formatting module documentation, include "Key Dependencies" and "Data Flows" derived from Joern.
+
+## Verification
+*   **Metric**: [metadata.json](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/wiki/metadata.json) should show `total_components` ~= Total Real Source Files.
+*   **Quality**: Generated [overview.md](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/wiki/overview.md) should reflect the actual high-level architecture (e.g., "Auth Module", "Database Module") rather than generic file groupings.

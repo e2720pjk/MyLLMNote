@@ -1,0 +1,29 @@
+# Fix MouseContext Error in llxprt-code-3
+
+## Goal Description
+The goal is to resolve the `React Error Boundary caught an error: Error: useMouseContext must be used within a MouseProvider` error in `llxprt-code-3`.
+This error occurs because components using [useMouseContext](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#38-45) (like `ScrollableList`) are not wrapped in a [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167).
+We will fix this by adding [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167) to the main application entry point, similar to how it is done in `gemini-cli`.
+
+## User Review Required
+> [!IMPORTANT]
+> This change involves modifying the main entry point of the application to wrap the app in [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167). This is a structural change but should be safe as it only provides context.
+
+## Proposed Changes
+
+### packages/cli/src
+
+#### [MODIFY] [Entry Point File] (To be determined, likely `index.tsx` or `llxprt.tsx`)
+- Import [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167) from `./ui/contexts/MouseContext.js`.
+- Wrap the main [App](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/gemini.tsx#206-239) or `AppContainer` component with [MouseProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/MouseContext.tsx#59-167).
+- Ensure `mouseEventsEnabled` prop is passed correctly (likely defaulting to true or based on config).
+
+## Verification Plan
+
+### Automated Tests
+- Run existing tests to ensure no regressions.
+- `npm run test`
+
+### Manual Verification
+- Run the application and verify that the error is gone.
+- Verify that mouse interactions (scrolling, clicking) work as expected in the UI components that use them.

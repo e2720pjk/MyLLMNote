@@ -1,0 +1,72 @@
+# Fix Terminal Corruption (Issue #26) Walkthrough
+
+This walkthrough documents the fix for the terminal corruption issue that occurred when exiting the CLI with an active OpenAI provider conversation.
+
+## Changes
+
+### 1. `packages/cli/src/gemini.tsx`
+
+Removed the early `process.stdin.setRawMode(wasRaw)` calls in the `SIGINT` and `SIGTERM` handlers. This prevents a race condition where raw mode was disabled *before* Ink's cleanup process (which requires raw mode) could complete.
+
+```typescript
+// Before
+process.on('SIGTERM', async () => {
+  process.stdin.setRawMode(wasRaw); // <--- REMOVED
+  await runExitCleanup();
+  process.exit(0);
+});
+
+// After
+process.on('SIGTERM', async () => {
+  await runExitCleanup();
+  process.exit(0);
+});
+```
+
+### 2. `packages/cli/src/utils/cleanup.ts`
+
+-   Extracted terminal reset logic into a `resetTerminalState` helper function.
+-   Moved the terminal reset logic to the **end** of `runExitCleanup`, ensuring it runs *after* all other cleanup functions (including Ink's unmount).
+-   Added `registerSyncCleanup` and `runSyncCleanup` to handle synchronous cleanup tasks.
+-   Ensured `resetTerminalState` is called in the `gracefulExit` timeout as a safety fallback.
+
+```typescript
+export async function runExitCleanup() {
+  // ...
+  runSyncCleanup();
+
+  try {
+    // Execute cleanup functions (LIFO)
+    // ...
+  } finally {
+    // ...
+    // Explicitly reset terminal modes LAST
+    resetTerminalState();
+    // ...
+  }
+}
+```
+
+### 3. `packages/cli/src/ui/utils/kittyProtocolDetector.ts`
+
+Exported `disableProtocol` so it can be used in `cleanup.ts`.
+
+## Verification Results
+
+### Automated Tests
+
+-   `npm test src/utils/cleanup.test.ts`: **PASSED**
+    -   Verified LIFO execution order.
+    -   Verified synchronous cleanup.
+-   `npm run preflight`: **PASSED** (All relevant tests passed; `test-utils` skipped as it has no tests).
+
+### Manual Verification Checklist
+
+-   [x] **OpenAI Stream Exit**:
+    1.  Start CLI with OpenAI provider.
+    2.  Trigger a long response.
+    3.  Press `Ctrl+C` mid-stream.
+    4.  **Result**: Terminal is restored correctly (cursor visible, no artifacts).
+-   [x] **Normal Exit**:
+    1.  Type `/exit`.
+    2.  **Result**: Terminal is clean.

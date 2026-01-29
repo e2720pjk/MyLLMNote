@@ -1,0 +1,17 @@
+{
+  "id": "ses_5905f2d8affe7R5zbh10F7NUXh",
+  "version": "1.0.51",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "parentID": "ses_5905f7665ffeMslyJzVKagHrDF",
+  "title": "分析 Qwen streaming 問題 (@general subagent)",
+  "time": {
+    "created": 1762809401973,
+    "updated": 1762809468273
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

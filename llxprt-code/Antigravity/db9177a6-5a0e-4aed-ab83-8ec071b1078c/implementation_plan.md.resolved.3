@@ -1,0 +1,29 @@
+# ToolCall UI Comparison and Alignment Plan
+
+## Goal
+Compare the ToolCall UI implementation in `llxprt-code-3` with `gemini-cli` to identify discrepancies and ensure feature parity and visual consistency.
+
+## Analysis Steps
+
+1.  **Component Comparison**:
+    - Compare [ToolGroupMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx) (Container for multiple tool calls).
+    - Compare [ToolMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolMessage.tsx) (Individual tool call display).
+    - Compare [ToolConfirmationMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolConfirmationMessage.tsx) (User confirmation UI).
+    - Investigate missing components in `llxprt-code-3`: [ToolResultDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolResultDisplay.tsx), [ShellToolMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ShellToolMessage.tsx), [ToolShared.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolShared.tsx).
+
+2.  **Visual & Functional Analysis**:
+    - Check for layout differences (padding, margins, borders).
+    - Check for color usage and theming.
+    - Check for interaction handling (collapsing/expanding).
+    - Check for content rendering (markdown support in tool results).
+
+## Proposed Changes (Tentative)
+
+Based on the analysis, we may need to:
+- Port missing components or logic from `gemini-cli` if they provide better UX.
+- Adjust styles in `llxprt-code-3` to match `gemini-cli`'s polished look.
+- Ensure `ToolResultDisplay` logic is correctly implemented (it might be inline in `llxprt-code-3`).
+
+## Verification
+- Manual verification of tool call rendering in chat.
+- Running existing tests.

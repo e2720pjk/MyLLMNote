@@ -1,0 +1,77 @@
+# UI Migration Walkthrough
+
+I have successfully ported the high-performance virtualization architecture and missing UI components from `gemini-cli` to `llxprt-code-3`. This ensures that `llxprt-code-3` can handle long chat sessions efficiently while retaining its new features.
+
+## Changes
+
+### 1. Virtualization Engine
+I ported the core virtualization components to `packages/cli/src/ui/components/shared/`:
+- [VirtualizedList.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/VirtualizedList.tsx): The core component that renders only visible items.
+- [ScrollableList.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/ScrollableList.tsx): A wrapper that adds scroll logic and keyboard/mouse interaction.
+
+And related hooks to [packages/cli/src/ui/hooks/](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/hooks):
+- [useAnimatedScrollbar.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/useAnimatedScrollbar.ts): For visual scrollbar feedback.
+- [useMouse.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/useMouse.ts) & [useMouseClick.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/useMouseClick.ts): For mouse interaction handling.
+- [useBatchedScroll.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/useBatchedScroll.ts): For efficient scroll updates.
+
+### 2. Component Porting
+I ported/re-implemented key UI components:
+- [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx): Re-implemented to use [ScrollableList](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/ScrollableList.tsx#44-248) when the alternate buffer is active (e.g., for long history), providing a seamless experience. It now integrates with `llxprt-code-3`'s [UIState](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/UIStateContext.tsx#33-176).
+- [ConfigInitDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/ConfigInitDisplay.tsx): Ported to show initialization status.
+
+### 3. Layout Integration
+I updated [packages/cli/src/ui/layouts/DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) to:
+- Integrate [MainContent](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/MainContent.tsx#35-159) and [ConfigInitDisplay](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/ConfigInitDisplay.tsx#14-46).
+- Ensure `TodoPanel` and [Footer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/config/settingsSchema.ts#1228-1233) are correctly positioned.
+- Pass necessary configuration to [MainContent](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/MainContent.tsx#35-159).
+
+### 4. Configuration
+- Updated [packages/cli/src/config/keyBindings.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/config/keyBindings.ts) to include missing scroll commands (`SCROLL_UP`, `SCROLL_DOWN`, `PAGE_UP`, `PAGE_DOWN`, `SCROLL_HOME`, `SCROLL_END`).
+- Updated [packages/cli/src/config/settingsSchema.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/config/settingsSchema.ts) to include [useAlternateBuffer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/hooks/useAlternateBuffer.ts#13-17) setting.
+
+## Verification Results
+
+### Automated Tests
+I attempted to run the preflight checks (`npm run preflight`), but encountered an environment issue with the `npm` command. Please run this command manually to ensure all tests pass.
+
+### Manual Verification Steps
+
+1.  **Long Session Test**:
+    - Run the CLI.
+    - Generate a long chat history (e.g., ask for a long story or code listing).
+    - Verify that scrolling is smooth and performance remains high.
+
+2.  **Mouse Interaction**:
+    - Use the mouse wheel to scroll the chat history.
+    - Click and drag the scrollbar (if visible) to scroll.
+
+3.  **Keyboard Navigation**:
+    - Use `PageUp`, `PageDown`, `Home`, and [End](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/VirtualizedList.tsx#396-405) keys to navigate the history.
+    - Use `ArrowUp` and `ArrowDown` (when not in input) to scroll.
+
+4.  **Layout Check**:
+    - Verify that the `TodoPanel` (if enabled) appears correctly on the right.
+    - Verify that the [Footer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/config/settingsSchema.ts#1228-1233) appears at the bottom.
+    - Resize the terminal window and ensure the layout adapts correctly.
+
+5.  **Initialization**:
+    - Restart the CLI and verify that the "Initializing..." message (from [ConfigInitDisplay](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/ConfigInitDisplay.tsx#14-46)) appears briefly.
+
+## Build and Lint Fixes
+
+### Resolved Issues
+- **ConfigInitDisplay.tsx**: Fixed import path for `GeminiRespondingSpinner` and ensured `McpClientUpdate` event usage.
+- **MainContent.tsx**: Fixed `any` type for [config](file:///Users/caishanghong/Shopify/cli-tool/.editorconfig) and [keyExtractor](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/MainContent.tsx#26-34), and extracted arrow functions.
+- **MouseContext.tsx**: Added missing `useMemo` import and verified logger usage.
+- **VirtualizedList.tsx**: Removed invalid `scrollTop` and `scrollbarThumbColor` props from [Box](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/ink-utils.ts#9-43), and removed unused `theme` import.
+- **Utilities**: Created [ink-utils.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/ink-utils.ts) (for [getBoundingBox](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/ink-utils.ts#9-43)), [color-utils.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/color-utils.ts) (for [interpolateColor](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/color-utils.ts#7-32)), and [debug.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/debug.ts) (for `debugState`).
+- **ScrollProvider.tsx / useMouseClick.ts**: Updated to use [ink-utils.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/ink-utils.ts).
+- **useAnimatedScrollbar.ts**: Updated to use [color-utils.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/color-utils.ts) and [debug.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/debug.ts).
+- **events.ts**: Verified `McpClientUpdate` event.
+- **keyMatchers.test.ts**: Added missing scroll commands (`SCROLL_UP`, `SCROLL_DOWN`, etc.) to `originalMatchers` to pass tests.
+- **DefaultAppLayout.tsx**: Refined [ConfigInitDisplay](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/ConfigInitDisplay.tsx#14-46) logic to only render when MCP servers are configured, preventing "Initializing..." flash for non-MCP users.
+
+### Verification
+- **Lint**: `npm run lint` passed.
+- **Build**: `npm run build` passed.
+- **Tests**: `npm test packages/cli/src/ui/keyMatchers.test.ts` passed.

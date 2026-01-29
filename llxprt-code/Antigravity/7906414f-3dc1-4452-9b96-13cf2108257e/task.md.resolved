@@ -1,0 +1,24 @@
+# Task List
+
+- [ ] Analyze Project Structure
+    - [ ] Read [package.json](file:///Users/caishanghong/devbox/workspace/test/package.json) to understand dependencies
+    - [ ] Read [app/root.tsx](file:///Users/caishanghong/devbox/workspace/test/app/root.tsx) to understand global layout
+    - [ ] Analyze `app/routes` to understand page flow
+    - [ ] Analyze [app/shopify.server.ts](file:///Users/caishanghong/devbox/workspace/test/app/shopify.server.ts) and `app/db.server.ts` for backend coupling
+- [x] Research and Explain Concepts
+    - [x] Explain Monorepo concept and benefits
+    - [x] Research existing Shopify/Remix templates and methodologies
+    - [x] Evaluate if an existing solution can be used instead of building a new one
+    - [x] Explain Polyrepo vs Monorepo trade-offs (Hot-reload vs Simplicity)
+- [ ] Design Template Architecture
+    - [ ] Select Architecture: Polyrepo (Separate Repos + npm dependency)
+    - [ ] Identify reusable UI components
+    - [ ] Identify generic flow (e.g., settings, dashboard)
+    - [ ] Define interface between Template and Business Logic
+- [x] Evaluate llxprt Tool
+    - [x] Run `llxprt --help`
+    - [x] Test task delegation (Research Framework vs App separation)
+    - [x] Analyze execution quality
+- [ ] Create Implementation Plan
+    - [ ] Draft [implementation_plan.md](file:///Users/caishanghong/.gemini/antigravity/brain/7906414f-3dc1-4452-9b96-13cf2108257e/implementation_plan.md)
+    - [ ] Review with User

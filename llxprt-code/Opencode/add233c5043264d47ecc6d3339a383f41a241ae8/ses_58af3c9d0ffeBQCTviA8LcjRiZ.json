@@ -1,0 +1,17 @@
+{
+  "id": "ses_58af3c9d0ffeBQCTviA8LcjRiZ",
+  "version": "1.0.55",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "parentID": "ses_58b97dd6affe29qIM5VkGbBsSn",
+  "title": "Check cancelled tool filtering (@general subagent)",
+  "time": {
+    "created": 1762900325935,
+    "updated": 1762901073044
+  },
+  "summary": {
+    "additions": 175,
+    "deletions": 32,
+    "files": 2
+  }
+}

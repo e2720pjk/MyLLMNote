@@ -1,0 +1,55 @@
+# UI Optimization Migration - Task Tracker
+
+## Phase 0: Ink Version Evaluation ✅
+
+- [x] Verify @jrichman/ink@6.4.6 compatibility
+- [x] Run existing tests
+- [x] Create performance baseline test
+- [x] Document verification results
+
+## Phase 3: TabBar Integration
+  - [x] Extend `UIStateContext` with tab management (activeTab, tabs array).
+  - [x] Implement [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/TabBar.tsx#25-85) component with keyboard shortcuts.
+  - [x] Create placeholder components for [DebugTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/DebugTab.tsx#17-108), `TodoTab`, `SystemTab`.
+  - [x] Refactor [MainContent](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx#23-155) to integrate [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/TabBar.tsx#25-85) and conditional rendering.
+  - [x] Add key bindings for tab switching (Ctrl+1-4, Ctrl+O).
+  - [x] Port [DebugTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/tabs/DebugTab.tsx#17-108) content from `llxprt-code-3` (console messages display).
+  - [x] Verify implementation with preflight checks and tests.
+
+## Phase 1.1: Screen Reader Support ✅
+
+- [x] Create ScreenReaderAppLayout.tsx
+  - [x] Implement component with SR-optimized layout (Footer on top, 90% width)
+  - [x] Add proper imports and exports
+  - [x] Include useFlickerDetector integration
+- [x] Update AppContainer.tsx
+  - [x] Import useIsScreenReaderEnabled from ink
+  - [x] Import ScreenReaderAppLayout
+  - [x] Add conditional rendering logic (SR ? ScreenReaderAppLayout : DefaultAppLayout)
+- [x] Testing & Verification
+  - [x] Test SR mode layout (verified by code inspection)
+  - [x] Test mode switching (conditional rendering verified)
+  - [x] Run test suite (typecheck, lint passed)
+- [ ] (Optional) Remove pendingHistory field
+  - [ ] Investigation complete: gemini-cli doesn't use this field
+  - [ ] Decision: Keep for now (non-blocking, backward compatible)
+
+## Phase 2: Systematic Memoization ✅
+
+- [x] Memoize Stats Display Components
+  - [x] StatsDisplay.tsx - Wrapped with React.memo
+  - [x] ModelStatsDisplay.tsx - Wrapped with React.memo
+  - [x] CacheStatsDisplay.tsx - Wrapped with React.memo
+  - [x] ToolStatsDisplay.tsx - Wrapped with React.memo
+- [x] Verification
+  - [x] TypeScript typecheck passed
+  - [x] Lint checks passed
+  - [x] Tests passed
+  - [x] Build succeeded
+
+## Phase 2+: Future Enhancements (Not Started)
+
+- [ ] Flicker Prevention system integration
+- [ ] Advanced Memory Management
+- [ ] Additional accessibility features
+- [ ] Performance testing and benchmarking

@@ -1,0 +1,17 @@
+{
+  "id": "ses_43de23ad7ffeWNSuzea30JDiwT",
+  "slug": "hidden-otter",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Snapshot and llxprt paths version control decision for test artifacts?",
+  "time": {
+    "created": 1768488289576,
+    "updated": 1768489272023
+  },
+  "summary": {
+    "additions": 102,
+    "deletions": 37,
+    "files": 2
+  }
+}

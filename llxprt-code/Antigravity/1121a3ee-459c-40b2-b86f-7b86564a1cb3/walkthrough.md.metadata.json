@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Documentation of the completed UI layout restoration and log centralization. Highlights include the repositioning of the TabBar, restoration of the Footer's persistent visibility, and the consolidation of all debug information into a dedicated tab.",
+  "updatedAt": "2025-12-18T15:36:21.049194Z",
+  "version": "6"
+}

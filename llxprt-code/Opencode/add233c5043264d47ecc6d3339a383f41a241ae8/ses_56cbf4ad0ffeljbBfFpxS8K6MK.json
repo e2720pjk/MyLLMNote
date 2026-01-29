@@ -1,0 +1,16 @@
+{
+  "id": "ses_56cbf4ad0ffeljbBfFpxS8K6MK",
+  "version": "1.0.68",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing recent complex commit merge from upstream upstream",
+  "time": {
+    "created": 1763407082817,
+    "updated": 1763408022124
+  },
+  "summary": {
+    "additions": 325,
+    "deletions": 349,
+    "files": 5
+  }
+}

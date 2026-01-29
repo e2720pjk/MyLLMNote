@@ -1,0 +1,25 @@
+# Align Height Calculation with gemini-cli Strategy
+
+## Goal Description
+Align the dynamic height calculation in [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/AppContainer.tsx) with the strategy used in `gemini-cli`, while accounting for `llxprt`-specific dynamic elements ([TodoPanel](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx#26-29) and [DetailedMessagesDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/DetailedMessagesDisplay.tsx#21-83)). This ensures stability during LLM streaming (as `buffer` remains constant) while maintaining responsiveness during user input, panel toggling, and debug message updates.
+
+## User Review Required
+> [!IMPORTANT]
+> This change aligns with `gemini-cli` by adding `buffer` to the dependency array. It also adds `settings.merged.showTodoPanel`, `showErrorDetails`, and `consoleMessages.length` to support dynamic panels and debug console. This prevents overlap when the footer grows due to debug logs.
+
+## Proposed Changes
+
+### UI Layer
+
+#### [MODIFY] [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/AppContainer.tsx)
+- Update `useLayoutEffect` dependency array to: `[buffer, terminalHeight, terminalWidth, settings.merged.showTodoPanel, showErrorDetails, consoleMessages.length]`.
+- Remove the `eslint-disable` comment.
+
+## Verification Plan
+
+### Manual Verification
+- Verify that the UI updates correctly when typing (buffer changes).
+- Verify that the UI updates correctly when toggling TodoPanel.
+- Verify that the UI updates correctly when Debug Console opens/closes (`showErrorDetails`).
+- Verify that the UI updates correctly when new debug messages arrive (`consoleMessages.length`).
+- Verify that the UI remains stable (no jitter) during LLM streaming (buffer constant).

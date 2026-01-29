@@ -1,0 +1,13 @@
+# Debugging UI Instability in llxprt-code-4
+
+- [/] **Problem Understanding & Code Analysis**
+    - [x] Analyze changes in [llxprt-code-4](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4) vs [main](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/gemini.tsx#354-1072) to identify the "Tabs" implementation. (Partially done via reading AppContainer) <!-- id: 0 -->
+    - [/] Locate `MainChat` and `Tabs` components in [llxprt-code-4](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4). (Found `tabs` logic in [AppContainer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/AppContainer.tsx#152-1852), looking for component in `DefaultAppLayout`) <!-- id: 1 -->
+    - [ ] Compare `Tabs` and `MainChat` implementation with [gemini-cli](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli) (reference stable). <!-- id: 2 -->
+    - [ ] Compare with `llxprt-code` (old stable version). <!-- id: 3 -->
+- [ ] **Hypothesis Generation & Investigation**
+    - [ ] Check for `Ink` specific issues: Re-mounting of heavy components, `MeasureElement` stability, Input handling conflicts. <!-- id: 4 -->
+    - [ ] Check for React performance issues: Excessive re-renders, state updates in render phase. <!-- id: 5 -->
+- [ ] **Report & Recommendation**
+    - [ ] Synthesize findings into a debugging report. <!-- id: 6 -->
+    - [ ] Propose fixes for the instability. <!-- id: 7 -->

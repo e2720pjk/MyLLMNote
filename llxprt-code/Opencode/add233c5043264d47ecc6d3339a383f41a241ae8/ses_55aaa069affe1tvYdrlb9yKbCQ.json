@@ -1,0 +1,17 @@
+{
+  "id": "ses_55aaa069affe1tvYdrlb9yKbCQ",
+  "version": "1.0.82",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_55aaf31e1ffeZuMzDnm5LnbGHF",
+  "title": "Analyze test environment issues (@general subagent)",
+  "time": {
+    "created": 1763710466405,
+    "updated": 1763711105073
+  },
+  "summary": {
+    "additions": 6,
+    "deletions": 0,
+    "files": 1
+  }
+}

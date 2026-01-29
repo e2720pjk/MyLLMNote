@@ -1,0 +1,17 @@
+{
+  "id": "ses_50c738799ffeIlQGw4CalfIc5N",
+  "version": "1.0.133",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "parentID": "ses_50cce8d4cffexvljk34ZBkcKkK",
+  "title": "審查 DebugTab 取代 SHOW_ERROR_DETAILS (@explore subagent)",
+  "time": {
+    "created": 1765022660710,
+    "updated": 1765022795625
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

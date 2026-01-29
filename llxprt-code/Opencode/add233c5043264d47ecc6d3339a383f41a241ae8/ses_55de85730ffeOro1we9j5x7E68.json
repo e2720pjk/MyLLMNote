@@ -1,0 +1,16 @@
+{
+  "id": "ses_55de85730ffeOro1we9j5x7E68",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Refactoring Branch Review: Extracting CORE_TOOL_SETTINGS_KEY, getSubSettingsWithDynamic, getCoreT...",
+  "time": {
+    "created": 1763656050896,
+    "updated": 1763670659476
+  },
+  "summary": {
+    "additions": 6,
+    "deletions": 4,
+    "files": 1
+  }
+}

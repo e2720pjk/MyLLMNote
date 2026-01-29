@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Move `cheerio`, `turndown`, and `node-fetch` from root `package.json` to `packages/core/package.json` in `llxprt-code-4`.",
+  "updatedAt": "2025-11-29T08:43:01.943882Z"
+}

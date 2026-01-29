@@ -1,0 +1,16 @@
+{
+  "id": "ses_561835c5bffeomVdwjUVK7T8BJ",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Debugging settingsSchema when subsettings switch not prompting R restart message",
+  "time": {
+    "created": 1763595559844,
+    "updated": 1763690169025
+  },
+  "summary": {
+    "additions": 95,
+    "deletions": 0,
+    "files": 1
+  }
+}

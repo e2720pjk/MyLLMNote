@@ -1,0 +1,45 @@
+# Status Report: Fiber Recorder Integration
+
+## 1. Context & Objective
+The immediate goal was to enable `fiber-recorder` to capture the UI state of the Ink-based CLI for two purposes:
+1.  **E2E Testing**: Validating UI regression in tests ([ui-regression-fiber.e2e.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/integration-tests/ui-regression-fiber.e2e.test.ts)).
+2.  **Playback/Analysis**: Supporting a "video-like" playback capability (requested feature).
+
+## 2. Progress Summary
+
+### ✅ What Works
+- **Test Infrastructure**: The [TestRig](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/integration-tests/test-helper.ts#116-1072) now correctly sets `DEV=true` and `ENABLE_FIBER_LOGGER=true` when running integration tests.
+- **Log Generation (Partially)**: Automated E2E tests *are* successfully generating [fiber-log.jsonl](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/fiber-log.jsonl) files (verified by the test runner passing assertions on file existence, though manual inspection was tricky).
+
+### 🚧 What Isn't Working (The "Wrong Direction")
+- **Hook Conflicts**: There is a race condition between `fiber-recorder`, `react-devtools-core` (used by Ink), and our custom interception logic.
+    - *Attempted Fix 1*: Inline defensive getters/setters in [index.ts](file:///Users/caishanghong/Shopify/cli-tool/fiber-recorder/src/index.ts). (Failed due to ESM import hoisting running Ink code before our hook logic).
+    - *Attempted Fix 2*: Extracting logic to [src/setup-hook.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/setup-hook.ts) to enforce import order. (Work in progress, paused per request).
+- **Manual Verification**: My manual reproduction steps were flawed:
+    - Used deprecated `--prompt` flag instead of positional arguments.
+    - Used complex background process management that obscured the actual logging output.
+
+## 3. Direction Check
+
+You mentioned concern about the direction. Here are the potential misalignments I need your guidance on:
+
+**A. The "How" (Technical Implementation)**
+- I have been fighting to make `fiber-recorder` coexist with Ink's built-in DevTools.
+- **Hypothesis**: Maybe this is too fragile. Perhaps we should *replace* Ink's DevTools integration entirely instead of trying to patch it, or use a completely different entry point for the recorder.
+
+**B. The "What" (Tool Choice)**
+- We are investing heavily in `fiber-recorder`.
+- **Hypothesis**: If the ultimate goal is "video playback" for LLMs, `fiber-recorder` (capturing React state) might be the wrong layer.
+    - *Alternative*: Capturing the raw output stream (Ansi/Xterm.js sequences) is the standard way to record terminal sessions (like `asciinema`).
+    - *Why Fiber?*: We chose Fiber to get semantic understanding (Component Tree, Props) which raw text lacks. If this valid semantic data is not valuable enough to justify this complexity, we might be over-engineering.
+
+**C. The CLI Usage**
+- I persisted in using outdated flags (`--prompt`). This might indicate I am testing against an older mental model of the CLI, potentially missing other recent changes in the `llxprt-code-4` branch.
+
+## 4. Next Steps via "Architect-Builder" Model
+
+I await your guidance to reset the direction.
+
+1.  **Confirm Goal**: semantic React tree recording vs. visual terminal recording.
+2.  **Review Implementation**: If we stick with Fiber, I propose simplifying the hook injection (using [setup-hook.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/setup-hook.ts)) and fixing my manual testing workflow.
+3.  **Review CLI Usage**: I will strictly adhere to the current CLI help output (`llxprt [promptWords...]`) for all future commands.

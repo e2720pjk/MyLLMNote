@@ -1,0 +1,16 @@
+{
+  "id": "ses_480d52794ffeswohKRjxuQkhf3",
+  "version": "1.0.220",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/private/var/folders/8m/309xc4vn3737_yftd2xz73l40000gn/T/vibe-kanban/worktrees/95da-joern-integratio/CodeWiki",
+  "title": "Analyzing Backend Core documentation generation failure",
+  "time": {
+    "created": 1767365073003,
+    "updated": 1767366180442
+  },
+  "summary": {
+    "additions": 123,
+    "deletions": 36,
+    "files": 1
+  }
+}

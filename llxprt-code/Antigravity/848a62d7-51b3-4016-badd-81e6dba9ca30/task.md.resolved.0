@@ -1,0 +1,6 @@
+# Task: Resolve Issue #26 - Terminal Corruption & Synchronous Cleanup
+
+- [ ] Analyze Issue #26 details and comments <!-- id: 0 -->
+- [ ] Create Implementation Plan <!-- id: 1 -->
+- [ ] Implement synchronous cleanup in `llxprt-code` <!-- id: 2 -->
+- [ ] Verify fix <!-- id: 3 -->

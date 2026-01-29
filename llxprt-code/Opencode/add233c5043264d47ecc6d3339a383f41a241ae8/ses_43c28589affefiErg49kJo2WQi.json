@@ -1,0 +1,17 @@
+{
+  "id": "ses_43c28589affefiErg49kJo2WQi",
+  "slug": "crisp-moon",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Notices.txt author fix and safe exec usage in generate-notices.js",
+  "time": {
+    "created": 1768517248869,
+    "updated": 1768573897306
+  },
+  "summary": {
+    "additions": 53,
+    "deletions": 14,
+    "files": 2
+  }
+}

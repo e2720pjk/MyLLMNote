@@ -1,0 +1,17 @@
+{
+  "id": "ses_50517e408ffeR0QFhNP5y4DKtd",
+  "version": "1.0.134",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "parentID": "ses_5051a2fe8ffebRHDhja0Tsd1cb",
+  "title": "Analyze dependency analysis implementation (@explore subagent)",
+  "time": {
+    "created": 1765146106871,
+    "updated": 1765146183634
+  },
+  "summary": {
+    "additions": 9,
+    "deletions": 15,
+    "files": 3
+  }
+}

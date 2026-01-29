@@ -1,0 +1,20 @@
+# Tasks
+
+- [ ] Phase 1: Detailed Specification & Model Redesign [/]
+    - [x] Analyze Project Structure & Feasibility
+    - [x] Review expert feedback (Copilot review)
+    - [ ] Specify Joern versioning and fallback strategy
+    - [ ] Design CPG cache invalidation & concurrency strategy
+    - [ ] Define `EnhancedNode` & [Relationship](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#46-54) schemas per language
+    - [ ] Create detailed Test Plan (Parity, Performance, Recovery)
+    - [ ] Create `JoernClient` for CLI/REST interaction
+- [ ] Phase 2: Joern Analysis Implementation
+    - [ ] Develop Joern query scripts (export structure, calls, dataflow)
+    - [ ] Implement `JoernAnalysisService`
+    - [ ] Map Joern results to Internal Models
+- [ ] Phase 3: Hybrid Clustering & LLM Optimization
+    - [ ] Implement graph-based community detection for modules
+    - [ ] Update [cluster_modules.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/cluster_modules.py) for hybrid labeling
+- [ ] Phase 4: Documentation Synthesis & Verification
+    - [ ] Enhance prompt templates with CPG data (Dataflows)
+    - [ ] Verify with target repositories

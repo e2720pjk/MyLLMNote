@@ -1,0 +1,16 @@
+{
+  "id": "ses_563e78933ffeuhs8Sn9snql1YT",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing project UI tooling and development workflow",
+  "time": {
+    "created": 1763555440332,
+    "updated": 1763567531420
+  },
+  "summary": {
+    "additions": 1171,
+    "deletions": 199,
+    "files": 4
+  }
+}

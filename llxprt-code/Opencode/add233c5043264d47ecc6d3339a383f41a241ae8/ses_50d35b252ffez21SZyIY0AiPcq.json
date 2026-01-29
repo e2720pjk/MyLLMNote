@@ -1,0 +1,16 @@
+{
+  "id": "ses_50d35b252ffez21SZyIY0AiPcq",
+  "version": "1.0.133",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "title": "Extending UIStateContext for tab management with TabId and activeTab state",
+  "time": {
+    "created": 1765009935789,
+    "updated": 1765010618587
+  },
+  "summary": {
+    "additions": 41,
+    "deletions": 1,
+    "files": 6
+  }
+}

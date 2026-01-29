@@ -1,0 +1,72 @@
+# The Code Intelligence Platform: 4 Pillars, 1 Architecture
+
+These 4 applications are **not** independent projects. They are 4 different **Views** consuming the same **Data Layer**.
+The new "Structure-First" Architecture (Layer 1-3) supports all of them natively.
+
+---
+
+## 1. Application Mapping (The 4 Pillars)
+
+| Application | Core Data Source | Logic Engine | Output Artifact |
+| :--- | :--- | :--- | :--- |
+| **1. Static Docs** | `module_tree_v2` + `summaries` | Template Engine | `README.md` / Web Site |
+| **2. Spec/Skeleton** | `ast_structure` + `graph_index` | Reverse-Engineer Agent | `skeleton.py` / `spec.yaml` |
+| **3. CPG Diff** | `dependency_graph` (x2) | Graph Isomorphism | `diff_report.json` |
+| **4. Review Verify** | `git_history` + `CPG Diff` | Semantic Matcher | `verification_score.md` |
+
+---
+
+## 2. Deep Dive: Feasibility & Design
+
+### App 1: Static Documentation (CodeWiki Classic)
+*   **Status:** **Core Feature.**
+*   **Design:** Already defined. Layer 3 (View) simply renders the Layer 2 (Map) data into Markdown.
+*   **Constraint:** None. The new architecture makes this *better* (more accurate) than v2.
+
+### App 2: Spec Recognition (The "Skeleton" Generator)
+*   **Concept:** "Reverse Engineering the Architect's Intent."
+*   **Design:**
+    1.  Read `ast_structure.json` -> Extract Public Interfaces (Signatures).
+    2.  Read `semantic_index` (Vector) -> Extract "Purpose" of each interface.
+    3.  **Generate:** A file containing *only* signatures + docstrings + type hints. (No logic).
+*   **Value:** "Contract Testing". You can compare this Skeleton against the original Design Spec.
+*   **Feasibility:** **High**. The data is already extracted in Layer 1.
+
+### App 3: CPG Diff (The "Spotlight" Analysis)
+*   **Concept:** "What *really* changed in the logic?" (Not just text lines).
+*   **Design:** (Based on `PR_ANALYSIS_PIPELINE.md`)
+    1.  Parse `Before` state -> Graph A.
+    2.  Parse `After` state -> Graph B.
+    3.  `GraphDiff(A, B)` -> Detects "Broken Edge" (Call removed) or "New Node" (Function added).
+*   **Feasibility:** **Medium**. Requires `networkx` graph matching logic.
+
+### App 4: Review Verification (The "AI Auditor")
+*   **Concept:** "Did the dev actually fix what the reviewer asked?"
+*   **Design:**
+    1.  Input: Review Comment ("Please handle the Null case in `auth.py`").
+    2.  Input: CPG Diff (App 3 Output).
+    3.  **Verification:** LLM checks if the *Graph Change* (e.g., added Conditional Edge) matches the *Semantic Intent* of the comment.
+*   **Feasibility:** **High**. This is the "Killer App" of the Semantic Layer.
+
+---
+
+## 3. System Design Recommendation
+
+**Don't build 4 tools. Build 1 Platform + 4 Plugins.**
+
+### The Core Platform (`codewiki-core`)
+*   **Responsibilities:**
+    *   Ingest Code -> Generate Layer 1 (Structure).
+    *   Ingest Git -> Generate Git History.
+    *   Run AutoMem -> Generate Layer 2 (Semantics).
+    *   **Save:** persist detailed JSONs to `.codewiki/data/`.
+
+### The Plugins (The "Apps")
+*   `codewiki render-docs`: Reads data -> Writes Markdown.
+*   `codewiki gen-spec`: Reads data -> Writes `spec.yaml`.
+*   `codewiki diff --pr 123`: Reads data -> Runs Spotlight -> Writes Diff Report.
+*   `codewiki verify --review "comment"`: Reads Diff Report -> Writes Audit.
+
+## 4. Summary
+Yes, your idea is the correct "Platformization" of the project.
+By centralizing the **Data Ingestion** (the hard part), you enable multiple downstream **Intelligence Apps** (the high-value part) for free.

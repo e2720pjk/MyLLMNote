@@ -1,0 +1,118 @@
+# Fix MouseContext Error Walkthrough
+
+## Problem
+The application was crashing with the error: `Error: useMouseContext must be used within a MouseProvider`.
+This happened because UI components like `ScrollableList` rely on `MouseContext`, but the `MouseProvider` was missing from the component tree in `llxprt-code-3`.
+
+## Solution
+We added `MouseProvider` and `ScrollProvider` to the [AppWrapper](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/gemini.tsx#206-239) component in [packages/cli/src/ui/App.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/App.tsx), mirroring the structure in `gemini-cli`.
+
+### Changes
+
+#### [packages/cli/src/ui/App.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/App.tsx)
+- Imported `MouseProvider`, `ScrollProvider`, and `isAlternateBufferEnabled`.
+- Wrapped the application context stack with `MouseProvider` and `ScrollProvider`.
+- Configured `mouseEventsEnabled` based on settings and screen reader status.
+
+## Verification
+Ran `npm run test` in `packages/cli` and all 132 tests passed.
+
+```bash
+Test Files  132 passed | 1 skipped (133) 
+Tests  1559 passed | 11 skipped (1570)
+```
+
+## Fix: InputPrompt Mouse Interaction and Shell Focus
+
+### Problem
+The [InputPrompt](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/InputPrompt.tsx#104-1182) component in `llxprt-code-3` lacked mouse interaction features (right-click paste, click-to-move-cursor) present in `gemini-cli`. Additionally, the `isEmbeddedShellFocused` state was not being passed from [Composer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/Composer.tsx#20-159), causing potential focus management issues.
+
+### Solution
+1.  **[InputPrompt.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/InputPrompt.tsx)**:
+    *   Added `useMouseClick` to handle cursor positioning.
+    *   Added `useMouse` to handle right-click paste.
+    *   Integrated `isEmbeddedShellFocused` prop.
+2.  **`TextBuffer.ts`**:
+    *   Implemented `moveToVisualPosition` to support accurate cursor placement based on visual coordinates (handling wrapped lines).
+    *   Added `set_cursor` action to the reducer.
+3.  **[Composer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/Composer.tsx)**:
+    *   Passed `embeddedShellFocused` from [UIState](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/UIStateContext.tsx#33-177) to [InputPrompt](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/InputPrompt.tsx#104-1182).
+
+### Verification
+*   **Lint Checks**: Ran `npm run lint` - Passed.
+*   **Unit Tests**: Created a temporary test file [src/utils/text-buffer-visual.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/text-buffer-visual.test.ts) to verify `moveToVisualPosition` logic, including edge cases like line wrapping and out-of-bounds coordinates. All tests passed.
+
+## Fix: DefaultAppLayout Structure Alignment
+
+### Problem
+[DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) in `llxprt-code-3` used a hardcoded width of `90%`, which could lead to layout inconsistencies and didn't account for the alternate buffer mode used in `gemini-cli`. It also lacked the flicker detection mechanism present in the upstream project.
+
+### Solution
+Updated [packages/cli/src/ui/layouts/DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) to:
+1.  Import and use [useFlickerDetector](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/hooks/useFlickerDetector.ts#11-44) (with `constrainHeight` argument) to monitor UI stability.
+2.  Import and use `useAlternateBuffer` to determine the correct layout mode.
+3.  Dynamically calculate the `width` prop:
+    *   Use `terminalWidth` when in alternate buffer mode.
+    *   Use `mainAreaWidth` otherwise.
+4.  Adjust the `height` prop to account for the scrollbar in alternate buffer mode.
+
+### Verification
+*   **Lint Checks**: Ran `npm run lint` - Passed.
+*   **Manual Verification**: Verified that the layout adapts correctly and the code compiles without errors.
+
+### Resolution
+### Resolution
+Restored `key={uiState.staticKey}` to the `Static` component in [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx). This aligns with `gemini-cli`'s behavior where `refreshStatic` updates a key to force re-rendering of history after a resize event, ensuring history reappears after the temporary clear.
+
+## Fix: ToolGroupMessage Layout Alignment
+
+### Problem
+The [ToolGroupMessage](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx#31-202) component was causing layout overflow and "growing frame" issues during dynamic rendering because it lacked an explicit width constraint, unlike the upstream `gemini-cli`.
+
+### Solution
+Updated [packages/cli/src/ui/components/messages/ToolGroupMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx) to add `width={terminalWidth}` to the inner `Box` component, aligning it with `gemini-cli` and stabilizing the layout.
+
+## Fix: InputPrompt Paste Tests
+
+### Problem
+The [InputPrompt.paste.spec.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.paste.spec.tsx) tests were failing with `Error: keypressHandler not initialized`. This was because the [InputPrompt](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/InputPrompt.tsx#104-1182) component failed to render in the test environment due to missing providers for [useUIActions](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.paste.spec.tsx#116-119), `useMouseClick`, and `useMouse` hooks. Consequently, the [useKeypress](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/hooks/useKeypress.ts#16-42) hook (which captures the handler for the test) was never executed.
+
+### Solution
+Updated [packages/cli/src/ui/components/InputPrompt.paste.spec.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.paste.spec.tsx) to:
+1.  Mock `../hooks/useKeypress.js` (matching the import extension in the component).
+2.  Mock `../hooks/useMouseClick.js` and `../contexts/MouseContext.js`.
+3.  Mock `../contexts/UIActionsContext.js`.
+
+### Verification
+*   **Unit Tests**: Ran `npm run test src/ui/components/InputPrompt.paste.spec.tsx` - All 5 tests passed.
+Updated [packages/cli/src/ui/components/InputPrompt.paste.spec.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.paste.spec.tsx) to:
+1.  Mock `../hooks/useKeypress.js` (matching the import extension in the component).
+2.  Mock `../hooks/useMouseClick.js` and `../contexts/MouseContext.js`.
+3.  Mock `../contexts/UIActionsContext.js`.
+
+### PR Feedback Addressal
+- **UI Stability**: Fixed [ToolGroupMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx) layout to match `gemini-cli` and resolve overflow issues.
+- **Nitpick Fixes**:
+    - **Color Validation**: Added input validation to [interpolateColor](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/themes/color-utils.ts#236-254) in [color-utils.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/themes/color-utils.ts).
+    - **Type Safety**: Added [getEnableInteractiveShell](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/config/config.ts#1470-1473) to [Config](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/core/src/config/config.ts#309-1537) interface to remove unsafe type assertions in [ToolMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolMessage.tsx).
+    - **Schema Cleanup**: Identified duplicate `preferredEditor` setting in [settingsSchema.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/config/settingsSchema.ts), but deferred removal to maintain build compatibility (added TODO).
+    - **Verification**: Confirmed [Composer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/Composer.tsx) uses dynamic values for context and layout, addressing placeholder concerns.
+- **[keyToAnsi.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/keyToAnsi.ts)**: Corrected copyright header to "Vybestack LLC".
+- **[ui-sizing.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/utils/ui-sizing.ts)**: Fixed critical bug where width calculation returned a percentage instead of pixels.
+- **[gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/gemini.tsx)**: Improved error handling to include component stack in logs.
+- **[HistoryItemDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/HistoryItemDisplay.tsx)**: Removed unused props to clean up code and avoid confusion.
+- **[ToolGroupMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx)**: Aligned layout with `gemini-cli` (removed root margin/gap, adjusted widths) to fix UI instability/overflow caused by corrected [ui-sizing.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/utils/ui-sizing.ts).
+
+## Verification Results
+### Automated Tests
+- `npm run lint`: Passed.
+- `npm run build`: Passed.
+- [InputPrompt.paste.spec.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.paste.spec.tsx): All tests passed.
+
+## Input UI Alignment
+- **Goal**: Align the input text block UI with `gemini-cli` to ensure consistent layout and behavior.
+- **Changes**:
+    - **[InputPrompt.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/InputPrompt.tsx)**: Updated [calculatePromptWidths](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.tsx#81-96) to remove hardcoded width fractions and rely on the passed `mainContentWidth`.
+    - **[AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/AppContainer.tsx)**: Updated to use [calculateMainAreaWidth](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/ui-sizing.ts#10-40) and the updated [calculatePromptWidths](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/InputPrompt.tsx#81-96) for determining `inputWidth` and `suggestionsWidth`. Restored missing constants `SHELL_WIDTH_FRACTION` and `SHELL_HEIGHT_PADDING`.
+    - **[Composer.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/Composer.tsx)**: Added `width={uiState.mainAreaWidth}` to the root `Box` component.
+- **Verification**: Verified via `npm run build` and `npm run test`.

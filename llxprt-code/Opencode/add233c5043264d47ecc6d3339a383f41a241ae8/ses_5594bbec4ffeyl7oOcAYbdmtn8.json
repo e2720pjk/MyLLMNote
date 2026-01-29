@@ -1,0 +1,16 @@
+{
+  "id": "ses_5594bbec4ffeyl7oOcAYbdmtn8",
+  "version": "1.0.85",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing Settings Architecture Reorganization progress assessment",
+  "time": {
+    "created": 1763733422395,
+    "updated": 1763734173689
+  },
+  "summary": {
+    "additions": 10,
+    "deletions": 17,
+    "files": 1
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "ses_57165b0beffeL1tzp8HNujg4ST",
+  "version": "1.0.65",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_57169bcb8ffem2V9diS2M4k4N1",
+  "title": "Analyze tool call ID handling (@general subagent)",
+  "time": {
+    "created": 1763329068865,
+    "updated": 1763329505106
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

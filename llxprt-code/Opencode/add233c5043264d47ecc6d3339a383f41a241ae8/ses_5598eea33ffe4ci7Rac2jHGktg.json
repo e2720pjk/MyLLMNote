@@ -1,0 +1,16 @@
+{
+  "id": "ses_5598eea33ffe4ci7Rac2jHGktg",
+  "version": "1.0.85",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Reviewing settings.test.ts cherry-pick issue",
+  "time": {
+    "created": 1763729020364,
+    "updated": 1763730974096
+  },
+  "summary": {
+    "additions": 171,
+    "deletions": 467,
+    "files": 2
+  }
+}

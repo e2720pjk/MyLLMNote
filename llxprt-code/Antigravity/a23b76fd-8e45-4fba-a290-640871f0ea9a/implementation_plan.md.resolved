@@ -1,0 +1,46 @@
+# Fix UI Instability in MainChat Tabs
+
+## Goal Description
+The `Tabs` feature in [llxprt-code-4](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4) causes UI instability (flashing, re-printing history) because switching tabs unmounts and remounts the [MainContent](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx#78-467) components. Ink's `<Static>` component (used for static rendering of history) loses its internal state when unmounted.
+
+A previous attempt to use `display: none` on all tabs caused an infinite render loop ("Maximum update depth exceeded"). This was likely due to [VirtualizedList](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/VirtualizedList.tsx#67-486) (used in virtualized validation) misbehaving when measured with 0 height/width in `useLayoutEffect`.
+
+The new plan is a hybrid approach:
+1.  **Virtualized Content ([ScrollableList](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/ScrollableList.tsx#40-153))**: Use conditional rendering. These components are performance-sensitive and handle re-mounting better (virtualized data is cheap to re-render compared to re-printing raw text). Also, [VirtualizedList](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/VirtualizedList.tsx#67-486) cannot handle `display: none` well.
+2.  **Static Content (`Static`)**: Keep these mounted but hidden using `display: none`. This preserves the `Static` component's internal state (which items have been printed), preventing the "re-print history" bug.
+
+## User Review Required
+> [!IMPORTANT]
+> This change keeps `Static` components mounted in memory. This is critical for preventing history flashing on static renderers (like [gemini-cli](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli)'s default). Virtualized lists will still unmount/remount to prevent layout thrashing.
+
+## Proposed Changes
+
+### [packages/cli](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli)
+
+#### [MODIFY] [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx)
+- Revert the "safe render" wrapper that applied `display: none` to everything.
+- Implement varying strategies based on `renderMode`:
+    - **If `virtualized`**: Use `switch(activeTab)` to conditionally render the active [ScrollableList](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/ScrollableList.tsx#40-153) only. This avoids the infinite loop.
+    - **If `static`**: Render *all* `Static` components in a fragment, but wrap the inactive ones in `<Box display="none">`. This preserves the history state.
+
+#### [MODIFY] [ScrollableList.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/ScrollableList.tsx)
+- No changes needed if we strictly conditionally render it.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run test` to ensure unit tests pass.
+- **CRITICAL**: Run the tmux-based E2E harness using `node scripts/oldui-tmux-harness.js --script scripts/oldui-tmux-script.tabs-cycling.llxprt.json --assert`.
+    - This script cycles tabs and verifies content.
+    - It must pass without "Maximum update depth exceeded".
+
+### Manual Verification
+- **Test 1: History Persistence (Static Mode)**
+    1. Force static mode (if needed, or verify on default config that uses it).
+    2. Generate chat history.
+    3. Switch tabs.
+    4. Verify history does not "re-type" or flash.
+- **Test 2: Virtualized Mode Stability**
+    1. Ensure `useAlternateBuffer: true` in settings (triggers virtualized mode).
+    2. Switch tabs.
+    3. Verify no crash.

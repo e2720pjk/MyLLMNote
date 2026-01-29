@@ -1,0 +1,30 @@
+# Debugging UI Instability & Regressions
+
+## Issue Descriptions & Fixes
+
+### 1. Tool Output Not Repainting
+- **Issue**: When switching tabs while a tool is running, the output would stop updating or fail to repaint when switching back to the Chat tab.
+- **Cause**: The `pendingItems` component (displaying streaming tool output) was hidden inside a [Box](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/MaxSizedBox.tsx#222-377) with `display: none`. Ink/React Reconciliation sometimes optimized away updates for hidden components or failed to invalidate layout upon visibility change.
+- **Fix**: Conditionally render `pendingItems` *only* when `activeTab === 'chat'`. This forces a re-mount and fresh paint whenever the Chat tab becomes active, ensuring the latest streaming state is visible.
+
+### 2. Virtualized Scrolling Effect Gone
+- **Issue**: User reported losing the "virtualized scrolling effect".
+- **Cause**: Likely due to [VirtualizedList](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/VirtualizedList.tsx#67-497) unmounting/remounting (resetting scroll) OR colliding with `Static` rendering in the previous hybrid approach.
+- **Fix**:
+    - **Unified Strategy**: Used `display: none` for *both* Virtualized and Static modes. This keeps [ScrollableList](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/ScrollableList.tsx#40-153) mounted and preserves its internal scroll state (anchoring, stick-to-bottom).
+    - **Crash Prevention**: Modified [VirtualizedList.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/VirtualizedList.tsx) to safely handle `display: none` (0-height measurements) by pausing state updates when hidden. This prevents the "Maximum update depth exceeded" infinite loop that originally plagued the `display: none` approach.
+
+### 3. Debug Output Duplication
+- **Issue**: Debug output appeared duplicated and console logs were missing.
+- **Fix**: The unified `display: none` strategy ensures `Static` components (used for Debug tab) remain mounted. This prevents history re-printing artifacts and ensures correct appending of new logs.
+
+## Verification Results
+
+### Automated Tests
+- **Preflight Check**: `npm run build && npm run lint && npm run format && npm run test` -> **PASSED**.
+- **E2E Test (Tab Cycling)**: `node scripts/oldui-tmux-harness.js ... tabs-cycling` -> **PASSED**.
+- **E2E Test (Todo Verification)**: `node scripts/oldui-tmux-harness.js ... todo-verification` -> **PASSED**.
+
+### Code Changes
+- [packages/cli/src/ui/components/shared/VirtualizedList.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/VirtualizedList.tsx): Added Guard for 0-height measurements.
+- [packages/cli/src/ui/components/MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx): Implemented Unified Rendering Strategy (always mount, toggle visibility) and conditional pending items.

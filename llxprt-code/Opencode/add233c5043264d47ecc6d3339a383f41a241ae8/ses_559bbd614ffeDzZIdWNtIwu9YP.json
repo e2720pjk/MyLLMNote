@@ -1,0 +1,17 @@
+{
+  "id": "ses_559bbd614ffeDzZIdWNtIwu9YP",
+  "version": "1.0.82",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_559bc2e67ffeJdRzUahR3PI6LK",
+  "title": "Analyze restart prompt issue (@general subagent)",
+  "time": {
+    "created": 1763726076398,
+    "updated": 1763726123677
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

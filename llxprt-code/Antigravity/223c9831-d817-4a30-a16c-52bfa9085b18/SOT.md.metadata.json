@@ -1,0 +1,6 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_OTHER",
+  "summary":  "Updated SOT.md to include the 'Verified Isolated' status of the fiber-recorder library, the fix for property name compatibility (style vs _style), and a clear roadmap for the next executor to rebuild and verify the full integration.",
+  "updatedAt":  "2025-12-20T12:18:15.991268Z",
+  "version":  "1"
+}

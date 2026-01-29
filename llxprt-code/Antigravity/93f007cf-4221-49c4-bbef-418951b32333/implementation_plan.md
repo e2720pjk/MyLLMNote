@@ -1,0 +1,53 @@
+# Fix Terminal Corruption with Centralized Signal Manager
+
+## Goal Description
+Fix terminal corruption issues (specifically on CTRL+C) by implementing a robust, centralized signal handling system. This replaces scattered `process.on('SIGINT', ...)` handlers with a single `SignalManager` that ensures all cleanup tasks (like disabling raw mode and Kitty protocol) are executed reliably and synchronously where needed.
+
+## User Review Required
+> [!IMPORTANT]
+> This change introduces a `SignalManager` singleton that takes over `SIGINT`, `SIGTERM`, `uncaughtException`, and `unhandledRejection`. It explicitly calls `process.exit()` after cleanup. This unifies the exit flow, ensuring `cleanup.ts` handlers are always run.
+
+## Proposed Changes
+
+### packages/cli/src/utils
+
+#### [NEW] [signalManager.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/utils/signalManager.ts)
+- Implement `SignalManager` class (Singleton).
+- Handles `SIGINT`, `SIGTERM`, `uncaughtException`, `unhandledRejection`.
+- Manages a list of cleanup handlers.
+- Executes handlers sequentially on shutdown.
+- Forces `process.exit` with appropriate code.
+
+#### [MODIFY] [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/utils/cleanup.ts)
+- Refactor to use `SignalManager.getInstance().registerCleanup(...)`.
+- Deprecate or remove `runExitCleanup` if `SignalManager` handles it automatically, or make `runExitCleanup` delegate to `SignalManager`.
+
+### packages/cli/src/ui/utils
+
+#### [MODIFY] [bracketedPaste.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/bracketedPaste.ts)
+- Update `enableBracketedPaste` and `disableBracketedPaste` to use `fs.writeSync` for reliability during exit.
+
+#### [MODIFY] [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts)
+- Remove internal signal listeners.
+- Register `disableProtocol` with `SignalManager`.
+- Use `writeToStdoutSync` (or direct `fs.writeSync`) for disabling.
+
+### packages/cli/src
+
+#### [MODIFY] [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/gemini.tsx)
+- Initialize `SignalManager` in `main()`.
+- Remove manual `SIGINT`/`SIGTERM` listeners that reset raw mode.
+- Register raw mode reset and other cleanup logic with `SignalManager`.
+
+## Verification Plan
+
+### Manual Verification
+1.  **CTRL+C Test**:
+    - Start app, press CTRL+C.
+    - **Pass**: App exits immediately, terminal is clean (no raw codes, cursor visible).
+2.  **Crash Test**:
+    - Throw error in code.
+    - **Pass**: App exits with error log, terminal is clean.
+3.  **Rapid CTRL+C**:
+    - Press CTRL+C multiple times.
+    - **Pass**: Clean exit, no duplicate cleanup errors.

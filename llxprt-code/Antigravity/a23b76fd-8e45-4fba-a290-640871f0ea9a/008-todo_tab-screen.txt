@@ -1,0 +1,40 @@
+
+     ░██        ░██        ░██    ░██░█████████ ░█████████░██████████
+░██  ░██        ░██         ░██  ░██ ░██     ░██░██     ░██   ░██
+ ░██ ░██        ░██          ░██░██  ░██     ░██░██     ░██   ░██
+  ░██░██        ░██           ░███   ░█████████ ░█████████    ░██
+ ░██ ░██        ░██          ░██░██  ░██        ░██   ░██     ░██
+░██  ░██        ░██         ░██  ░██ ░██        ░██    ░██    ░██
+     ░██████████░██████████░██    ░██░██        ░██     ░██   ░██
+
+Tips for getting started:
+1. Ask questions, edit files, or run commands.
+2. Be specific for the best results.
+3. /help for more information.
+ Todo Progress
+
+ No tasks yet.
+
+✦
+
+
+
+
+
+
+
+
+
+│ [Chat] | Debug  | Todo  | System  (Ctrl+O to switch)                                                                 │
+│  Chat  | Debug  |[Todo] | System  (Ctrl+O to switch)                                                                 │
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ >   Type your message or @path/to/file                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+(feat/ink-tabs*)                                               Memory: 3% | Context: 3.9k/200k | TPM: 31.00k | Wait: 0ms
+~/Shopify/cli-tool/llxprt-code-4  [no sandbox (see /docs)]                                    big-pickle | Tokens: 7,853
+
+
+
+Cache hit: openai:big-pickle:CodeSearch,DeleteLineRange,DirectWebFetch,Edit,ExaWebSearch,Glob,GoogleWebFetch,GoogleWebSt
+

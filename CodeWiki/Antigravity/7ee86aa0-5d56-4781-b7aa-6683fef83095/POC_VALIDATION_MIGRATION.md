@@ -1,0 +1,38 @@
+# Validation: POC vs. Migration Failure
+
+## 1. The Core Problem
+The failed migration (`41333186`) suffered from **"Blind Generation"**.
+*   **Symptom:** "Quality poor, missing parts, did not follow original design."
+*   **Root Cause:** The LLM was asked to "Port Feature X" without knowing the full dependency tree of Feature X. It missed hidden hooks (`usePreservedSearch`), utility functions, and type definitions that were outside the immediate context window.
+
+## 2. How the POC Architecture Solves This
+
+The "Structure-First" architecture transforms **Migration** from a "Creative Writing Task" into a **"Graph Transformation Task"**.
+
+### A. Pre-Migration Analysis (The "Skeleton" Phase)
+Before generating *any* code, we run the POC Pipeline on the **Source Project**.
+
+1.  **CPG (Layer 1):** We extract the **Call Graph**.
+    *   *Query:* "Find all dependencies of `App.tsx`."
+    *   *Result:* Returns `[usePreservedSearch, PolarisProvider, AppBridge, ...]`.
+    *   **Fix:** The LLM now knows *exactly* what is missing if it doesn't import these.
+
+2.  **PageIndex Tree (Layer 3):** We extract the **Structural Hierarchy**.
+    *   *Query:* "What is the folder structure logic?"
+    *   *Result:* "Routes are in `app/routes/*`, Components in `app/components/*`."
+    *   **Fix:** The LLM places files in the correct locations, matching the original design patterns.
+
+### B. The "Spec-Based" Generation
+Instead of saying "Port this file", we say:
+*"Generate a file that satisfies **Spec Node #123** (Signature: `App(props)`, Dependencies: `[A, B, C]`)."*
+
+*   **Validator:** If the generated code doesn't call `usePreservedSearch` (which is in the Spec), the `Review Verify` (App #4) flagging system **rejects** it immediately.
+
+## 3. Recommended Addition to POC
+To explicitly prove this value, we should add a **"Dependency Completeness" Test** to the POC Scope.
+
+*   **Test Case:** "Identify the `usePreservedSearch` hook dependency in the specific failure case."
+*   **Pass Criteria:** The POC (via CPG) must list this hook as a *Hard Dependency* of the main component.
+
+## 4. Conclusion
+**Yes**, the POC architecture is uniquely suited to solve this. It provides the **"Contract"** that was missing in the previous attempt.

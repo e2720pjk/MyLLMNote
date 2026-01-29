@@ -1,0 +1,52 @@
+# Implementation Plan - Fix ASTEdit Tool Refactoring
+
+## User Review Required
+
+> [!IMPORTANT]
+> This plan modifies `ASTEditTool` internals to improve LLM context. The displayed preview output will change significantly to include more details from related files.
+> **User Feedback Updates**:
+> - Rename "Tabby" related branding in output strings to generic or "LLXPRT".
+> - Ensure context output is strictly formatted (Markdown/clean text), avoiding raw JSON dumps.
+
+## Proposed Changes
+
+### 1. `packages/core/src/tools/ast-edit.ts`
+
+#### [MODIFY] [ASTQueryExtractor](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts)
+-   **Goal**: Capture function signatures (parameters & return type) to provide meaningful context in Skeleton View.
+-   **Changes**:
+    -   Update `EnhancedDeclaration` interface to include optional `signature: string`.
+    -   Update `extractDeclarations` (both ast-grep and fallback paths) to extract signatures.
+        -   For ast-grep: Extract the text of the function header or construct it from parameters/return type nodes.
+        -   For regex fallback: Capture the parameter list and return type if available.
+
+#### [MODIFY] [ASTEditTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts)
+-   **Goal**: Expose Working Set context to the LLM and improve Git command safety.
+-   **Changes**:
+    -   **Context Display**: In `executePreview`, iterate over `enhancedContext.connectedFiles`.
+        -   **Formatter**: Create a clean, Markdown-list style output for each file and its declarations. **Avoid JSON**.
+        -   **Branding**: Change `TABBY EDIT PREVIEW` to `LLXPRT EDIT PREVIEW`.
+    -   **Git Robustness**: In `RepositoryContextProvider.getWorkingSetFiles`, change `git diff --name-only` to `git diff --name-only -z` and split by `\0` to safely handle filenames with spaces or special characters.
+
+### 2. `packages/core/src/tools/ast-edit.test.ts`
+
+#### [MODIFY] [ast-edit.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.test.ts)
+-   **Goal**: Add missing coverage for Freshness Check and Git Context.
+-   **Changes**:
+    -   Add test case: `should return FILE_MODIFIED_CONFLICT when file is modified`.
+        -   Mock `fs.stat` to return a time newer than `params.last_modified`.
+    -   Add test case: `should collect signatures in AST extraction`.
+        -   Verify that `extractDeclarations` returns objects with the `signature` property populated.
+
+## Verification Plan
+
+### Automated Tests
+-   Run `npm test packages/core/src/tools/ast-edit.test.ts` to ensure all new and existing tests pass.
+
+### Manual Verification
+-   **Context Check**:
+    1.  Use `ASTEditTool` in "preview" mode on a file.
+    2.  Ensure the output "TABBY EDIT PREVIEW" section contains "Connected files (Working Set)" with a list of files and their function signatures, not just a count.
+-   **Freshness Check**:
+    1.  Call `ASTEditTool` with a `last_modified` timestamp from the past.
+    2.  Verify it returns the `FILE_MODIFIED_CONFLICT` error with the current timestamp.

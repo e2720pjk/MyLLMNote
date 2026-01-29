@@ -1,0 +1,44 @@
+# Fix Deadlock in /quit Command
+
+## Goal Description
+Fix the deadlock that occurs when running `/quit`. The issue is caused by the cleanup handler waiting for `instance.waitUntilExit()` (which waits for unmount) *before* calling `instance.unmount()`. Additionally, we want to prevent future hangs by adding a timeout.
+
+## User Review Required
+> [!IMPORTANT]
+> This change removes `waitUntilExit()` entirely from the cleanup path.
+> **Reason**: Debugging confirmed that `waitUntilExit()` **never resolves** in this specific shutdown scenario, causing any timeout (even 5s) to be fully consumed.
+> **Solution**: We will call `instance.unmount()`, wait a minimal **10ms** to allow the event loop to flush any final render updates, and then call `instance.clear()`. This ensures immediate exit without hanging.
+
+## Proposed Changes
+
+### CLI
+#### [MODIFY] [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)
+- Update the [registerCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#14-17) callback to use `unmount()`, a **10ms** delay, and [clear()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/hooks/slashCommandProcessor.ts#245-250).
+- Remove `waitUntilExit()` as it is unreliable here.
+- Remove debug logging.
+
+```typescript
+  registerCleanup(async () => {
+    try {
+      instance.unmount();
+      // Allow a brief moment for unmount to flush pending renders
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      instance.clear();
+    } catch (error) {
+      // Fallback if cleanup fails
+      console.error('Cleanup error:', error);
+    }
+  });
+```
+
+## Verification Plan
+
+### Manual Verification
+1.  **Command Quit Test**:
+    -   Launch the CLI.
+    -   Run `/quit`.
+    -   **Expected Result**: The CLI should exit **immediately**.
+2.  **Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Press `Ctrl+C`.
+    -   **Expected Result**: Clean exit.

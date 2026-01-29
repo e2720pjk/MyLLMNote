@@ -1,0 +1,46 @@
+# Implementation Plan - Fix Terminal Corruption (Issue #26)
+
+The current implementation of [runExitCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#41-85) resets the terminal (disables raw mode, shows cursor, etc.) *before* running the registered cleanup functions. One of these cleanup functions is `instance.unmount()` from Ink. Ink expects to control the terminal and likely assumes raw mode is active during its unmount/cleanup phase. Resetting the terminal early causes conflicts, especially when active streams (like OpenAI) trigger state updates or renders during the unmount process.
+
+To fix this, we will move the terminal reset logic to the *end* of the cleanup sequence, ensuring Ink has finished its work before we touch the terminal. We will also add a safety reset in the [gracefulExit](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#86-102) timeout to handle cases where the cleanup hangs.
+
+## User Review Required
+
+> [!IMPORTANT]
+> This change modifies the order of cleanup operations. Terminal reset will now happen *after* application unmount. This restores behavior similar to v0.5.0 but keeps the robust cleanup logic.
+
+## Proposed Changes
+
+### CLI Package
+
+#### [MODIFY] [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts)
+
+- Extract terminal reset logic into a new helper function `resetTerminalState()`.
+    - This function will handle `DISABLE_BRACKETED_PASTE`, `DISABLE_FOCUS_TRACKING`, `SHOW_CURSOR`, `disableProtocol()`, and `process.stdin.setRawMode(false)`.
+- Update [runExitCleanup()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#41-85):
+    - Remove the early terminal reset code.
+    - Call `resetTerminalState()` *after* the cleanup loop (and after [runSyncCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#23-33)).
+    - Wrap the cleanup loop in a `try...finally` (or ensure reset runs even if loop throws) to guarantee terminal reset.
+- Update [gracefulExit()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#86-102):
+    - In the fallback timeout (1s), call `resetTerminalState()` before `process.exit(code)`.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run preflight` to ensure no regressions.
+- Existing tests in [cleanup.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.test.ts) might need updates if they mock/spy on these functions.
+
+### Manual Verification
+- **Test 1: OpenAI Stream Exit**
+    1. Start the CLI with OpenAI provider.
+    2. Start a long generation (e.g. "Write a long story").
+    3. Press `Ctrl+C` *during* the generation.
+    4. Verify the terminal is restored correctly (cursor visible, no stair-stepping, typing works).
+- **Test 2: Normal Exit**
+    1. Start CLI.
+    2. Type `/exit` or press `Ctrl+C` at prompt.
+    3. Verify terminal is clean.
+- **Test 3: Hang Simulation (Optional/Dev only)**
+    1. Temporarily add a `await new Promise(() => {})` in a cleanup function.
+    2. Press `Ctrl+C`.
+    3. Verify that after 1s, the process exits AND the terminal is reset (thanks to the timeout handler).

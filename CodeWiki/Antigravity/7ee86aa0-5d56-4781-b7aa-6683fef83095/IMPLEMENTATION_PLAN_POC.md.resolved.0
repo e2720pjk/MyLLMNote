@@ -1,0 +1,62 @@
+# POC Implementation Plan: Code Intelligence Verification
+
+This plan is optimized for an **autonomous agent** to execute. It focuses on validating the "Structure-First" approach using a dedicated POC workspace.
+
+---
+
+## 1. Setup Phase
+*   **Target Directory**: `.sisyphus/poc/`
+*   **Target Project for Analysis**: `CodeWiki-2/codewiki/src` (Self-hosting analysis).
+*   **Goal**: Create a portable, script-based pipeline that avoids modifying the core repo.
+
+---
+
+## 2. Component Implementation (L1/L2 Analyzer)
+
+### Task 1: The Code Blueprint Script (`poc_blueprint.py`)
+*   **Input**: A directory of source code.
+*   **Action**: Use `tree-sitter` (or simple python `ast`) to extract:
+    *   **Nodes**: Class/Function signatures, file paths.
+    *   **Edges**: Imports, function calls, hook usage.
+*   **Output**: `blueprint.json` (The CPG "Ground Truth").
+
+### Task 2: The Context Generator (`poc_context.py`)
+*   **Input**: `blueprint.json`.
+*   **Action**: Transform the graph into a **Structural Reasoning Tree** (PageIndex format).
+    *   Inject high-level "Purpose" placeholders (to be filled by an agent or hardcoded for the test).
+*   **Output**: `page_index_context.json`.
+
+---
+
+## 3. The "Generation & Verification" Loop
+
+### Task 3: The LLM Prompt Experiment
+*   **Action**: Provide the `page_index_context.json` to an agent.
+*   **Prompt**: "Based on this blueprint, implement a new module `poc_demo.py` that satisfies all listed dependencies and interfaces."
+*   **Save Output**: `generated_code.py`.
+
+### Task 4: The Deterministic Verifier (`poc_verify.py`)
+*   **Input**: `generated_code.py` + `blueprint.json`.
+*   **Action**:
+    1.  Parse `generated_code.py`.
+    2.  Check for **Required Imports**.
+    3.  Check for **Critical Method Calls**.
+    4.  Compare Graph Isomorphism (Topological check).
+*   **Output**: Console Report (`PASS` / `FAIL: Missing Call to X`).
+
+---
+
+## 4. Execution Roadmap (For Agent)
+
+1.  [ ] **Prepare Workspace**: Create `.sisyphus/poc/` and install `tree-sitter`, `networkx`.
+2.  [ ] **Run Analysis**: Execute `poc_blueprint.py` on `CodeWiki-2` to get the reference data.
+3.  [ ] **Generate Tree**: Run `poc_context.py` to create the reasoning context.
+4.  [ ] **Simulate/Run Task**: Ask another agent (or yourself) to "Write a module based on this JSON context".
+5.  [ ] **Verify**: Run `poc_verify.py` on the result.
+6.  [ ] **Report**: Summarize the "Zero-Hallucination" success rate.
+
+---
+
+## 5. Risks & Guardrails
+*   **Parsing Depth**: Focus only on "Exports" and "Calls" for the POC to keep it simple.
+*   **Language Support**: Start with **Python-only** for the script verification logic.

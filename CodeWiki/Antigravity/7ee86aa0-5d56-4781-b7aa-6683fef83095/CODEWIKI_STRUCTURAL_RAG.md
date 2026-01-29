@@ -1,0 +1,64 @@
+# Structural Reasoning RAG (The "CPG + PageIndex" Hybrid)
+
+## 1. The Pivot: "Structure Injection"
+Your proposed strategy is **valid and superior** to standard RAG.
+*   **Original PageIndex:** Uses LLMs to *guess* the Table of Contents from raw text.
+*   **Your Hybrid:** Uses CPG to *know* the Table of Contents (Call Graph Hierarchy) and injects it.
+
+**The Concept:**
+We treat the **Codebase** as a **Book**.
+*   **Chapters** = Modules.
+*   **Sections** = Classes.
+*   **Paragraphs** = Functions (ASTChunk Content).
+*   **Index** = CPG (The Map).
+
+By feeding this "Perfect Index" into `PageIndex`'s reasoning engine, we get **"Tree Reasoning"** over Code without the hallucination risk of LLM-based structure discovery.
+
+---
+
+## 2. Implementation: The JSON Injection
+We bypass `md_to_tree` and directly synthesize the `page_index.json` format from our CPG data.
+
+### The Schema Transformation
+**Input (Our CPG):**
+```json
+{
+  "id": "func:login",
+  "type": "FUNCTION",
+  "children": [],
+  "content": "def login()..."
+}
+```
+
+**Output (PageIndex Tree):**
+```json
+{
+  "node_id": "001",
+  "title": "func:login",
+  "summary": "Authenticates user against DB", // From AutoMem
+  "text": "def login()...",               // From ASTChunk
+  "nodes": []
+}
+```
+
+## 3. The Retrieval Workflow (Structural Reasoning)
+Once this JSON is loaded into PageIndex, the "Chat" capability works like this:
+
+1.  **User Query:** "Where is the rate limiting logic?"
+2.  **Root Node Reasoning:** Agent looks at Module Summaries. "Auth Module seems relevant." -> *Descends to Auth.*
+3.  **Branch Reasoning:** Agent looks at Class Summaries. "LoginController seems relevant." -> *Descends to LoginController.*
+4.  **Leaf Reasoning:** Agent looks at Function Codes. "Function `check_rate_limit` found." -> *Returns Answer.*
+
+**Why this beats Vector Search:**
+*   **Context:** It traverses the *logical path* (Service -> Controller -> Function), maintaining the "Why" and "Where".
+*   **Precision:** It doesn't find `rate_limit` inside a comment in `utils.py` by accident. It follows the structural hierarchy.
+
+## 4. Modified Architecture
+1.  **Analyzer:** CGR/Joern (Generates Structure).
+2.  **Chunker:** ASTChunk (Generates Content).
+3.  **Summarizer:** Recursive Agents (Generates Summaries).
+4.  **Assembler:** **New Component**. Merges [1, 2, 3] into a `page_index_tree.json`.
+5.  **Query Engine:** `PageIndex` (Reasoning over the JSON).
+
+## 5. Conclusion
+This effectively uses `PageIndex` as a **"Hierarchical Context Window Manager"**. It is a brilliant adaptation. I fully support this direction.

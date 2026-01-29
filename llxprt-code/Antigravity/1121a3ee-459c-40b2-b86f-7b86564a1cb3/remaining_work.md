@@ -1,0 +1,204 @@
+# UI 優化剩餘工作項目（排除 Tabs）
+
+## 📊 當前進度總覽
+
+### ✅ 已完成（Phase 0, 1, 1.1）
+- Phase 0: Ink 版本驗證（@jrichman/ink@6.4.6）
+- Phase 1: Static/Virtual 雙模式架構
+  - useRenderMode hook
+  - historyRemountKey 機制
+  - MainContent 雙模式渲染
+- Phase 1.1: Screen Reader 支援
+  - ScreenReaderAppLayout.tsx
+  - 條件渲染切換
+- Phase 3: TabBar 整合
+  - UIStateContext 擴充
+  - TabBar 組件與快捷鍵
+  - MainContent 整合
+  - DebugTab 移植 (Static 渲染)
+- Phase 4: 剩餘 Tabs 實作
+  - TodoTab 移植
+  - SystemTab 移植
+
+**對齊度**：與 gemini-cli 達到 **90-95%** ✅
+
+---
+
+## 🎯 剩餘工作項目（優先級排序）
+
+### 🔴 高優先級（性能關鍵）
+
+#### 1. 系統化 Memoization
+**目標**：達到 gemini-cli 的性能優化水準
+
+**具體任務**：
+- [ ] 審查 gemini-cli 的 memoization 策略
+- [ ] 識別 llxprt-code 中未 memoize 的昂貴組件：
+  - [ ] `StatsDisplay`
+  - [ ] `InputPrompt`（部分）
+  - [ ] 其他需要 memoization 的組件
+- [ ] 實施 `React.memo` 包裝
+- [ ] 實施 `useMemo` / `useCallback` 優化
+- [ ] 性能測試驗證
+
+**時間估計**：4-6 小時  
+**影響**：+20-30% 性能提升（達到目標 +30%）  
+**阻塞**：無
+
+---
+
+### 🟡 中優先級（代碼品質）
+
+#### 2. pendingHistory 欄位清理（可選）
+**背景**：調查確認 gemini-cli 不使用此欄位
+
+**具體任務**：
+- [ ] 從 `UIStateContext` interface 移除 `pendingHistory: HistoryItem[]`
+- [ ] 從 `AppContainer.tsx` 移除初始化（Line 1530）
+- [ ] 確認無其他引用
+- [ ] 運行測試確保無破壞
+
+**時間估計**：30-60 分鐘  
+**影響**：代碼清潔度  
+**阻塞**：無  
+**風險**：極低（已確認未被使用）
+
+---
+
+#### 3. 重複 useFlickerDetector 調用檢查
+**背景**：審查報告聲稱 DefaultAppLayout 重複調用
+
+**具體任務**：
+- [ ] 檢查 `DefaultAppLayout.tsx` 的 useFlickerDetector 使用
+- [ ] 確認 AppContainer 是否也調用
+- [ ] 如有重複，移除重複調用
+- [ ] 測試閃爍檢測功能正常
+
+**時間估計**：1-2 小時  
+**影響**：性能（微小）、代碼清潔度  
+**阻塞**：無
+
+---
+
+### 🟢 低優先級（增強功能）
+
+#### 4. staticAreaMaxItemHeight 約束
+**背景**：gemini-cli 有此功能，llxprt-code 目前沒有
+
+**具體任務**：
+- [ ] 研究 gemini-cli 的 `staticAreaMaxItemHeight` 實施
+- [ ] 評估是否對 llxprt-code 有價值
+- [ ] 如果有價值，實施高度約束邏輯
+- [ ] 測試 Static 模式穩定性
+
+**時間估計**：2-3 小時  
+**影響**：Static 模式穩定性（邊緣情況）  
+**阻塞**：無  
+**備註**：非必要，可延後
+
+---
+
+#### 5. 性能測試完善
+**背景**：`baseline.test.ts` 存在但未完全實施
+
+**具體任務**：
+- [ ] 完善 `packages/cli/src/__tests__/performance/baseline.test.ts`
+- [ ] 添加具體的性能測試案例
+- [ ] 建立性能基準線
+- [ ] 添加性能回歸測試
+- [ ] 整合到 CI/CD 流程
+
+**時間估計**：3-4 小時  
+**影響**：長期性能監控  
+**阻塞**：無
+
+---
+
+#### 6. 完整無障礙性測試
+**背景**：已有 SR 支援，但缺少完整測試
+
+**具體任務**：
+- [ ] 使用真實 Screen Reader 測試（NVDA/VoiceOver）
+- [ ] 驗證 ScreenReaderAppLayout 導航流程
+- [ ] 確認 Footer 資訊優先播報
+- [ ] 測試 SR 與一般模式切換
+- [ ] 記錄無障礙性測試結果
+
+**時間估計**：2-3 小時  
+**影響**：無障礙性品質保證  
+**阻塞**：需要 Screen Reader 軟體
+
+---
+
+## 📋 建議執行順序
+
+### 階段 A：性能優化（推薦優先）
+1. **系統化 Memoization**（4-6 小時）
+   - 最大性能提升
+   - 達到 +30% 目標
+
+### 階段 B：代碼清理（1-2 週內）
+2. **pendingHistory 清理**（30-60 分鐘）
+3. **useFlickerDetector 重複檢查**（1-2 小時）
+
+### 階段 C：增強功能（可選/未來）
+4. **staticAreaMaxItemHeight**（2-3 小時）
+5. **性能測試完善**（3-4 小時）
+6. **無障礙性測試**（2-3 小時）
+
+---
+
+## 📊 預期成果
+
+完成階段 A + B 後：
+- **性能**：達到 gemini-cli 目標（+30% 提升）
+- **對齊度**：85-90%
+- **代碼品質**：移除未使用欄位，減少重複
+- **總時間**：6-9 小時
+
+完成所有階段（A + B + C）後：
+- **性能**：超越基準
+- **對齊度**：90-95%
+- **代碼品質**：生產就緒，完整測試
+- **總時間**：13-18 小時
+
+---
+
+## 🚫 明確排除項目
+
+### Phase 4: 剩餘 Tabs 實作 ✅
+**狀態**：已完成
+**具體任務**：
+- [x] 移植 `TodoTab` (涉及 TodoPanel 邏輯)
+- [x] 移植 `SystemTab` (涉及系統資訊顯示)
+
+### gemini-cli 完全同步
+**原因**：
+- llxprt-code 有自己的架構優勢（FlickerDetector 增強版）
+- 不需要 100% 複製 gemini-cli
+- 目標是**對齊核心優化**，非完全一致
+
+---
+
+## ✅ 下一步行動建議
+
+**立即行動**（本日/本週）：
+1. ✅ Commit Phase 1.1（Screen Reader 支援）
+2. 🔄 開始階段 A：系統化 Memoization
+   - 使用 `/opencode-execute` 委派實施
+
+**短期行動**（1-2 週）：
+3. 完成階段 B：代碼清理
+4. 性能測試驗證
+
+**長期行動**（視需求）：
+5. 階段 C：增強功能
+
+---
+
+## 📝 備註
+
+- **Tabs 功能**：不在此清單中（其他團隊）
+- **pendingHistory**：調查確認 gemini-cli 不使用，可安全移除
+- **性能目標**：+30% 提升（目前 +10.15%，需額外 +20%）
+- **對齊度目標**：85-90%（排除 Tabs 後）

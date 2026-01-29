@@ -1,0 +1,35 @@
+# Screen Reader Mode Regression Fix
+
+## Goal Description
+Fix the accessibility regression where [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/TabBar.tsx#19-61) complexity and the visually-rich [Footer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/Footer.tsx#27-51) add non-content noise for screen reader users. The goal is to provide a clean, streamlined experience for users relying on assistive technology.
+
+## User Review Required
+> [!NOTE]
+> This plan implements "Option C" for Tabs (replacing interactive TabBar with a simple text indicator) and "Option 2" for Footer (creating a simplified, text-only footer) when Screen Reader Mode is detected.
+
+## Proposed Changes
+
+### UI Components
+
+#### [MODIFY] [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx)
+- Import `useIsScreenReaderEnabled` from [ink](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/colors.ts#242-245).
+- Conditionally render [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/TabBar.tsx#19-61):
+    - **Normal Mode**: Render interactive [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/TabBar.tsx#19-61).
+    - **Screen Reader Mode**: Render simple [Text](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/oldui-tmux-harness.js#225-231) indicating current tab: `Current Tab: {activeTab}`.
+
+#### [NEW] [ScreenReaderFooter.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/ScreenReaderFooter.tsx)
+- Create a simplified footer component that removes:
+    - Gradients
+    - Responsive logic
+    - Debounced updates
+    - Rapidly changing metrics (TPM, memory) if they are too noisy.
+- Display essential info: Model, Context Usage, Session Tokens, Error Count.
+
+#### [MODIFY] [ScreenReaderAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/layouts/ScreenReaderAppLayout.tsx)
+- Replace [Footer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/Footer.tsx#27-51) with `ScreenReaderFooter`.
+
+## Verification Plan
+
+### Manual Verification
+- Since we cannot easily enable actual Screen Reader mode in this environment, verification will rely on code correctness logic and potentially mocking `useIsScreenReaderEnabled` if a test can be devised.
+- **Code Review**: Ensure `useIsScreenReaderEnabled` usage is correct.

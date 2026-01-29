@@ -1,0 +1,34 @@
+# Walkthrough - IME Ctrl+C Fix
+
+## Changes
+
+### CLI
+
+#### [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/AppContainer.tsx)
+
+-   Added `await runExitCleanup()` before `process.exit(0)` in the `useEffect` hook that handles `quittingMessages`.
+-   This ensures that when the application exits via the `/quit` command or the IME-mapped `Ctrl+C` path, the terminal is correctly restored (raw mode disabled, cursor shown, etc.).
+
+## Verification Results
+
+### Automated Tests
+-   N/A (Requires manual interaction with IME and terminal)
+
+### Manual Verification
+> [!IMPORTANT]
+> Please perform the following steps to verify the fix:
+
+1.  **IME Ctrl+C Test**:
+    -   Launch the CLI: `npm run dev` (or equivalent).
+    -   Enable an IME (e.g., Chinese/Japanese).
+    -   Press `Ctrl+C` (which generates the mapped sequence).
+    -   **Expected Result**: The CLI should exit *cleanly*. The terminal cursor should be visible, and typing should echo characters. There should be no "ghosting" or visual corruption.
+
+2.  **Standard Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Press standard `Ctrl+C`.
+    -   **Expected Result**: Clean exit.
+
+3.  **Command Quit Test**:
+    -   Run `/quit`.
+    -   **Expected Result**: Clean exit.

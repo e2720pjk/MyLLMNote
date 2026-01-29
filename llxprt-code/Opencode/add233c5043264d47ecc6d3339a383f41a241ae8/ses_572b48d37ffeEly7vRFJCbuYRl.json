@@ -1,0 +1,17 @@
+{
+  "id": "ses_572b48d37ffeEly7vRFJCbuYRl",
+  "version": "1.0.65",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_572b4a9a1ffe7L3bVorIcFr3Rs",
+  "title": "Analyze keyboard input handling (@general subagent)",
+  "time": {
+    "created": 1763307123400,
+    "updated": 1763307383356
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

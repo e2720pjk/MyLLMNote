@@ -1,0 +1,16 @@
+{
+  "id": "ses_563b8b9deffeDOyER8w3OXmwbI",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing Tool Management false status",
+  "time": {
+    "created": 1763558508065,
+    "updated": 1763558947791
+  },
+  "summary": {
+    "additions": 5,
+    "deletions": 4,
+    "files": 2
+  }
+}

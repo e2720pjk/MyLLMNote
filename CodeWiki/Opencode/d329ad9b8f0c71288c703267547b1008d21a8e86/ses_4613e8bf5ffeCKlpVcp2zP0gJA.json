@@ -1,0 +1,16 @@
+{
+  "id": "ses_4613e8bf5ffeCKlpVcp2zP0gJA",
+  "version": "1.0.220",
+  "projectID": "d329ad9b8f0c71288c703267547b1008d21a8e86",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWikiBench",
+  "title": "Analyzing module retry failures in OpenHands repo",
+  "time": {
+    "created": 1767895036938,
+    "updated": 1767896982933
+  },
+  "summary": {
+    "additions": 589,
+    "deletions": 0,
+    "files": 2
+  }
+}

@@ -1,0 +1,27 @@
+# Walkthrough - Fix Terminal Corruption in Kitty Protocol Detector
+
+I have implemented a robust fix for the terminal corruption issue (Issue #26) that occurred when the application was exited using `CTRL+C` or crashed.
+
+## Changes
+
+### CLI Package
+
+#### [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts)
+
+-   **Synchronous Cleanup**: Switched from `process.stdout.write` (async) to `fs.writeSync` (sync) in [disableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#123-138). This ensures the terminal reset sequence `\x1b[<u` is flushed to the output before the process terminates.
+-   **Robust Signal Handling**:
+    -   Added a `SIGINT` handler to specifically catch `CTRL+C` events (which were previously ignored).
+    -   Added `SIGTERM`, `uncaughtException`, and `unhandledRejection` handlers for comprehensive crash safety.
+    -   Used `process.once` to prevent duplicate handler execution.
+    -   Added explicit exit codes (`130` for `SIGINT`, `0` for `SIGTERM`, `1` for errors).
+-   **Re-entry Protection**: Added a check to set `protocolEnabled = false` *before* performing the write operation, preventing infinite loops if multiple signals are received simultaneously.
+
+## Verification Results
+
+### Automated Checks
+-   **Lint**: Passed (`npm run lint`).
+-   **Build**: [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts) compiled successfully (unrelated errors in `github.test.ts` ignored).
+
+### Manual Verification Steps
+1.  **CTRL+C**: Start the app and press `CTRL+C`. The terminal should reset correctly without showing raw escape codes or "bell" characters.
+2.  **Crash**: Simulate a crash. The terminal should reset correctly.

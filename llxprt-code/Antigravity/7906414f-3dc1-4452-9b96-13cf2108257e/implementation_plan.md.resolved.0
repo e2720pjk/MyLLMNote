@@ -1,0 +1,61 @@
+# Implementation Plan - Extract UI Architecture to Open Source Template
+
+## Goal
+Extract the generic UI architecture and flow from the current Shopify App into a reusable open-source template (npm package). This allows the main project to focus on business logic while the template handles the UI shell, navigation, and common Shopify app patterns.
+
+## User Review Required
+> [!IMPORTANT]
+> This plan involves refactoring the current [app/routes/app/route.tsx](file:///Users/caishanghong/devbox/workspace/test/app/routes/app/route.tsx) and potentially [app/root.tsx](file:///Users/caishanghong/devbox/workspace/test/app/root.tsx) to use a new library.
+> We need to decide if we want to convert the current repo into a monorepo (using workspaces) to host both the app and the library, or if the library should be a completely separate repository.
+> **Recommendation**: Start with a monorepo structure (`packages/template` and `app`) for easier development, then publish the template package.
+
+## Proposed Changes
+
+### 1. Create Template Package
+Create a new directory `packages/shopify-app-template` (or similar name) with the following structure:
+- [package.json](file:///Users/caishanghong/devbox/workspace/test/package.json)
+- `src/`
+    - `components/`
+        - `AppLayout.tsx`: The main layout component (extracted from [app/routes/app/route.tsx](file:///Users/caishanghong/devbox/workspace/test/app/routes/app/route.tsx)).
+        - `LoadingPage.tsx`: The loading spinner page.
+    - `hooks/`
+        - `useShopifyApp.ts`: Hook to handle Shopify context and i18n.
+    - `index.ts`: Exports.
+
+### 2. Extract Logic from [app/routes/app/route.tsx](file:///Users/caishanghong/devbox/workspace/test/app/routes/app/route.tsx)
+Move the following logic to the template package:
+- `AppProvider` setup.
+- `NavMenu` rendering logic (make it data-driven).
+- Loading state handling (`isLoading`, `Spinner`).
+- I18n setup (Polaris locale handling).
+
+### 3. Refactor Original App
+Modify [app/routes/app/route.tsx](file:///Users/caishanghong/devbox/workspace/test/app/routes/app/route.tsx) to use the new package:
+- Import `AppLayout` from the new package.
+- Pass `apiKey`, `shop`, `navItems`, and `children` (Outlet) to `AppLayout`.
+
+### 4. Define Interface
+The `AppLayout` component will accept:
+```typescript
+interface AppLayoutProps {
+  apiKey: string;
+  shop: string;
+  i18n: any; // Polaris i18n data
+  navItems: { label: string; href: string; rel?: string }[];
+  children: React.ReactNode;
+}
+```
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run test` to ensure existing tests pass.
+- Add unit tests in the new package for `AppLayout`.
+
+### Manual Verification
+- Run `npm run dev` to start the app.
+- Verify the app loads correctly with the new layout.
+- Verify navigation works.
+- Verify loading states work.
+- Verify i18n works (change locale).
+

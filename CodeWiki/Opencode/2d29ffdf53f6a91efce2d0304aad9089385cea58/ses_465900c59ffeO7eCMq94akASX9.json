@@ -1,0 +1,16 @@
+{
+  "id": "ses_465900c59ffeO7eCMq94akASX9",
+  "version": "1.0.220",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "Analyzing code review for Pydantic defaults, parse_view_range issues",
+  "time": {
+    "created": 1767822586791,
+    "updated": 1767823360523
+  },
+  "summary": {
+    "additions": 1397,
+    "deletions": 2,
+    "files": 5
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "ses_42b1d3082ffeJunzP16vXWPnpP",
+  "slug": "misty-orchid",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "AST Tool Optimization: Cleanup, Readme, Build & Lint Checks",
+  "time": {
+    "created": 1768803192701,
+    "updated": 1768805068783
+  },
+  "summary": {
+    "additions": 295,
+    "deletions": 2,
+    "files": 6
+  }
+}

@@ -1,0 +1,21 @@
+# Rebase Conflict Resolution
+
+- [ ] Phase 1: Core Architecture Conflicts
+    - [x] Resolve `codewiki/cli/models/job.py`
+    - [x] Resolve `codewiki/src/config.py`
+    - [x] Resolve `codewiki/cli/commands/generate.py`
+    - [x] Resolve `codewiki/cli/adapters/doc_generator.py`
+- [ ] Phase 2: Code Improvement Conflicts
+    - [x] Resolve `codewiki/src/utils.py`
+    - [x] Resolve `codewiki/src/be/cluster_modules.py`
+    - [x] Resolve `codewiki/src/be/agent_tools/str_replace_editor.py`
+    - [x] Resolve `codewiki/src/be/dependency_analyzer/analysis/analysis_service.py`
+    - [x] Resolve `codewiki/src/be/dependency_analyzer/models/core.py`
+    - [x] Resolve `codewiki/src/be/dependency_analyzer/dependency_graphs_builder.py`
+    - [x] Resolve `codewiki/src/be/dependency_analyzer/analyzers/php.py`
+- [ ] Phase 3: Verification
+    - [x] Verify `codewiki/src/config.py` parameter design
+    - [ ] `git add .`
+    - [ ] `git rebase --continue`
+    - [ ] Run tests: `python -m pytest test/`
+    - [ ] Verify CLI: `codewiki generate --use-joern --help`

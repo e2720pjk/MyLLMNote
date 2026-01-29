@@ -1,0 +1,17 @@
+{
+  "id": "ses_55aa959e9ffe3tbKkmgYu9sR2t",
+  "version": "1.0.82",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_55aae3a1fffeZ00ddiy2qsex6D",
+  "title": "Check for Chinese comments (@general subagent)",
+  "time": {
+    "created": 1763710510614,
+    "updated": 1763710518943
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

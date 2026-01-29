@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Design document for Project-Level Verification. Defines 'Macro-Graph Isomorphism' to verify directory structures and cross-file dependencies, ensuring generated projects match the architectural skeleton of the reference.",
+  "updatedAt": "2026-01-24T02:07:43.101180Z"
+}

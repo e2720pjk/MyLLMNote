@@ -1,0 +1,34 @@
+# Fix Deadlock in /quit Command
+
+## Goal Description
+Fix the deadlock that occurs when running `/quit`. The issue is caused by [runExitCleanup()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#18-32) waiting for `instance.waitUntilExit()`, which in turn waits for the application to exit. Since `process.exit()` is called *after* [runExitCleanup()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#18-32), the application never exits, causing a hang.
+
+## User Review Required
+> [!IMPORTANT]
+> This change removes `await instance.waitUntilExit()` from the cleanup handler. This is safe because `instance.waitUntilExit()` is intended to block the main thread until exit, not to be part of the cleanup process itself.
+
+## Proposed Changes
+
+### CLI
+#### [MODIFY] [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)
+- Remove `await instance.waitUntilExit()` from the [registerCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#14-17) callback.
+
+```typescript
+  registerCleanup(async () => {
+    // await instance.waitUntilExit(); // REMOVE THIS
+    instance.clear();
+    instance.unmount();
+  });
+```
+
+## Verification Plan
+
+### Manual Verification
+1.  **Command Quit Test**:
+    -   Launch the CLI.
+    -   Run `/quit`.
+    -   **Expected Result**: The CLI should exit immediately without hanging.
+2.  **Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Press `Ctrl+C`.
+    -   **Expected Result**: Clean exit.

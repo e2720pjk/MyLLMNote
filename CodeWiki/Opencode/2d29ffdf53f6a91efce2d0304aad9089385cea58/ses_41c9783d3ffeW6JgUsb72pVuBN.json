@@ -1,0 +1,35 @@
+{
+  "id": "ses_41c9783d3ffeW6JgUsb72pVuBN",
+  "slug": "cosmic-moon",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "parentID": "ses_41c97f8e1ffeEKP1zw27PCl4cA",
+  "title": "Background: Examine git ignore implementation",
+  "time": {
+    "created": 1769046834220,
+    "updated": 1769046845550
+  },
+  "permission": [
+    {
+      "permission": "task",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "background_task",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "call_omo_agent",
+      "action": "deny",
+      "pattern": "*"
+    }
+  ],
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

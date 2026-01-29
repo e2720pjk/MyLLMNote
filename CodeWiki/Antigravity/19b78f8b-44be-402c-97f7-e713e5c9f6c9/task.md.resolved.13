@@ -1,0 +1,34 @@
+# Task: Investigate llxprt for Agent Workflow
+
+- [x] Run `llxprt --help` to understand CLI options <!-- id: 0 -->
+- [x] Investigate Interactive vs Non-interactive modes <!-- id: 1 -->
+    - [x] Test non-interactive command execution
+    - [x] Check if interactive-only features (slash commands) are accessible via flags
+- [x] Analyze codebase for CLI argument parsing and mode handling <!-- id: 2 -->
+- [x] Design `llxprt` Agent Workflow Template <!-- id: 3 -->
+    - [x] Define recommended mode (Interactive vs Non-interactive)
+    - [x] Outline workflow steps
+- [x] Create [llxprt_workflow_proposal.md](file:///Users/caishanghong/.gemini/antigravity/brain/19b78f8b-44be-402c-97f7-e713e5c9f6c9/llxprt_workflow_proposal.md) with findings and recommendations <!-- id: 4 -->
+- [x] Deep dive into Slash Command Handling <!-- id: 5 -->
+    - [x] Explore `/Users/caishanghong/Shopify/cli-tool/llxprt-code-2` codebase
+    - [x] Identify CLI entry point and argument parsing logic
+    - [x] Determine how slash commands are routed in interactive vs non-interactive modes
+    - [x] Verify if `llxprt "/cmd"` sends prompt to LLM instead of executing local handler
+- [x] Revise `llxprt_workflow_proposal.md` based on code analysis <!-- id: 6 -->
+- [x] Verify `@filename` support in non-interactive mode <!-- id: 7 -->
+    - [x] Analyze `handleAtCommand` in `packages/cli/src/ui/hooks/atCommandProcessor.ts`
+    - [x] Confirm if file content is resolved locally before LLM request
+- [x] Create `llxprt_agent_guide.md` (Context for LLM) <!-- id: 8 -->
+    - [x] Document correct usage (Non-interactive mode)
+    - [x] Document limitations (No slash commands)
+    - [x] Document context provision (`@filename` vs flags)
+    - [x] Provide example prompts for the Agent
+- [x] Refine `llxprt_agent_guide.md` based on user feedback <!-- id: 9 -->
+    - [x] Remove configuration/flag details (assume defaults)
+    - [x] Adopt "Delegation Decision Tree" style from reference
+    - [x] Focus on "When to delegate" (Code writing) vs "Self-handle" (Read/Plan)
+- [x] Adjust workflow for "Plan Delegation & Review" <!-- id: 10 -->
+    - [x] Update Roles: Agent (Architect/Reviewer) vs LLxprt (Builder)
+    - [x] Update Decision Tree: Plan -> Delegate -> Review
+    - [x] Emphasize "Complete Plan" in prompt construction
+    - [x] Add "Review Phase" instructions

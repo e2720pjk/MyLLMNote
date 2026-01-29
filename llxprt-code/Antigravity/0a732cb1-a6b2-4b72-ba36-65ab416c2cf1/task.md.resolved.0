@@ -1,0 +1,4 @@
+- [ ] Search for IME mapping/key handling code in `llxprt-code` and `gemini-cli` <!-- id: 0 -->
+- [ ] Compare input handling implementations <!-- id: 1 -->
+- [ ] Analyze if IME mapping affects CTRL+C handling or terminal cleanup <!-- id: 2 -->
+- [ ] Report findings to user <!-- id: 3 -->

@@ -1,0 +1,16 @@
+{
+  "id": "ses_440b41f9fffeZ4g0D0XFA5XLeO",
+  "version": "1.1.10",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Typescript ESLint no-explicit-any review and best practices",
+  "time": {
+    "created": 1768440979552,
+    "updated": 1768444533554
+  },
+  "summary": {
+    "additions": 433,
+    "deletions": 238,
+    "files": 10
+  }
+}

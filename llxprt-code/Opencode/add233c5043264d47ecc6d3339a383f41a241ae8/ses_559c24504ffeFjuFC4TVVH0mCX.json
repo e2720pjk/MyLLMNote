@@ -1,0 +1,16 @@
+{
+  "id": "ses_559c24504ffeFjuFC4TVVH0mCX",
+  "version": "1.0.82",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing PasERROR useAppDispatch within AppDispatchProvider",
+  "time": {
+    "created": 1763725654779,
+    "updated": 1763725979954
+  },
+  "summary": {
+    "additions": 18,
+    "deletions": 2,
+    "files": 1
+  }
+}

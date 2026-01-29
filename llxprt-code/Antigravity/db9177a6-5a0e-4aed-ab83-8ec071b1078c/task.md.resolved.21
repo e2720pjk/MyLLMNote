@@ -1,0 +1,39 @@
+# UI Architecture Parity Analysis
+
+- [x] **Foundation**: Port Virtualization Engine <!-- id: 5 -->
+    - [x] Port [VirtualizedList.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/VirtualizedList.tsx) and [ScrollableList.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/ScrollableList.tsx)
+    - [x] Port [useAnimatedScrollbar.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/useAnimatedScrollbar.ts), [useMouse.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/useMouse.ts), [useMouseClick.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/useMouseClick.ts)
+- [x] **Components**: Port Missing UI Components <!-- id: 6 -->
+    - [x] Port [ConfigInitDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/ConfigInitDisplay.tsx)
+    - [x] Re-implement [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx) (adapted for llxprt)
+- [x] **Integration**: Refactor Layout <!-- id: 7 -->
+    - [x] Update [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) to use [MainContent](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/MainContent.tsx#35-159)
+    - [x] Verify integration with `TodoPanel` and [Header](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/StickyHeader.tsx#19-74)
+- [x] **Verification**: Validate Performance & Features <!-- id: 8 -->
+    - [x] Verify scrolling in long sessions
+    - [x] Verify mouse interactions
+    - [x] Ensure no regressions in existing features
+- [x] **Fix Build & Lint Errors** <!-- id: 9 -->
+    - [x] Fix [ConfigInitDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/ConfigInitDisplay.tsx) (imports, events)
+    - [x] Fix [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx) (types, callbacks)
+    - [x] Fix [MouseContext.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/contexts/MouseContext.tsx) (useMemo, logger)
+    - [x] Fix [VirtualizedList.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/shared/VirtualizedList.tsx) (overflowY)
+    - [x] Create [ink-utils.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/ink-utils.ts) and fix [ScrollProvider](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/contexts/ScrollProvider.tsx#76-350)/[useMouseClick](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/useMouseClick.ts#11-43)
+    - [x] Create [color-utils.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/color-utils.ts) and [debug.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/debug.ts)
+    - [x] Fix [useAnimatedScrollbar.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/hooks/useAnimatedScrollbar.ts)
+    - [x] Fix [events.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/events.ts) and [keyMatchers.test.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/keyMatchers.test.ts)
+    - [x] Verify build and lint pass
+- [x] **Refine ConfigInitDisplay Logic** <!-- id: 10 -->
+    - [x] Update [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) to conditionally render [ConfigInitDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/ConfigInitDisplay.tsx#14-47)
+- [/] **Compare ToolCall UI** <!-- id: 11 -->
+    - [x] Compare [ToolGroupMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx)
+    - [x] Compare [ToolMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolMessage.tsx)
+    - [x] Investigate [ToolResultDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/messages/ToolResultDisplay.tsx#38-128) usage
+- [/] **Port ToolCall UI Components** <!-- id: 12 -->
+    - [x] Create [ToolShared.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolShared.tsx) (extract common components)
+    - [x] Port [StickyHeader.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/StickyHeader.tsx)
+    - [x] Port [ToolResultDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolResultDisplay.tsx)
+    - [ ] Port [ShellInputPrompt.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/ShellInputPrompt.tsx)
+    - [ ] Port [ShellToolMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ShellToolMessage.tsx)
+    - [ ] Refactor [ToolMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolMessage.tsx) to use new components
+    - [ ] Refactor [ToolGroupMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx) to integrate StickyHeader and ShellToolMessage

@@ -1,0 +1,17 @@
+{
+  "id": "ses_43f803243ffepImNLyJmB7V2b5",
+  "slug": "eager-canyon",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Lockfile unsupported peer flags error",
+  "time": {
+    "created": 1768461159868,
+    "updated": 1768461558088
+  },
+  "summary": {
+    "additions": 27,
+    "deletions": 1,
+    "files": 1
+  }
+}

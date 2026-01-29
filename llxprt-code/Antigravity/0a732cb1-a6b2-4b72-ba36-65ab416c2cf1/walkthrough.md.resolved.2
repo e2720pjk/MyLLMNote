@@ -1,0 +1,39 @@
+# Walkthrough - IME Ctrl+C & Deadlock Fix
+
+## Changes
+
+### CLI
+
+#### [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/AppContainer.tsx)
+
+-   Added `await runExitCleanup()` before `process.exit(0)` in the `useEffect` hook that handles `quittingMessages`.
+-   This ensures that when the application exits via the `/quit` command or the IME-mapped `Ctrl+C` path, the terminal is correctly restored.
+
+#### [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)
+
+-   Updated [registerCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#14-17) to fix a deadlock where the cleanup handler waited for the process to exit before unmounting the UI.
+-   **Optimization**: Removed `await instance.waitUntilExit()` entirely as it was found to hang during explicit exit.
+-   Replaced with: `instance.unmount()` -> `await 10ms` (flush) -> `instance.clear()`.
+-   This ensures immediate exit without the 5-second timeout delay.
+
+## Verification Results
+
+### Manual Verification
+> [!IMPORTANT]
+> Please perform the following steps to verify the fixes:
+
+1.  **Command Quit Test (Optimization Fix)**:
+    -   Launch the CLI: `npm run dev` (or equivalent).
+    -   Run `/quit`.
+    -   **Expected Result**: The CLI should exit **immediately** (no 5s delay).
+
+2.  **IME Ctrl+C Test (Terminal Corruption Fix)**:
+    -   Launch the CLI.
+    -   Enable an IME (e.g., Chinese/Japanese).
+    -   Press `Ctrl+C` (which generates the mapped sequence).
+    -   **Expected Result**: The CLI should exit *cleanly*. The terminal cursor should be visible, and typing should echo characters.
+
+3.  **Standard Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Press standard `Ctrl+C`.
+    -   **Expected Result**: Clean exit.

@@ -1,0 +1,69 @@
+# Opencode Agent Interface
+
+## 1. Environment & Availability
+
+**CRITICAL**: `opencode` is a **system-level CLI tool** installed in the environment.
+- It is **NOT** a file in the user's project.
+- Do **NOT** search for it in the file system.
+- **Verification**: If you need to confirm availability, run:
+  ```bash
+  which opencode
+  ```
+
+## 2. Role Definition
+
+**Opencode** acts as your **Senior Technical Reviewer**.
+
+- **You (The Agent)**: **Architect & Builder**. You are responsible for creating plans, writing code, and verifying results.
+- **Opencode (The Reviewer)**: **Quality Assurance**. Responsible *only* for auditing your plans and walkthroughs to ensure feasibility, completeness, and quality.
+
+## 3. The "Plan Check" Workflow
+
+You must obtain feedback from Opencode **before** modifying any code.
+
+```text
+[Phase 1: Draft]
+    ├── Analyze User Request
+    ├── Create `implementation_plan.md` (Detailed steps)
+    └── Create `walkthrough.md` (Verification strategy)
+    ↓
+[Phase 2: Review (MANDATORY)]
+    ├── Consult Opencode
+    └── Command: `opencode run "Review this plan..."`
+    ↓
+[Phase 3: Refine]
+    ├── Analyze Opencode's feedback
+    └── Update artifacts (`implementation_plan.md` / `walkthrough.md`)
+    ↓
+[Phase 4: Execute]
+    └── You (The Agent) implement the changes.
+```
+
+## 4. Review Protocol
+
+Use the following template to request a review. Ensure you include the **full content** of your artifacts.
+
+**Command:**
+```bash
+opencode run "
+Role: Senior Tech Lead
+Task: Review the following implementation plan and walkthrough.
+Focus:
+1. Feasibility: Will this work?
+2. Completeness: Are there missing edge cases?
+3. Risks: Any potential side effects?
+
+[Implementation Plan]
+(Paste content of implementation_plan.md)
+
+[Walkthrough]
+(Paste content of walkthrough.md)
+"
+```
+
+## 5. Success Criteria
+
+A plan is considered "Ready for Execution" only when:
+1.  You have run the `opencode` review command.
+2.  You have addressed any critical issues raised by Opencode.
+3.  The `implementation_plan.md` reflects the refined approach.

@@ -1,0 +1,23 @@
+Review of UI Layout Discrepancies between llxprt-code (Source) and llxprt-code-4 (Target)
+
+Context:
+Migrating Tabs feature from source to target. E2E tests confirm functionality, but the user reports layout differences in tab positions and content.
+
+Key Findings:
+1. DefaultAppLayout.tsx
+   - Source: Renders ConfigInitDisplay above MainContent.
+   - Target: ConfigInitDisplay is missing from DefaultAppLayout.
+   - Target: Uses new Notifications component instead of inline startupWarnings/UpdateNotification.
+   - Target: Uses hardcoded useAlternateBuffer boolean logic instead of a hook.
+
+2. MainContent.tsx
+   - Both: TabBar is rendered above tab content.
+   - Both: AppHeader (Banner/Tips) is inside the tab content area (e.g. at the top of Chat tab).
+   - Target version has more props passed to AppHeader (terminalWidth, config) and McpStatus.
+
+3. AppHeader.tsx
+   - Target: Removed branchName prop from Header component.
+   - Target: Added terminalWidth prop for Header rendering.
+
+Requirement:
+Determine if these changes are due to incomplete migration or intentional upstream design changes. Specifically check if TabBar position relative to other global components (like ConfigInitDisplay or Footer) is correct. Assist in aligning with source llxprt-code if migration was incomplete.

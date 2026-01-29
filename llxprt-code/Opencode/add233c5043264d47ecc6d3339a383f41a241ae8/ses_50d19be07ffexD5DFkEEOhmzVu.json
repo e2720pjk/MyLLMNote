@@ -1,0 +1,17 @@
+{
+  "id": "ses_50d19be07ffexD5DFkEEOhmzVu",
+  "version": "1.0.133",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "parentID": "ses_50d19f9d3ffe3RznTma1d4PQQF",
+  "title": "Read DebugTab from llxprt-code-3 (@explore subagent)",
+  "time": {
+    "created": 1765011767800,
+    "updated": 1765011792658
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

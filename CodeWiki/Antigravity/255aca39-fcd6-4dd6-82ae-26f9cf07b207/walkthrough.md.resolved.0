@@ -1,0 +1,26 @@
+# Walkthrough: Tool Integration in `llxprt-code-2`
+
+I have successfully integrated [CodeSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/codesearch.ts#52-92) and [WebFetchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/webfetch.ts#30-71) from `opencode` into `llxprt-code-2`.
+
+## Changes
+
+### New Tools
+- **[CodeSearchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/codesearch.ts)**: Enables searching for code snippets and documentation via `mcp.exa.ai`.
+- **[WebFetchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/webfetch.ts)**: Enables fetching and converting web content (HTML to Markdown/Text) directly using `node-fetch`, `turndown`, and `cheerio`. Registered as `DirectWebFetchTool` to coexist with the existing Gemini-based [WebFetchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/webfetch.ts#30-71).
+
+### Configuration
+- **[config.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/config/config.ts)**: Registered both tools in the [ToolRegistry](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/tool-registry.ts#179-691).
+
+### Verification
+I implemented comprehensive unit tests for both tools to ensure reliability and correct error handling.
+
+- **[codesearch.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/codesearch.test.ts)**: Verified API interaction, parameter validation, and error handling.
+- **[webfetch.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/webfetch.test.ts)**: Verified URL fetching, content conversion (HTML/Markdown), and error handling.
+
+## Validation Results
+All unit tests passed successfully.
+
+```bash
+✓ packages/core/src/tools/codesearch.test.ts (5 tests)
+✓ packages/core/src/tools/webfetch.test.ts (5 tests)
+```

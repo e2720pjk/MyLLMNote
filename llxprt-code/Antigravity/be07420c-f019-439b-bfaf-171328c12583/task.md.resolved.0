@@ -1,0 +1,6 @@
+# Task: Review Tree-sitter to ast-grep Migration Plan
+
+- [ ] Read and analyze [llxprt-code-2/docs/migration-tree-sitter-to-ast-grep.md](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/docs/migration-tree-sitter-to-ast-grep.md) <!-- id: 0 -->
+- [ ] Read relevant performance reports if available ([llxprt-code-2/tools_performance_test/performance_report.md](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/tools_performance_test/performance_report.md)) <!-- id: 1 -->
+- [ ] Assess feasibility and quality of the plan <!-- id: 2 -->
+- [ ] Provide comprehensive feedback and recommendations <!-- id: 3 -->

@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan to fix deadlock by adding AbortSignal support to retryWithBackoff and OpenAIProvider.",
+  "updatedAt": "2025-12-02T13:30:29.487950Z"
+}

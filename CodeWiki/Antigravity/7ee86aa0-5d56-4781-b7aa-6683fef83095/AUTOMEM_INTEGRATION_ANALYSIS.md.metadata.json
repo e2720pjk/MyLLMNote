@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_OTHER",
+  "summary": "Analysis of AutoMem integration. Recommends using it as the 'Semantic Memory' layer (Sidecar) while keeping CGR for structural data.",
+  "updatedAt": "2026-01-19T07:41:12.850489Z"
+}

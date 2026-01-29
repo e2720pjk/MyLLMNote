@@ -1,0 +1,17 @@
+{
+  "id": "ses_50f98afdaffe2MX6pfMRCxR88Z",
+  "version": "1.0.133",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_50f98ce82ffeUh4wnTYnqE07b2",
+  "title": "Explore ink usage patterns (@explore subagent)",
+  "time": {
+    "created": 1764969893925,
+    "updated": 1764970018580
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

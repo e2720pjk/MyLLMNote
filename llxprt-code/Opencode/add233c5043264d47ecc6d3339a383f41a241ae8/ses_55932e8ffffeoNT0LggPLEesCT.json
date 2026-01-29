@@ -1,0 +1,21 @@
+{
+  "id": "ses_55932e8ffffeoNT0LggPLEesCT",
+  "version": "1.0.85",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4",
+  "title": "Writing md file note for branch",
+  "time": {
+    "created": 1763735049984,
+    "updated": 1763735096500
+  },
+  "summary": {
+    "additions": 90,
+    "deletions": 0,
+    "files": 1
+  },
+  "revert": {
+    "messageID": "msg_aa6cd1702001XKCtpJp05KypSg",
+    "snapshot": "ba4fe607bf62f0c5af6251682f71467e1a25cc41",
+    "diff": "diff --git a/BRANCH_NOTES.md b/BRANCH_NOTES.md\ndeleted file mode 100644\nindex c00286b..0000000\n--- a/BRANCH_NOTES.md\n+++ /dev/null\n@@ -1,90 +0,0 @@\n-# Main Branch Notes - November 2025\n-\n-## Recent Changes Overview\n-\n-This branch contains several important fixes and improvements focused on UI performance, memory management, and terminal handling.\n-\n-### Key Fixes\n-\n-#### 1. Production React Builds (PR #615)\n-\n-- **Issue**: Performance buffer overflow in development React builds\n-- **Solution**: Enabled production React builds to prevent performance issues\n-- **Files**: `esbuild.config.js`, build configurations\n-- **Impact**: Improved performance and stability\n-\n-#### 2. Memory Leak in SettingsDialog (PR #607)\n-\n-- **Issue**: Memory leak in SettingsDialog component\n-- **Solution**: Fixed memory management in dialog components\n-- **Files**: `packages/cli/src/ui/components/SettingsDialog.tsx`, related test files\n-- **Impact**: Reduced memory usage and improved component lifecycle management\n-\n-#### 3. Terminal Raw Mode Fix (Issue #263)\n-\n-- **Issue**: Terminal sequences and raw mode not properly restored after tmux reattach\n-- **Solution**: Re-enabled raw mode and terminal sequences restoration\n-- **Files**: `packages/cli/src/ui/utils/terminalSequences.ts`, `packages/cli/src/ui/contexts/KeypressContext.tsx`\n-- **Impact**: Better terminal experience, especially in tmux environments\n-\n-#### 4. Dialog Key Handling Improvements\n-\n-- **Enhancement**: Better key event handling in dialog components\n-- **Files**: Multiple dialog components in `packages/cli/src/ui/components/`\n-- **Impact**: Improved user interaction with dialogs\n-\n-### Technical Improvements\n-\n-#### UI Component Enhancements\n-\n-- Updated multiple dialog components for better performance:\n-  - `LoadProfileDialog.tsx`\n-  - `LoggingDialog.tsx`\n-  - `ProviderDialog.tsx`\n-  - `ProviderModelDialog.tsx`\n-  - `ToolsDialog.tsx`\n-\n-#### Test Infrastructure\n-\n-- Added try/finally blocks to test cleanup for better resource management\n-- Enhanced test coverage for UI components and key handling\n-\n-#### Dependencies\n-\n-- Updated package dependencies across CLI and core packages\n-- Synchronized package-lock.json for consistency\n-\n-### Testing & Quality\n-\n-- All changes include corresponding test updates\n-- Improved test reliability with better cleanup procedures\n-- Enhanced type safety in UI components\n-\n-## Current Status\n-\n-The branch is stable and includes:\n-\n-- ✅ Performance improvements\n-- ✅ Memory leak fixes\n-- ✅ Terminal handling enhancements\n-- ✅ Better user experience in dialog interactions\n-- ✅ Comprehensive test coverage\n-\n-## Next Steps\n-\n-These fixes prepare the codebase for:\n-\n-1. Better performance in production environments\n-2. More reliable terminal interactions\n-3. Enhanced user experience\n-4. Stronger foundation for future UI improvements\n-\n-## Verification\n-\n-To verify these changes work correctly:\n-\n-1. Run `npm run build` - should complete without errors\n-2. Test dialog interactions in the CLI\n-3. Verify terminal behavior in tmux sessions\n-4. Check memory usage during extended sessions\n-5. Run the full test suite to ensure no regressions"
+  }
+}

@@ -1,0 +1,47 @@
+# Task: Review UI Alignment between llxprt-code-3 and gemini-cli
+
+## Status
+- [/] List and compare UI component files in both projects <!-- id: 0 -->
+- [x] Compare `DefaultAppLayout.tsx` structure <!-- id: 1 -->
+- [/] Compare `App.tsx` / `gemini.tsx` provider stack (re-verify) <!-- id: 2 -->
+- [x] Compare key components (`InputPrompt`, `HistoryItemDisplay`, `Tool*Message`) <!-- id: 3 -->
+- [x] Identify missing or mismatched components/logic <!-- id: 4 -->
+- [x] Report findings to user <!-- id: 5 -->
+- [x] Port `useMouseClick` hook if missing (Already exists) <!-- id: 6 -->
+- [x] Update `InputPrompt.tsx` with mouse interaction logic <!-- id: 7 -->
+- [x] Update `Composer.tsx` to pass `isEmbeddedShellFocused` <!-- id: 8 -->
+- [x] Verify fixes <!-- id: 9 -->
+- [x] Align Input UI with `gemini-cli` (InputPrompt, AppContainer, Composer) <!-- id: 24 -->
+- [x] Fix history persistence on resize (Restored `key={uiState.staticKey}` to align with `gemini-cli`) <!-- id: 10 -->
+- [x] Address PR Review Feedback <!-- id: 11 -->
+    - [x] `packages/cli/src/ui/utils/color-utils.ts`: Add validation to `interpolateColor`
+    - [x] `packages/cli/src/ui/components/messages/ToolMessage.tsx`: Check `AnsiOutput` casting and remove `@ts-expect-error`
+    - [x] `packages/cli/src/ui/components/messages/ShellToolMessage.tsx`: Remove `@ts-expect-error`
+    - [x] `packages/cli/src/ui/hooks/shellCommandProcessor.ts`: Add `getEnableInteractiveShell` to `Config` interface
+    - [x] `packages/core/src/config/config.ts`: Ensure `ShellExecutionConfig` fields are handled
+    - [-] `packages/cli/src/config/settingsSchema.ts`: Remove duplicate `preferredEditor` (Deferred: Required for build compatibility, added TODO)
+    - [x] `packages/cli/src/ui/components/Composer.tsx`: Verify placeholder- [x] Review auto-merged changes for regressions <!-- id: 4 -->
+    - [x] Verify `version` variable sourcing and usage <!-- id: 5 -->
+    - [x] Check `UIStateContext.tsx` for correct type definitions <!-- id: 6 -->
+    - [x] Review `DefaultAppLayout.tsx` for layout consistency <!-- id: 7 -->
+    - [x] Verify `ToolGroupMessage.tsx` layout fixes <!-- id: 8 -->
+    - [x] Fix UI stability regression in `ToolGroupMessage.tsx` <!-- id: 23 -->
+- [x] Resolve merge conflicts in `packages/core/src/config/config.ts` <!-- id: 25 -->
+- [x] Resolve merge conflicts in `packages/cli/src/ui/AppContainer.tsx` <!-- id: 26 -->
+- [x] Resolve merge conflicts in `packages/cli/src/ui/components/HistoryItemDisplay.tsx` <!-- id: 27 -->
+- [x] Resolve merge conflicts in `packages/cli/src/ui/contexts/UIStateContext.tsx` <!-- id: 28 -->
+- [x] Resolve merge conflicts in `packages/cli/src/ui/layouts/DefaultAppLayout.tsx` <!-- id: 29 -->
+- [x] Resolve merge conflicts in `packages/cli/src/config/settings.test.ts` <!-- id: 30 -->
+- [x] Verify merge resolution (Lint, Typecheck, Test) <!-- id: 31 -->
+- [x] Analyze Codex Report & Fixes <!-- id: 32 -->
+    - [x] Investigate `llxprt-code-4` rendering components (`MainContent`, `AppContainer`) <!-- id: 33 -->
+    - [x] Evaluate "Static Removal" proposal (Rejected: breaks scrollback) <!-- id: 34 -->
+    - [x] Evaluate "Dynamic Height" proposal (Accepted: calculation needs improvement) <!-- id: 35 -->
+    - [x] Formulate and present recommendation <!-- id: 36 -->
+- [x] Apply fixes to llxprt-code-4 <!-- id: 6 -->
+    - [x] Fix `isResponding` check in `useGeminiStream.ts` <!-- id: 7 -->
+    - [x] Refine `AppContainer.tsx` height calculation (removed deps) <!-- id: 8 -->
+- [x] Align `AppContainer.tsx` Height Strategy with `gemini-cli` <!-- id: 9 -->
+    - [x] Update deps to `[buffer, terminalHeight, terminalWidth, showTodoPanel]` <!-- id: 10 -->
+    - [x] Add Debug dependencies `[showErrorDetails]` (Removed `consoleMessages.length` to fix loop) <!-- id: 11 -->
+    - [x] Verify fixes (Lint, Typecheck, Test) <!-- id: 40 -->

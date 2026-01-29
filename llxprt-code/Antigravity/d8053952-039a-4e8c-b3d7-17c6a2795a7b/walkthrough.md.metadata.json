@@ -1,0 +1,5 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary":  "Documentation of ASTEditTool refactoring, including BM25 removal, Git-based Working Set implementation, and File Freshness Check.",
+  "updatedAt":  "2026-01-15T00:38:29.203003Z"
+}

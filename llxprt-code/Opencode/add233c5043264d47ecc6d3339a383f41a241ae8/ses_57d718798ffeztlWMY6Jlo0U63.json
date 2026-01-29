@@ -1,0 +1,17 @@
+{
+  "id": "ses_57d718798ffeztlWMY6Jlo0U63",
+  "version": "1.0.62",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_57d71a174ffeZ0821fn8CsuZb7",
+  "title": "Verify provider aliases implementation (@general subagent)",
+  "time": {
+    "created": 1763126966375,
+    "updated": 1763127071225
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

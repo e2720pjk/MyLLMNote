@@ -1,0 +1,16 @@
+{
+  "id": "ses_56b54fcd7ffe42wv83a33vN79H",
+  "version": "1.0.68",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Reviewing gh pr#16 latest comments authenticitying handling",
+  "time": {
+    "created": 1763430826792,
+    "updated": 1763437498732
+  },
+  "summary": {
+    "additions": 13,
+    "deletions": 7,
+    "files": 4
+  }
+}

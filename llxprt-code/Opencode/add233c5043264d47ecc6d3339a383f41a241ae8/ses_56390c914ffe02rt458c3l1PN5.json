@@ -1,0 +1,16 @@
+{
+  "id": "ses_56390c914ffe02rt458c3l1PN5",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing useInput to useKeypress migration for ToolsDialog.tsx",
+  "time": {
+    "created": 1763561125612,
+    "updated": 1763561584894
+  },
+  "summary": {
+    "additions": 10,
+    "deletions": 6,
+    "files": 1
+  }
+}

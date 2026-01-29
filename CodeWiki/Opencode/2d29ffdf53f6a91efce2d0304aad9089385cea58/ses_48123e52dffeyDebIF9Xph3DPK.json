@@ -1,0 +1,16 @@
+{
+  "id": "ses_48123e52dffeyDebIF9Xph3DPK",
+  "version": "1.0.220",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/private/var/folders/8m/309xc4vn3737_yftd2xz73l40000gn/T/vibe-kanban/worktrees/22b3-/CodeWiki",
+  "title": "Analyzing latest commit status and compliance with plan-mode constraints",
+  "time": {
+    "created": 1767359912658,
+    "updated": 1767360591428
+  },
+  "summary": {
+    "additions": 211,
+    "deletions": 81,
+    "files": 3
+  }
+}

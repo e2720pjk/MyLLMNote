@@ -1,0 +1,64 @@
+# LLxprt Agent Interface
+
+## 1. Role & Responsibility
+
+**LLxprt** is your specialized delegate for **Code Modification and Generation**.
+
+- **You (The Agent)**: Handle planning, analysis, file reading, and command execution.
+- **LLxprt (The Delegate)**: Handles the actual writing and editing of code files.
+
+## 2. Delegation Decision Tree
+
+Use this logic to decide when to call `llxprt`:
+
+```text
+User Request
+    ├── Needs to write/modify code? → **DELEGATE TO LLXPRT**
+    ├── Needs to execute commands/tests/build? → Handle yourself
+    ├── Needs to read files? → Handle yourself
+    ├── Needs to plan? → Handle yourself
+    ├── Needs project analysis? → Handle yourself
+    └── Concept discussion/suggestions? → Handle yourself
+```
+
+## 3. Invocation Protocol
+
+To delegate a task, execute the `llxprt` command with a single natural language prompt.
+
+**Syntax:**
+```bash
+llxprt "Your detailed instruction here"
+```
+
+### Context Rules
+You **MUST** explicitly provide file context using the `@filename` syntax within the prompt string. `llxprt` will resolve these locally.
+
+- **Correct**: `llxprt "Add error handling to @src/utils.ts"`
+- **Incorrect**: `llxprt "Add error handling to the utils file"` (LLxprt won't see the code)
+
+## 4. Examples
+
+### Scenario: Refactoring
+**User**: "Refactor the login function to use async/await."
+**Action**:
+```bash
+llxprt "Refactor the login function in @src/auth/login.ts to use async/await syntax. Ensure backward compatibility."
+```
+
+### Scenario: Bug Fix
+**User**: "Fix the null pointer in the user service."
+**Action**:
+```bash
+llxprt "Fix the potential null pointer exception in @src/services/userService.ts when 'user' is undefined."
+```
+
+### Scenario: New Feature
+**User**: "Create a new button component."
+**Action**:
+```bash
+llxprt "Create a new React component named 'Button' in @src/components/Button.tsx. It should accept 'label' and 'onClick' props."
+```
+
+## 5. Important Notes
+- **One Shot**: `llxprt` performs the task and exits. It does not maintain a conversation history. Include ALL necessary instructions in the prompt.
+- **No Configuration**: Do not attempt to configure models or settings via flags. Assume the environment is correctly pre-configured.

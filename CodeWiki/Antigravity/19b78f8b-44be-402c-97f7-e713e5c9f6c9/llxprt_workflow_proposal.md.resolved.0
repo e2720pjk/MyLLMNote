@@ -1,0 +1,109 @@
+# llxprt Agent Workflow Proposal
+
+## 1. Mode Assessment: Interactive vs. Non-Interactive
+
+### Findings
+- **Interactive Mode** (`llxprt` or `llxprt -i "prompt"`):
+  - Designed for human-in-the-loop sessions.
+  - Keeps the process alive, waiting for user input.
+  - **Verdict for Agents**: Generally **NOT recommended** for automated agent workflows unless you have a sophisticated way to manage `stdin`/`stdout` streams (like `expect` scripts or a dedicated terminal manager). It introduces complexity in handling process termination and output parsing.
+
+- **Non-Interactive Mode** (`llxprt "prompt"`):
+  - Executes the given prompt and exits.
+  - Returns standard exit codes (0 for success).
+  - **Verdict for Agents**: **Highly Recommended**. It treats the agent as a deterministic tool: Input -> Processing -> Output -> Exit. This fits perfectly into standard CI/CD pipelines, script chains, and agent tool calls.
+
+## 2. Accessing "Interactive" Features (Slash Commands)
+
+You asked if features visible via `/help` in interactive mode are accessible in non-interactive mode.
+
+**Yes, they are.**
+
+Our testing confirmed that passing a slash command as the prompt argument works exactly as expected.
+
+- **Command**: `llxprt "/help"`
+- **Result**: Executes the help logic and prints the output, then exits.
+
+This means you do **not** need special flags to access these features. You simply pass the slash command string as the prompt.
+
+### Examples
+| Feature | Interactive Command | Non-Interactive Equivalent |
+| :--- | :--- | :--- |
+| Show Help | `/help` | `llxprt "/help"` |
+| Install IDE Ext | `/ide install` | `llxprt "/ide install"` |
+| Custom Command | `/custom-cmd` | `llxprt "/custom-cmd"` |
+
+## 3. Recommended Agent Workflow Template
+
+If you are building an agent or a script that utilizes `llxprt`, follow this pattern:
+
+### Workflow Structure
+
+1.  **Construct the Prompt**:
+    - Determine if you need a natural language task (e.g., "Fix bug in X") or a slash command (e.g., "/help").
+    - Escape any special characters if running from a shell.
+
+2.  **Execute Command**:
+    - Run `llxprt "YOUR_PROMPT_HERE"`.
+    - Capture `stdout` and `stderr`.
+
+3.  **Handle Output**:
+    - **Success (Exit Code 0)**: Parse `stdout` for the result.
+    - **Failure (Non-zero Exit Code)**: Check `stderr` for errors.
+
+### Template (Bash Example)
+
+```bash
+#!/bin/bash
+
+TASK="$1"
+
+# 1. Run llxprt in non-interactive mode
+echo "Running llxprt with task: $TASK"
+OUTPUT=$(llxprt "$TASK")
+EXIT_CODE=$?
+
+# 2. Check status
+if [ $EXIT_CODE -eq 0 ]; then
+  echo "Success!"
+  echo "Result: $OUTPUT"
+else
+  echo "Error executing llxprt."
+  echo "$OUTPUT"
+  exit 1
+fi
+```
+
+### Template (Python Agent Tool Example)
+
+If you are integrating this as a tool for another AI agent:
+
+```python
+import subprocess
+
+def run_llxprt_task(prompt: str) -> str:
+    """
+    Executes a task using the llxprt CLI agent.
+    
+    Args:
+        prompt: The natural language instruction or slash command (e.g., "/help").
+    """
+    try:
+        result = subprocess.run(
+            ["llxprt", prompt],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        return result.stdout
+    except subprocess.CalledProcessError as e:
+        return f"Error: {e.stderr}"
+
+# Usage
+print(run_llxprt_task("/help"))
+print(run_llxprt_task("Refactor src/utils.ts"))
+```
+
+## Summary
+- **Use Non-Interactive Mode** (`llxprt "prompt"`) for reliability and simplicity.
+- **Pass Slash Commands** directly as the prompt string to access "interactive" features.

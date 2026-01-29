@@ -1,0 +1,17 @@
+{
+  "id": "ses_43db04a3dffeV5uFUr3prnRKeT",
+  "slug": "jolly-cactus",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Bun.lock fix for UI: peer dep @vybestack/llxprt-code-core missing",
+  "time": {
+    "created": 1768491562435,
+    "updated": 1768504521935
+  },
+  "summary": {
+    "additions": 22,
+    "deletions": 7,
+    "files": 1
+  }
+}

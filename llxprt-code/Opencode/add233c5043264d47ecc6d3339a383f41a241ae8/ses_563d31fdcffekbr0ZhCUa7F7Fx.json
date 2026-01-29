@@ -1,0 +1,16 @@
+{
+  "id": "ses_563d31fdcffekbr0ZhCUa7F7Fx",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing Tool Management display fix report",
+  "time": {
+    "created": 1763556778019,
+    "updated": 1763558365808
+  },
+  "summary": {
+    "additions": 1,
+    "deletions": 3,
+    "files": 1
+  }
+}

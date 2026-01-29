@@ -1,0 +1,618 @@
+
+[PROMPT_LOADER] ========== Loading tools/shell.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/shell.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-p
+rompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/read-file.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/read-file.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/defau
+lt-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/delete_line_range.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/delete_line_range.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bund
+le/default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/edit.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/edit.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-pr
+ompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/insert_at_line.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/insert_at_line.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/
+default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/read_line_range.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/read_line_range.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle
+/default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/write-file.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/write-file.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/defa
+ult-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/grep.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/grep.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-pr
+ompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/glob.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/glob.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-pr
+ompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/ls.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/ls.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-prom
+pts.json)
+
+[PROMPT_LOADER] ========== Loading tools/memory.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/memory.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-
+prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/save-memory.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/save-memory.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/def
+ault-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/read-many-files.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/read-many-files.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle
+/default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/todo-read.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/todo-read.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/defau
+lt-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/todo-write.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/todo-write.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/defa
+ult-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/todo-pause.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/todo-pause.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/defa
+ult-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/google-web-fetch.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/google-web-fetch.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundl
+e/default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/direct-web-fetch.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/direct-web-fetch.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundl
+e/default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/code-search.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/code-search.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/def
+ault-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/google-web-search.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/google-web-search.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bund
+le/default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/exa-web-search.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/exa-web-search.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/
+default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/list-subagents.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/list-subagents.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/
+default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/task.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/scripts/start.js
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/task.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-pr
+ompts.json)
+Checking build status...
+Build is up-to-date.
+
+[PROMPT_LOADER] ========== Loading tools/shell.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/shell.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-p
+rompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/read-file.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/read-file.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/defau
+lt-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/delete_line_range.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/delete_line_range.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bund
+le/default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/edit.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/edit.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-pr
+ompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/insert_at_line.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/insert_at_line.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/
+default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/read_line_range.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/read_line_range.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle
+/default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/write-file.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/write-file.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/defa
+ult-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/grep.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/grep.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-pr
+ompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/glob.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/glob.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-pr
+ompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/ls.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/ls.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-prom
+pts.json)
+
+[PROMPT_LOADER] ========== Loading tools/memory.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/memory.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-
+prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/save-memory.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/save-memory.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/def
+ault-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/read-many-files.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/read-many-files.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle
+/default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/todo-read.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/todo-read.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/defau
+lt-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/todo-write.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/todo-write.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/defa
+ult-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/todo-pause.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/todo-pause.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/defa
+ult-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/google-web-fetch.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/google-web-fetch.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundl
+e/default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/direct-web-fetch.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/direct-web-fetch.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundl
+e/default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/code-search.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/code-search.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/def
+ault-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/google-web-search.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/google-web-search.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bund
+le/default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/exa-web-search.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/exa-web-search.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/
+default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/list-subagents.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/list-subagents.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/
+default-prompts.json)
+
+[PROMPT_LOADER] ========== Loading tools/task.md ==========
+[PROMPT_LOADER] __dirname: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/core/dist/src/prompt-config/defau
+lts
+[PROMPT_LOADER] process.cwd(): /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[PROMPT_LOADER] process.argv[0]: /Users/caishanghong/.nvm/versions/node/v22.16.0/bin/node
+[PROMPT_LOADER] process.argv[1]: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli
+[PROMPT_LOADER] process.platform: darwin
+[PROMPT_LOADER] NODE_ENV: undefined
+[PROMPT_LOADER] CI: undefined
+[PROMPT_LOADER] Loaded tools/task.md from manifest (/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/bundle/default-pr
+ompts.json)
+[DevTools Hook] Inject called by renderer: 19.1.0
+Current heap size 4144.00 MB
+Loaded profile 'opencode-big-pickle': provider=openai, model=big-pickle
+Applied profile 'opencode-big-pickle' with provider: openai, model: big-pickle
+[DEBUG] IDE mode configuration: {
+  'argv.ideMode': undefined,
+  'effectiveSettings.ui.ideMode': true,
+  'final ideMode': true
+}
+[DEBUG] [MemoryDiscovery] Loading server hierarchical memory for CWD: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+ (importFormat: tree)
+[DEBUG] [MemoryDiscovery] Found readable global LLXPRT.md: /Users/caishanghong/.llxprt/LLXPRT.md
+[DEBUG] [MemoryDiscovery] Searching for LLXPRT.md starting from CWD: /Users/caishanghong/Shopify/cli-tool/llxprt-code-4
+[DEBUG] [MemoryDiscovery] Determined project root: None
+[DEBUG] [MemoryDiscovery] Final ordered LLXPRT.md paths to read: ["/Users/caishanghong/.llxprt/LLXPRT.md","/Users/caisha
+nghong/Shopify/LLXPRT.md"]
+[DEBUG] [MemoryDiscovery] Successfully read and processed imports: /Users/caishanghong/.llxprt/LLXPRT.md (Length: 109)
+[DEBUG] [MemoryDiscovery] Successfully read and processed imports: /Users/caishanghong/Shopify/LLXPRT.md (Length: 95)
+[DEBUG] [MemoryDiscovery] Combined instructions length: 392
+[DEBUG] [MemoryDiscovery] Combined instructions (snippet): --- Context from: ../../../.llxprt/LLXPRT.md ---
+# LANGUAGE
+
+- Conversations: **繁體中文**
+- Code and inline comments: English
+- Logs and debug messages: English
+--- End of Context from: ../../../.llxprt/LLXPRT.md ---
+
+--- Context from: ../../LLXPRT.md ---
+# bd - Beads Issue Tracker
+
+BEFORE ANYTHING ELSE: run 'bd onboard' and follow the instructions
+--- End of Context from: ../../LLXPRT.md ---...
+Current heap size 4144.00 MB
+
+╭───────────╮
+│  > /quit  │
+╰───────────╯
+
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                      │
+│  Agent powering down. Goodbye!                                                                                       │
+│                                                                                                                      │
+│  Interaction Summary                                                                                                 │
+│  Session ID:                 session-1766242059382-5frx51wnb                                                         │
+│  Tool Calls:                 1 ( ✓ 1 x 0 )                                                                           │
+│  Success Rate:               100.0%                                                                                  │
+│                                                                                                                      │
+│  Performance                                                                                                         │
+│  Wall Time:                  18.1s                                                                                   │
+│  Agent Active:               180ms                                                                                   │
+│    » API Time:               0s (0.0%)                                                                               │
+│    » Tool Time:              180ms (100.0%)                                                                          │
+│                                                                                                                      │
+│  Token Tracking                                                                                                      │
+│  Tokens Per Minute:          974.5390693590869                                                                       │
+│  Throttle Wait Time:         0ms                                                                                     │
+│    » Session Token Usage:   Session Tokens - Input: 15,680, Output: 37, Cache: 7,852, Tool: 0, Thought: 0, Total:    │
+│                             23,569                                                                                   │
+│                                                                                                                      │
+│                                                                                                                      │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+
+Pane is dead (status 0, Sat Dec 20 22:47:57 2025)

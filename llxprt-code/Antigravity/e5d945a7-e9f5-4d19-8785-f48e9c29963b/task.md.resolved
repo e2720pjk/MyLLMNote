@@ -1,0 +1,23 @@
+- [x] Check if [packages/cli/dist/index.js](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/dist/index.js) exists
+- [x] Search for "chutes" in the codebase to understand the profile
+- [ ] Read [packages/cli/src/providers/aliases/chutes-ai.config](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/providers/aliases/chutes-ai.config)
+- [x] Verify `llxprt` command execution (e.g. help or version)
+- [x] Answer user about capability
+- [x] Run `llxprt --profile-load chutes`
+- [x] Send input: "閱讀分支變動，並提供摘要" (Used `--prompt` argument)
+- [x] Capture and report CLI response
+- [x] Run `LLXPRT_AUTH_TYPE=none node packages/cli/dist/index.js --profile-load chutes` (Interactive)
+- [x] Send input: "Hello" via `send_command_input`
+- [x] Verify response in interactive mode (Failed to capture response via tool)
+- [x] Answer user about terminal visibility
+- [x] Start `llxprt` CLI for user interaction test
+- [x] Ask user to attempt interaction
+- [x] Check terminal output for "hi" (Missed input echo, but saw response)
+- [x] Record result of user interaction test (Positive - Response visible)
+- [x] Search for "Initializing..." in codebase
+- [x] Analyze the component rendering "Initializing..."
+- [x] Determine why it might be stuck
+- [x] Propose a fix
+- [x] Modify [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) to conditionally render [ConfigInitDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/ConfigInitDisplay.tsx#14-47)
+- [x] Rebuild CLI
+- [x] Verify fix by running CLI and checking output (Confirmed fix)

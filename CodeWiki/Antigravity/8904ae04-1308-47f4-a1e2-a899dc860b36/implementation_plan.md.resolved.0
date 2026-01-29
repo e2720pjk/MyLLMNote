@@ -1,0 +1,62 @@
+# Joern Integration & Architecture Enhancement Plan
+
+This plan outlines the steps to replace the current AST-based analysis in CodeWiki with Joern's Code Property Graph (CPG) analysis, while enhancing the data models to support advanced features like data-flow documentation.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Joern Dependency**: This integration requires `joern` to be installed and available in the environment's path. We will provide a fallback or clear error message if it's missing.
+> **Breaking Changes to Model**: We are extending the [Node](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#7-44) model. While we aim for backward compatibility, the documentation generation prompts will be updated to expect the new "Enhanced" data structure for better results.
+
+## Proposed Changes
+
+### [Core Models]
+#### [MODIFY] [core.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py)
+- Introduce `EnhancedNode` inheriting from [Node](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#7-44).
+- Add `cfg_data` (Control Flow Graph) and `ddg_data` (Data Dependence Graph) fields.
+- Add `metadata` for language-specific Joern outputs.
+- Redesign [Relationship](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#46-54) to include [type](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/ast_parser.py#138-156) (CALL, DATA_FLOW, INHERITANCE).
+
+---
+
+### [Analysis Layer]
+#### [NEW] [joern_client.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/analysis/joern_client.py)
+- Wrapper for Joern CLI commands.
+- Methods: [parse(repo_path)](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/ast_parser.py#31-68), `query(script_or_cpgql)`.
+- Handles CPG generation and caching.
+
+#### [NEW] [joern_analysis_service.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/analysis/joern_analysis_service.py)
+- Implementation of the analysis orchestrator using Joern.
+- Extracts:
+    - File/Directory structure.
+    - Class/Method hierarchy.
+    - Inter-procedural call graph.
+    - Critical data flows (e.g., parameter propagation).
+
+---
+
+### [Clustering Layer]
+#### [MODIFY] [cluster_modules.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/cluster_modules.py)
+- **Hybrid Clustering**:
+    1. Use NetworkX (or similar) to perform community detection (Louvain/Leiden) on the Joern call graph.
+    2. Group components based on structural topology.
+    3. Send the *pre-grouped* clusters to LLM for **naming** and **high-level summary** only.
+- Reduces LLM token usage and prevents "hallucinated" groupings.
+
+---
+
+### [Synthesis Layer]
+#### [MODIFY] [prompt_template.py](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/prompt_template.py)
+- Update documentation prompts to include "Data Flow Context" retrieved from Joern.
+- Example: "Function `A` takes input `X` which flows from Config file and eventually reaches Database Sink `S`."
+
+## Verification Plan
+
+### Automated Tests
+- Create a test suite under `tests/joern_integration/`.
+- Validate Joern client can parse a small Python/Java project.
+- Compare Joern-based dependency graph with legacy AST-based for basic parity (functions detected, calls detected).
+
+### Manual Verification
+- Run `codewiki generate` on the CodeWiki repo itself using the Joern backend.
+- Inspect the generated `overview.md` for accurate data-flow descriptions.

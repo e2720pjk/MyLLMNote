@@ -1,0 +1,27 @@
+# UI Layout Alignment Plan
+
+## Goal Description
+Align [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) in `llxprt-code-3` with `gemini-cli`'s structure to fix layout issues and improve stability. This involves introducing dynamic width calculation (handling alternate buffer mode) and flicker detection, while preserving `llxprt-code-3`'s specific features like `TodoPanel` and `MainContent`.
+
+## Proposed Changes
+
+### UI Layouts
+
+#### [MODIFY] [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/layouts/DefaultAppLayout.tsx)
+- Import `useFlickerDetector` and [useAlternateBuffer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/hooks/useAlternateBuffer.ts#13-17).
+- Implement dynamic width calculation:
+  - If [isAlternateBuffer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/hooks/useAlternateBuffer.ts#10-12) is true, use `uiState.terminalWidth`.
+  - Otherwise, use `uiState.mainAreaWidth`.
+- Replace hardcoded `width="90%"` with calculated `width`.
+- Add `useFlickerDetector(uiState.rootUiRef, uiState.terminalHeight)` hook call.
+- Ensure `height` prop on root Box handles alternate buffer mode (subtracting 1 line if active).
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run test` to ensure no regressions in existing tests.
+- Specifically check [App.test.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/App.test.tsx) if available.
+
+### Manual Verification
+- Verify that the application layout looks correct in both normal and alternate buffer modes (if applicable).
+- Check that the "90%" width constraint is effectively replaced by `mainAreaWidth` (which should be calculated correctly in `ui-sizing.ts`).

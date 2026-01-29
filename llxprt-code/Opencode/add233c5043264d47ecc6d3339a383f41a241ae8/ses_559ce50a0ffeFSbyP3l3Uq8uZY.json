@@ -1,0 +1,16 @@
+{
+  "id": "ses_559ce50a0ffeFSbyP3l3Uq8uZY",
+  "version": "1.0.82",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing Vitest internal state access error",
+  "time": {
+    "created": 1763724865375,
+    "updated": 1763725240365
+  },
+  "summary": {
+    "additions": 190,
+    "deletions": 68,
+    "files": 4
+  }
+}

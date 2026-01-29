@@ -1,0 +1,17 @@
+{
+  "id": "ses_42da08e38ffeTb07fS85SWP4Ut",
+  "slug": "kind-cactus",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "Contextual analysis of git-based cleanup plan and gitignore handling changes",
+  "time": {
+    "created": 1768761029065,
+    "updated": 1768802193727
+  },
+  "summary": {
+    "additions": 250,
+    "deletions": 252,
+    "files": 9
+  }
+}

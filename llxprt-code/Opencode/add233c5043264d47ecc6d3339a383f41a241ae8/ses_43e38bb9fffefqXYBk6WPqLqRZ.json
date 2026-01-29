@@ -1,0 +1,17 @@
+{
+  "id": "ses_43e38bb9fffefqXYBk6WPqLqRZ",
+  "slug": "curious-knight",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Codebase AST edit: replacements, logging, and Unicode boundary fixes",
+  "time": {
+    "created": 1768482620512,
+    "updated": 1768482871631
+  },
+  "summary": {
+    "additions": 14,
+    "deletions": 7,
+    "files": 1
+  }
+}

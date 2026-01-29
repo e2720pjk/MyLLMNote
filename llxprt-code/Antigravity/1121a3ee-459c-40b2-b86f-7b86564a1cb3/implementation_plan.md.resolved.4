@@ -1,0 +1,37 @@
+# UI Layout Refinement and Log Visibility Fix
+
+This revised plan addresses user feedback regarding the regression in Footer visibility, the positioning of the TabBar, and the missing early console logs in the Debug tab.
+
+## Proposed Changes
+
+### 1. TabBar Positioning (Bottom)
+Reposition the TabBar to the bottom of the main content area to follow user preference and ensure a stable layout.
+- **[MODIFY] [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx)**:
+    - Move the [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TabBar.tsx#19-61) (or Screen Reader tab indicator) to the bottom of the component's render tree.
+    - Use a flex container to push the [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TabBar.tsx#19-61) to the bottom while allowing the content area to grow.
+
+### 2. Footer Visibility and Metrics
+Restore the Footer to be always visible, matching the [main](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/gemini.tsx#253-797) branch behavior where status metrics remain visible during input.
+- **[MODIFY] [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/layouts/DefaultAppLayout.tsx)**:
+    - Remove the `!isInputActive` conditional wrapping the [Footer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/Footer.tsx#27-51).
+    - Ensure all props required for full metric display (TPM, session tokens, etc.) are correctly passed from `uiState`.
+
+### 3. Debug Tab and Log Preservation
+Ensure the [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/config/config.ts#673-681) tab correctly displays all logs, including those captured during the early boot process.
+- **[MODIFY] [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx)**:
+    - Verify that `uiState.consoleMessages` correctly receives logs from `earlyLogBuffer` (via [AppContainer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/AppContainer.tsx#160-1857) mount).
+    - Ensure the [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/config/config.ts#673-681) tab renders these logs reliably in both `Static` and [Virtualized](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/ScrollableList.tsx#25-33) modes.
+    - **[DELETE]** Remove any remaining references to `DetailedMessagesDisplay` as it is fully superseded by the [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/config/config.ts#673-681) tab.
+
+### 4. DEBUG=true Rendering
+Verify that `DEBUG=true` environment variable behavior is preserved in the new layout.
+- **[VERIFY]** The [Footer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/Footer.tsx#27-51) component should show the `DebugProfiler` and `debugMessage` when `DEBUG=true` is set.
+- **[VERIFY]** Ensure no other `DEBUG`-gated UI elements from the [main](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/gemini.tsx#253-797) branch are missing in the new tabbed structure.
+
+## Verification Plan
+
+### Manual Verification
+- **Log Visibility**: Start the CLI and immediately switch to the [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/config/config.ts#673-681) tab. Verify that boot-up logs (e.g., config loading, provider initialization) are present.
+- **TabBar Position**: Confirm the [TabBar](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TabBar.tsx#19-61) stays at the bottom of the screen.
+- **Footer Persistence**: Verify the [Footer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/Footer.tsx#27-51) remains visible while typing in the composer.
+- **Debug Mode**: Run with `DEBUG=true` and verify the additional metrics/profilers appear in the footer.

@@ -1,0 +1,17 @@
+{
+  "id": "ses_43ccb1358ffe6j0QSj2yaaEcL8",
+  "slug": "stellar-orchid",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "ESLint unused variable repositoryUrl in generate-notices.js",
+  "time": {
+    "created": 1768506584231,
+    "updated": 1768506722243
+  },
+  "summary": {
+    "additions": 3,
+    "deletions": 4,
+    "files": 3
+  }
+}

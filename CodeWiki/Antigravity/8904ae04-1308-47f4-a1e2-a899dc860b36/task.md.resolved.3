@@ -1,0 +1,22 @@
+# Tasks
+
+- [ ] Phase 0: Proof of Concept & Baseline [/]
+    - [x] Analyze Project Structure & Feasibility
+    - [x] Review expert feedback (Copilot & OpenCode)
+    - [ ] Pin Joern version (2.1.0) and verify environment support
+    - [ ] Measure baseline performance of existing AST analyzer
+- [ ] Phase 1: Model Redesign & Specification
+    - [ ] Implement `EnhancedNode` with CFG/DDG schemas
+    - [ ] Implement generalized [Relationship](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/models/core.py#46-54) (Call, Dataflow, Inheritance)
+    - [ ] Create `NodeMigration` utilities for backward compatibility
+- [ ] Phase 2: Joern Infrastructure
+    - [ ] Implement `JoernClient` with SHA256-based caching & file locking
+    - [ ] Implement `JoernAnalysisService` with automatic AST fallback
+    - [ ] Normalize language-specific CPG outputs
+- [ ] Phase 3: Hybrid Clustering & Synthesis
+    - [ ] Implement graph-based community detection (Louvain/Leiden)
+    - [ ] Update documentation prompts to include Data Flow Context
+- [ ] Phase 4: Full-Scale Verification
+    - [ ] Run Parity tests (Target F1 > 0.92)
+    - [ ] Run Performance tests (Target < 3x AST)
+    - [ ] Verify on CodeWiki itself

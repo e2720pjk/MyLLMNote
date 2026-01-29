@@ -1,0 +1,76 @@
+# Refine TODO Tab and Fix Redraw Logic
+
+This plan addresses issues with the TODO tab integration, layout stability, and redraw failures when switching tabs.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Full Migration:** The `TodoPanel` and detailed Todo tool outputs must be **removed** from the `MainChat` tab and exclusively rendered in the `TodoTab`. `MainChat` should only display minimal summaries if necessary, keeping the interface clean and stable.
+> - **Redraw Fix:** Switching tabs will trigger a full terminal clear and static re-render to ensure a clean UI state.
+
+## Proposed Changes
+
+### UI Components
+
+#### [MODIFY] [ToolGroupMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx)
+- Add logic to **filter out** `todoread` and `todowrite` tool calls completely when `showTodoPanel` (or a new `hideTodoTools`) prop is set.
+- This ensures that when the user is in the `Chat` tab, they do not see redundant Todo tool artifacts, as these are now fully managed in the `TodoTab`.
+
+#### [MODIFY] [HistoryItemDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/HistoryItemDisplay.tsx)
+- Ensure the `showTodoPanel` (or `hideTodoTools`) prop is correctly passed down to `ToolGroupMessage`.
+
+#### [MODIFY] [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx)
+- **Remove** any `TodoPanel` rendering from the 'chat' tab logic.
+- Ensure `HistoryItemDisplay` is configured to hide todo tools when rendering for the 'chat' tab.
+- Ensure `TodoPanel` is **only** rendered within the 'todo' tab structure.
+- Use `uiState.staticKey` instead of `uiState.historyRemountKey` for `Static` components in all tabs to ensure `refreshStatic()` triggers a correct remount and terminal clear.
+- **Decompose `TodoPanel`**: Instead of rendering a monolithic `TodoPanel` component, update `MainContent` to map individual Todo items into the `todoVirtualizedData` array.
+  - Create a helper `useTodoItems` hook (or refactor `TodoPanel.tsx` to export data generation logic) that returns an array of renderable items:
+    - `header` (Todo Progress)
+    - `summary` (e.g. "3 tasks: 1 completed...")
+    - `todo-item` (individual task rows)
+    - `tool-call` (grouped tool calls for tasks)
+  - This allows `ScrollableList` to handle scrolling naturally, making it truly virtualized and dynamic.
+
+#### [MODIFY] [TodoPanel.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx)
+- Refactor to export the data generation logic (e.g., `getTodoItems`) for consumption by `MainContent`, or keep as a component but aligned with the new item-based structure if reused.
+- Ensure styling remains faithful to the original design (no arbitrary yellow/bold changes unless specified).
+- Remove `useVerticalResponsive` logic that manually truncates lists; let `ScrollableList` handle viewport management.
+
+### Contexts & Hooks
+
+#### [MODIFY] [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/AppContainer.tsx)
+- Update `setActiveTab` to explicitly call `refreshStatic()`.
+
+## Debugging & Fixes
+
+### Debugging "Range is not defined" Crash
+- Use `DEBUG=true` to identify the source of the crash.
+- Inspect `DebugProfiler`, `McpStatus`, and `ConsoleSummary` for browser API usage.
+- Search for `Range` in dependencies if needed.
+- Apply fix (polyfill or code change).
+
+### Fixing UI Layout Overlap
+- Investigate `DefaultAppLayout.tsx` and `MainContent.tsx` stacking.
+- Verify `availableTerminalHeight` calculation in `UIStateContext`.
+- Remove arbitrary height adjustments (like `+ 3`) if they cause overflow.
+- Ensure `MainContent` respects flexible layout with `flexGrow={1}` instead of fixed height where possible.
+
+### E2E Test Refinement
+- Update `scripts/oldui-tmux-script.todo-verification.llxprt.json` to include:
+    - Long chat history generation.
+    - Verification of tool output display relative to Footer.
+- Run tests to confirm fix.
+
+## Verification Plan
+
+### Automated Tests (E2E)
+- Create or update a `tmux` test script (e.g., `scripts/oldui-tmux-script.todo-verification.llxprt.json`) to verify:
+  1. **Tab Cycling**: Verify correct content rendering in Chat, Debug, Todo, and System tabs using `CTRL+O`.
+  2. **MainChat Cleanliness**: Verify that Todo commands/tools do *not* appear in MainChat, but *do* appear in TodoTab.
+  3. **Tool Confirmation**: Trigger a confirmation dialog, switch tabs, and verify robust re-rendering.
+  4. **Debug Console**: Verify early logs appear in DebugTab when `Debug=true`.
+- Run the test using `node scripts/oldui-tmux-harness.js ...`.
+
+### Build & Lint
+- Run `npm run build && npm run lint && npm run format && npm run test` to ensure code quality.

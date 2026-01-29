@@ -1,0 +1,16 @@
+{
+  "id": "ses_46076a193ffeSrJnGMal5kwtfg",
+  "version": "1.0.220",
+  "projectID": "d329ad9b8f0c71288c703267547b1008d21a8e86",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWikiBench",
+  "title": "Debugging test_small_projects.sh script issues",
+  "time": {
+    "created": 1767908138605,
+    "updated": 1767908313262
+  },
+  "summary": {
+    "additions": 14,
+    "deletions": 4,
+    "files": 1
+  }
+}

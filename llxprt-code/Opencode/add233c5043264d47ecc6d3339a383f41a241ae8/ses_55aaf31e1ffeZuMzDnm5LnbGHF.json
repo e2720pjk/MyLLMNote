@@ -1,0 +1,16 @@
+{
+  "id": "ses_55aaf31e1ffeZuMzDnm5LnbGHF",
+  "version": "1.0.82",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Reviewing branch changes for quality issues",
+  "time": {
+    "created": 1763710127646,
+    "updated": 1763724660499
+  },
+  "summary": {
+    "additions": 1100,
+    "deletions": 409,
+    "files": 8
+  }
+}

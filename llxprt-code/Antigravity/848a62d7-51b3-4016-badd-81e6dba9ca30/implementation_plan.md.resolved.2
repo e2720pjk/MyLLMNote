@@ -1,0 +1,45 @@
+# Fix Terminal Corruption in Kitty Protocol Detector
+
+## Goal Description
+The goal is to prevent terminal corruption when the application exits, specifically addressing the user-reported scenario of using `CTRL+C`. Currently, the cleanup logic is missing a handler for `SIGINT` (CTRL+C) and uses asynchronous writes, which causes the terminal to remain in a "protocol enabled" state (showing raw escape codes) after the application exits.
+
+## User Review Required
+> [!IMPORTANT]
+> **Root Cause Confirmed**: The current code listens for `exit` and `SIGTERM` but **ignores `SIGINT`** (CTRL+C). This explains why `CTRL+C` leaves the terminal corrupted.
+>
+> **The Fix**:
+> 1.  **Add `SIGINT` handler**: Ensures cleanup runs on CTRL+C.
+> 2.  **Use `fs.writeSync`**: Ensures the disable sequence `\x1b[<u` is actually flushed to the terminal before the process dies. Asynchronous `process.stdout.write` is unreliable during exit.
+> 3.  **Robust Signal Handling**: Use `process.once` and explicit exit codes to ensure clean termination without duplicate cleanups.
+
+## Proposed Changes
+
+### CLI Package
+#### [MODIFY] [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts)
+-   **Import `fs`**: Required for `writeSync`.
+-   **Update [disableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101)**:
+    -   Check `if (!protocolEnabled) return;`
+    -   Set `protocolEnabled = false` **BEFORE** writing (to prevent re-entry).
+    -   Use `fs.writeSync(process.stdout.fd, '\x1b[<u')` wrapped in `try/catch`.
+-   **Update [enableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#11-15) (or where handlers are attached)**:
+    -   Add a `handlersRegistered` flag to ensure listeners are only added once.
+    -   Use `process.once` instead of `process.on` for all handlers.
+    -   **Add `SIGINT` handler**: Call [disableProtocol()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101) then `process.exit(130)`.
+    -   **Add `SIGTERM` handler**: Call [disableProtocol()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101) then `process.exit(0)`.
+    -   **Add `uncaughtException` handler**: Call [disableProtocol()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101), log error, then `process.exit(1)`.
+    -   **Add `unhandledRejection` handler**: Call [disableProtocol()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101), log error, then `process.exit(1)`.
+    -   **Update `exit` handler**: Keep `process.once('exit', disableProtocol)`.
+
+## Verification Plan
+
+### Manual Verification
+1.  **CTRL+C Test**:
+    -   Start the application.
+    -   Press `CTRL+C`.
+    -   **Pass Criteria**: Terminal should return to normal immediately. Exit code should be 130 (if checkable).
+2.  **Crash Test**:
+    -   Simulate a crash (e.g., throw Error).
+    -   **Pass Criteria**: Terminal should be restored cleanly.
+3.  **Rapid CTRL+C**:
+    -   Press CTRL+C multiple times quickly.
+    -   **Pass Criteria**: No errors printed, terminal restored cleanly (re-entry protection works).

@@ -1,0 +1,16 @@
+{
+  "id": "ses_5640aee78ffe6xdiW9HNpALY8M",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing review report authenticity and cherry-pick progress",
+  "time": {
+    "created": 1763553120647,
+    "updated": 1763556086072
+  },
+  "summary": {
+    "additions": 167,
+    "deletions": 2378,
+    "files": 25
+  }
+}

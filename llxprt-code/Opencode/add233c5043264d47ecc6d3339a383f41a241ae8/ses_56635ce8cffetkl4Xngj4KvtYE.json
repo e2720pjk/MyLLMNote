@@ -1,0 +1,16 @@
+{
+  "id": "ses_56635ce8cffetkl4Xngj4KvtYE",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing Chinese filenames in current path",
+  "time": {
+    "created": 1763516756339,
+    "updated": 1763516796094
+  },
+  "summary": {
+    "additions": 817,
+    "deletions": 0,
+    "files": 3
+  }
+}

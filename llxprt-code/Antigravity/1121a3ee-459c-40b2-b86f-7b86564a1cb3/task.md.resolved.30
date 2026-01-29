@@ -1,0 +1,20 @@
+# Task: Refine TODO Tab and Fix Redraw Logic
+
+- [ ] Investigate and Refine TODO Tab Integration
+    - [ ] Compare current [TodoTab.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/tabs/TodoTab.tsx) with [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/config/config.ts#673-681) tab styling and functionality
+    - [ ] **Decompose [TodoPanel](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx#26-30)**: Create helper hook `useTodoItems` to return individual items (Header, Summary, TodoItem) for [ScrollableList](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/ScrollableList.tsx#40-153)
+    - [ ] Update [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/MainContent.tsx) to use `todoVirtualizedData` with decomposed items
+    - [ ] **Clean MainChat**: Ensure [ToolGroupMessage](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx#82-255) filters out Todo artifacts in Chat tab
+- [ ] Debug and Fix Redraw Logic
+    - [ ] Ensure [setActiveTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/AppContainer.tsx#1825-1829) in [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/AppContainer.tsx) triggers `refreshStatic()`
+    - [ ] Verify tool call redraws when switching back to Chat tab
+- [ ] Verification
+    - [ ] Create `scripts/oldui-tmux-script.todo-verification.llxprt.json` for E2E testing
+    - [ ] Verify Tab Cycling (Chat -> Debug -> Todo -> System)
+    - [ ] Verify MainChat Cleanliness (No Todo artifacts)
+    - [ ] Verify Tool Confirmation Re-render
+    - [ ] Run `npm run build && npm run lint && npm run format && npm run test`
+- [ ] Verification
+    - [ ] Verify TODO tab styling and layout stability
+    - [ ] Verify tool call windows redraw correctly when switching back to Chat tab
+    - [ ] Run full preflight check

@@ -1,0 +1,115 @@
+# CodeWiki System Architecture: The "Semantic Evolution" Engine
+
+This document synthesizes your "Batch Processing" plan with the "Code Intelligence" vision. It addresses the core challenge: **Turning raw data (Git/AST) into accessible meaning without context explosion.**
+
+---
+
+## 1. Core Philosophy: "Dynamic Agents, Static Indices"
+
+The central thesis (inspired by arXiv:2512.24601v1) is:
+*   **Context Explosion Solution:** Never load the whole project. Load only the *current module's* context + *pointers* to dependencies.
+*   **The "Recursive" Pattern:** The Main LLM plans the job, then spawns "Sub-Agents" (Batch Processors) to handle leaf nodes independently.
+*   **The "Resume" Pattern:** State is saved to disk (`metadata.json`) after every batch, allowing "Breakpoint Resume".
+
+---
+
+## 2. The 3-Tier Architecture
+
+### Tier 1: The "Structure & Evolution" Builder (Static / Build-Time)
+*Input: Source Code + .git folder*
+*Output: CGR Graph (Nodes + Edges + Commit Intents)*
+
+**Workflow:**
+1.  **Structural Scan (CGR/AST):**
+    *   Build the skeleton: [Function](file:///Users/caishanghong/Shopify/cli-tool/code-graph-rag/codebase_rag/types_defs.py#29-35), [Class](file:///Users/caishanghong/Shopify/cli-tool/code-graph-rag/codebase_rag/types_defs.py#201-208), [File](file:///Users/caishanghong/Shopify/cli-tool/code-graph-rag/codebase_rag/types_defs.py#303-306).
+    *   *No LLM yet. Pure parsing (Fast).*
+2.  **Semantic Git Analysis (The Missing Link):**
+    *   **Problem:** Git Diffs are noisy. "Changed Line 10" is meaningless.
+    *   **Solution**: Run a dedicated **"Commit Summarizer"** agent.
+    *   *Loop:* For each HEAD commit in the last N months:
+        1.  Extract Diff.
+        2.  Identify modified [Function](file:///Users/caishanghong/Shopify/cli-tool/code-graph-rag/codebase_rag/types_defs.py#29-35) nodes (via Line range matching).
+        3.  **LLM Call (Small Context):** *"Summarize this diff in 1 sentence focus on INTENT relative to function X."*
+        4.  **Store:** Create [(Function)-[:CHANGED_IN {intent: "Fixed NPE in login"}]->(Commit)](file:///Users/caishanghong/Shopify/cli-tool/code-graph-rag/codebase_rag/graph_updater.py#264-286).
+3.  **Result:** A Graph that knows *Structure* AND *Meaningful History*.
+
+### Tier 2: The "Doc Generator" Orchestrator (The Batch Engine)
+*Input: CGR Graph + Source Code*
+*Output: Markdown Docs (Static Site)*
+
+**Workflow (The Recursive Agent):**
+1.  **Planner:** `AgentOrchestrator` reads the CGR Graph. Calculates topological sort.
+2.  **Dispatcher:**
+    *   Identifies "Leaf Modules" (no dependencies).
+    *   Checks Token budget.
+    *   Spawns `Task: Document Module A`.
+3.  **Worker (The Sub-Agent):**
+    *   Loads `Module A` source.
+    *   Loads **only** direct dependency signatures (from Tier 1 Graph). *No need to read deep dependency source.*
+    *   **Git Integration:** Fetches the top 5 `intent` summaries from the Graph for this module.
+    *   **Generates:** `docs/Module_A.md`.
+    *   **Checkpoint:** Updates `metadata.json` (State Saved).
+
+### Tier 3: The "Insight" Service (Dynamic / Query-Time)
+*Input: User Query*
+*Output: Answer*
+
+**Workflow:**
+1.  **RAG Layer:** Vectors search the *Generated Docs* (Tier 2).
+2.  **Graph Layer:**
+    *   Agent detects question about "History" or "Impact".
+    *   Agent queries Tier 1 Graph: *"Show me the evolution of `PaymentController`."*
+    *   Graph returns: `["Added validation (Jan)", "Refactored for Perf (Feb)"]`.
+3.  **Synthesis:** LLM combines Doc text + Graph Facts into the final answer.
+
+---
+
+## 3. Addressing Your Specific Questions
+
+### Q: How to turn Git Diffs into "Readable Semantics"?
+**A: The "Semantic Diff" Pipeline.**
+Don't use raw `git diff` at query time. It's too slow and token-heavy.
+**Pre-compute it.**
+*   **Ingestion Time:** When ingest a commit, map the diff to specific AST nodes (Functions).
+*   **Transformation:** Use a cheap/fast LLM (e.g., Haiku/Flash) to convert the "Diff Hunks" into a "Semantic Changelog Entry".
+*   **Storage:** Store the *Entry* in the Graph, not the Diff.
+*   **Display:** The UI shows a timeline of these semantic entries.
+
+### Q: Does the Batch Plan check "Recursive Context"?
+**A: Yes.**
+Your plan ([COMPLETE_ANALYSIS_BATCH_PROCESSING_DISCUSSION_EN.md](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-2/docs/COMPLETE_ANALYSIS_BATCH_PROCESSING_DISCUSSION_EN.md)) correctly identifies `is_complex_module` and `Module Tree` limits.
+*   **Improvement:** Instead of just checking `depth`, check **"Information Density"**.
+*   If a Module has 50 Commits in the last week (High Density), it *must* be split or batched, even if the file count is low.
+
+---
+
+## 4. The Unified Data Model (JSON/Graph)
+
+To support both "Static Docs" and "Dynamic Chat", your data schema acts as the bridge:
+
+```json
+// metadata.json (Expanded)
+{
+  "modules": {
+    "auth_service": {
+      "path": "src/auth",
+      "status": "generated",
+      "last_updated": "2024-03-20",
+      "semantics": {
+        "complexity_score": 85,
+        "primary_language": "python",
+        "key_dependencies": ["db_service", "crypto_lib"]
+      },
+      "evolution": [
+        {"hash": "a1b2c", "date": "2024-03-19", "intent": "Added OAUTH2 support"},
+        {"hash": "d4e5f", "date": "2024-02-01", "intent": "Fixed token expiry bug"}
+      ]
+    }
+  }
+}
+```
+
+This single file allows:
+1.  **Frontend:** To render a "History" tab without hitting Git.
+2.  **Agent:** To answer "What changed recently?" instantly.
+3.  **Resume:** To know exactly where it left off.

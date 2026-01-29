@@ -1,0 +1,62 @@
+# Implementation Plan - Integrate `opencode` Tools
+
+## Goal Description
+Enhance `llxprt-code` by integrating high-value tools from `opencode`:
+1.  **New Tools**: Add `CodeSearchTool` (Remote AI search) and `WebFetchTool`.
+2.  **Enhancements**: Upgrade `ShellTool` with AST-based security and `EditTool` with robust multi-strategy replacement logic.
+
+## User Review Required
+> [!IMPORTANT]
+> **Dependency Addition**: The `ShellTool` enhancement requires adding `web-tree-sitter` and `tree-sitter-bash` to `package.json`.
+> **API Keys**: `CodeSearchTool` uses `mcp.exa.ai`. Ensure the environment has necessary access or keys if required (though `opencode` implementation seemed open).
+
+## Proposed Changes
+
+### Dependencies
+#### [MODIFY] [package.json](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/package.json)
+- Add `web-tree-sitter` and `tree-sitter-bash` for AST parsing.
+
+### New Tools
+
+#### [NEW] [packages/core/src/tools/codesearch.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/core/src/tools/codesearch.ts)
+- Port `opencode/codesearch.ts`.
+- Implement `CodeSearchTool` class extending `BaseDeclarativeTool`.
+- Use `node-fetch` to query `https://mcp.exa.ai`.
+
+#### [NEW] [packages/core/src/tools/webfetch.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/core/src/tools/webfetch.ts)
+- Port `opencode/webfetch.ts`.
+- Implement `WebFetchTool` class extending `BaseDeclarativeTool`.
+- Use `node-fetch` and `cheerio` (if needed/available, or regex) to extract content.
+
+### Tool Enhancements
+
+#### [MODIFY] [packages/core/src/tools/shell.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/core/src/tools/shell.ts)
+- Integrate `tree-sitter` initialization.
+- Port AST traversal logic from `opencode/bash.ts` to validate commands and paths before execution.
+- Retain existing output limiting logic.
+
+#### [MODIFY] [packages/core/src/tools/smart-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/core/src/tools/smart-edit.ts)
+- (Or `edit.ts` depending on which is primary).
+- Port the `Replacer` generator chain from `opencode/edit.ts` (Simple, Trimmed, ContextAware, etc.).
+- Replace or augment the existing `applyReplacement` function with this more robust logic.
+
+### Registry
+
+#### [MODIFY] [packages/core/src/tools/tool-registry.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/core/src/tools/tool-registry.ts)
+- Register `CodeSearchTool` and `WebFetchTool`.
+
+## Verification Plan
+
+### Automated Tests
+- **Unit Tests**:
+    - Create `packages/core/src/tools/codesearch.test.ts` to mock API responses.
+    - Create `packages/core/src/tools/webfetch.test.ts`.
+    - Update `packages/core/src/tools/shell.test.ts` to test blocked/allowed commands via AST.
+    - Update `packages/core/src/tools/smart-edit.test.ts` to test new replacement strategies (e.g., whitespace mismatch).
+- **Command**: `npm run test --workspace packages/core`
+
+### Manual Verification
+- **Search**: Run `llxprt` and ask "Search for React useState examples". Verify `CodeSearchTool` is called.
+- **Fetch**: Ask "Fetch content from https://example.com". Verify `WebFetchTool` works.
+- **Shell**: Try running complex bash commands. Verify AST validation allows valid ones and blocks suspicious ones (if configured).
+- **Edit**: Try editing a file with slightly mismatched whitespace in `old_string`. Verify `EditTool` still finds and replaces it.

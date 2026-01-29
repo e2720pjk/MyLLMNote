@@ -1,0 +1,13 @@
+# Task: Refine .gitignore Implementation & Cleanup
+
+- [ ] Review implementation of [.gitignore](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-1/.gitignore) support across all modified files <!-- id: 0 -->
+    - [ ] `repo_analyzer.py` <!-- id: 1 -->
+    - [ ] `analysis_service.py` <!-- id: 2 -->
+    - [ ] `config.py` (both backend and CLI) <!-- id: 3 -->
+    - [ ] CLI commands <!-- id: 4 -->
+- [ ] Align formatting with upstream (checking for redundant changes) <!-- id: 5 -->
+- [ ] Simplify [README.md](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-1/README.md) changes according to user request <!-- id: 6 -->
+    - [ ] Add option descriptions <!-- id: 7 -->
+    - [ ] Add one-line example to existing example <!-- id: 8 -->
+    - [ ] Use one-line prompt for execution order <!-- id: 9 -->
+- [ ] Final verification of code quality and alignment with [PHASE1_RESPECT_GITIGNORE_ONLY.md](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki-1/PHASE1_RESPECT_GITIGNORE_ONLY.md) <!-- id: 10 -->

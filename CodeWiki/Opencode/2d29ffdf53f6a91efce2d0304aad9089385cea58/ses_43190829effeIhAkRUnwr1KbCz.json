@@ -1,0 +1,22 @@
+{
+  "id": "ses_43190829effeIhAkRUnwr1KbCz",
+  "slug": "proud-moon",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "Gitignore respect feature: review plan and status",
+  "time": {
+    "created": 1768694971746,
+    "updated": 1768694981304
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  },
+  "revert": {
+    "messageID": "msg_bce6f7d6f0015wSMAJXX8nCF0z",
+    "snapshot": "4c31c35da0d03b1f1876abd00dabb35493132edd",
+    "diff": ""
+  }
+}

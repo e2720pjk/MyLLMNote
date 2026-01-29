@@ -1,0 +1,5 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary":  "Plan to refactor TabbyEdit (ASTEdit) to implement file freshness checks, remove redundant BM25 search, and improve workspace file discovery using Git.",
+  "updatedAt":  "2026-01-14T23:50:35.032801Z"
+}

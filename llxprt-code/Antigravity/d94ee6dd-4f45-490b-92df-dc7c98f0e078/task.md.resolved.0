@@ -1,0 +1,14 @@
+# Code Review: llxprt-code-4
+
+- [ ] Context Acquisition <!-- id: 0 -->
+    - [ ] Read `issue.md` and `PR.md` <!-- id: 1 -->
+    - [ ] Identify the goal and scope of changes <!-- id: 2 -->
+- [ ] Change Analysis <!-- id: 3 -->
+    - [ ] Perform `git diff` to view changes <!-- id: 4 -->
+    - [ ] Map changes to files and components <!-- id: 5 -->
+- [ ] Review Execution <!-- id: 6 -->
+    - [ ] Analyze Context & Correctness <!-- id: 7 -->
+    - [ ] Security & Performance Review <!-- id: 8 -->
+    - [ ] Code Quality & Tests <!-- id: 9 -->
+- [ ] Report Generation <!-- id: 10 -->
+    - [ ] Compile findings into a structured review report <!-- id: 11 -->

@@ -1,0 +1,249 @@
+# Phase 2: Systematic Memoization Implementation Plan
+
+## Overview
+
+Implement systematic memoization across llxprt-code UI components to achieve +30% performance target (currently at +10.15%, need additional +20%).
+
+## Background
+
+**Current State**:
+- ✅ MainContent: Already memoized (MemoizedHistoryItemDisplay, MemoizedAppHeader)
+- ✅ Footer: Already extensively memoized (ResponsiveMemoryDisplay, DebouncedTPMDisplay, etc.)
+- ❌ StatsDisplay variants: Not memoized
+- ❌ InputPrompt: Partially optimized, needs review
+- ❌ Other components: Need assessment
+
+**gemini-cli Pattern**:
+```typescript
+const MemoizedComponent = memo(Component);
+```
+
+## Target Components for Memoization
+
+### Priority 1: High-Frequency Components
+
+#### 1. StatsDisplay.tsx
+**Current**: No memoization
+**Impact**: High (renders frequently with session stats)
+
+**Required Changes**:
+```typescript
+// End of file, replace export
+export const StatsDisplay = React.memo(_StatsDisplay);
+
+// Or wrap the component definition
+const _StatsDisplay: React.FC = () => {
+  // ... existing code
+};
+
+export const StatsDisplay = React.memo(_StatsDisplay);
+```
+
+---
+
+#### 2. ModelStatsDisplay.tsx
+**Current**: Not memoized
+**Impact**: Medium
+
+**Required Changes**:
+```typescript
+export const ModelStatsDisplay = React.memo(_ModelStatsDisplay);
+```
+
+---
+
+#### 3. CacheStatsDisplay.tsx
+**Current**: Not memoized
+**Impact**: Medium
+
+**Required Changes**:
+```typescript
+export const CacheStatsDisplay = React.memo(_CacheStatsDisplay);
+```
+
+---
+
+#### 4. ToolStatsDisplay.tsx
+**Current**: Not memoized
+**Impact**: Medium
+
+**Required Changes**:
+```typescript
+export const ToolStatsDisplay = React.memo(_ToolStatsDisplay);
+```
+
+---
+
+### Priority 2: Input-Related Components
+
+#### 5. InputPrompt.tsx
+**Current**: Has some optimization, needs review
+**Action**: Review and ensure proper memoization of sub-components
+
+**Potential Optimization Areas**:
+- Memoize expensive calculations (e.g., [calculatePromptWidths](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/InputPrompt.tsx#82-97))
+- Use `useCallback` for event handlers
+- Use `useMemo` for derived values
+
+**Review Required**:
+```typescript
+// Check if these are already optimized:
+- calculatePromptWidths usage
+- Event handler stability
+- Derived values calculations
+```
+
+---
+
+### Priority 3: Dialog Components (If Needed)
+
+#### 6. Various Dialog Components
+**Assessment Required**:
+- SettingsDialog
+- AuthDialog
+- ThemeDialog
+- etc.
+
+**Action**: Profile and memoize if showing performance impact
+
+---
+
+## Implementation Strategy
+
+### Step 1: Memoize Stats Components (High Priority)
+
+**Files to Modify**:
+1. [packages/cli/src/ui/components/StatsDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/StatsDisplay.tsx)
+2. [packages/cli/src/ui/components/ModelStatsDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/ModelStatsDisplay.tsx)
+3. [packages/cli/src/ui/components/CacheStatsDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/CacheStatsDisplay.tsx)
+4. [packages/cli/src/ui/components/ToolStatsDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/ToolStatsDisplay.tsx)
+
+**Pattern**:
+```typescript
+// Before
+export const ComponentName: React.FC<Props> = (props) => {
+  // ... implementation
+};
+
+// After
+const _ComponentName: React.FC<Props> = (props) => {
+  // ... implementation
+};
+
+export const ComponentName = React.memo(_ComponentName);
+```
+
+**Alternative Pattern** (if component is already defined):
+```typescript
+// At the end of file, replace export
+export const ComponentName = React.memo(ComponentName);
+```
+
+---
+
+### Step 2: Review and Optimize InputPrompt
+
+**File**: [packages/cli/src/ui/components/InputPrompt.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/InputPrompt.tsx)
+
+**Actions**:
+1. Review current optimization level
+2. Identify expensive operations
+3. Apply `useMemo` for derived values
+4. Apply `useCallback` for event handlers
+5. Consider memoizing the entire component if appropriate
+
+---
+
+### Step 3: Assess Other Components
+
+**Method**: Runtime profiling
+**Tools**: React DevTools Profiler (if available in Ink)
+**Fallback**: Code review + manual testing
+
+**Components to Assess**:
+- Composer
+- Notifications
+- Any other frequently re-rendering components
+
+---
+
+## Verification Plan
+
+### Performance Testing
+
+#### 1. Before Measurements
+```bash
+# Run performance baseline
+npm run test -- baseline.test.ts
+
+# Note current performance metrics
+```
+
+#### 2. After Measurements
+```bash
+# Run same tests after memoization
+npm run test -- baseline.test.ts
+
+# Compare metrics
+```
+
+#### Expected Results:
+- [ ] +20-30% improvement in render performance
+- [ ] Reduced re-render count in profiling
+- [ ] No functional regression
+
+---
+
+### Functional Testing
+
+```bash
+# Full test suite
+npm run preflight
+
+# Expected: All tests pass
+```
+
+**Manual Testing**:
+- [ ] Stats display updates correctly
+- [ ] Input prompt renders correctly
+- [ ] No visual glitches
+- [ ] All interactive elements work
+
+---
+
+## Success Criteria
+
+- [ ] All Stats components wrapped in React.memo
+- [ ] InputPrompt optimized with useMemo/useCallback
+- [ ] Performance improvement: +20-30% (total +30% from baseline)
+- [ ] No functional regression
+- [ ] All tests pass (npm run preflight)
+- [ ] Code quality maintained (proper TypeScript types)
+
+---
+
+## Risk Assessment
+
+| Risk | Probability | Impact | Mitigation |
+|------|-------------|--------|-------------|
+| Over-memoization | Low | Low | Test thoroughly, remove if no benefit |
+| Props comparison issues | Low | Medium | Use default shallow comparison |
+| Type errors | Low | Low | Follow existing patterns |
+| Functional regression | Low | High | Comprehensive testing |
+
+---
+
+## Rollback Plan
+
+If performance degrades or bugs occur:
+1. Revert specific component memoization
+2. Test incrementally
+3. Keep only proven optimizations
+
+---
+
+## References
+
+- gemini-cli MainContent.tsx: Line 20-21 (memo pattern)
+- llxprt-code Footer.tsx: Existing memoization examples
+- React.memo documentation

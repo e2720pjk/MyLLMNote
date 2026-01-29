@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_OTHER",
+  "summary": "Simplified agent guide. 'opencode run' commands are now plain strings without complex internal formatting, reducing the risk of shell execution errors.",
+  "updatedAt": "2025-11-29T20:59:39.768167Z",
+  "version": "7"
+}

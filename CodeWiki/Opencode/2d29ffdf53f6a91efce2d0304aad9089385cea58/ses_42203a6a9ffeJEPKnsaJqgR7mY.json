@@ -1,0 +1,30 @@
+{
+  "id": "ses_42203a6a9ffeJEPKnsaJqgR7mY",
+  "slug": "hidden-moon",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "parentID": "ses_4228087b3ffeB76E1egk390OoS",
+  "title": "Get Oracle review results (@oracle subagent)",
+  "permission": [
+    {
+      "permission": "todowrite",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "todoread",
+      "action": "deny",
+      "pattern": "*"
+    }
+  ],
+  "time": {
+    "created": 1768955861334,
+    "updated": 1768955862984
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

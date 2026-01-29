@@ -1,0 +1,17 @@
+{
+  "id": "ses_4b4cf75a6ffepqzbJUxOPjtVkq",
+  "version": "1.0.171",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "parentID": "ses_4b4cf8dedffeKXIxa9qdVu4OFt",
+  "title": "Explore llxprt extension system (@explore subagent)",
+  "time": {
+    "created": 1766493031001,
+    "updated": 1766493192156
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

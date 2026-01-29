@@ -1,0 +1,70 @@
+# TabbyEdit Refactoring Plan
+
+## Goal Description
+Refactor `ASTEditTool` (`ast-edit.ts`) to address critical issues identified in a recent code review. The goals are to implement missing concurrency safeguards (freshness check), remove redundant/broken functionality (BM25), and improve context gathering (Git integration).
+
+## User Review Required
+> [!IMPORTANT]
+> **Breaking Change**: The `ASTEditToolParams` will be updated to include an optional `latest_modified` parameter. Clients/Agents should ideally pass this timestamp from the preview step to the execution step to ensure safe writes.
+
+> [!WARNING]
+> **Removal of Feature**: `BM25SearchEngine` will be completely removed as it currently only searches the file being edited (which is redundant) and adds unnecessary overhead.
+
+> [!NOTE]
+> **Reference to Tabby**: The original Tabby implementation uses a `RecentlyChangedCodeSearch` feature that indexes modified file history. The `ast-edit` tool is stateless, so we cannot run a background watcher. Instead, we will simulate this by using **Git** to identify the "Working Set" (modified/recent files) and extract context from them.
+
+> [!NOTE]
+> **Reference to Opencode**: The `opencode` project implements a strict `FileTime` module that tracks when a session last read a file and blocks writes if the file has been modified since (`mtime > read_time`). This validates our "File Freshness Check" strategy, which will implement a stateless version of this by passing the `last_modified` timestamp.
+
+## Proposed Changes
+All changes are within `packages/core/src/tools/ast-edit.ts`.
+
+### 1. Implement File Freshness Check (High Priority)
+- **Modify** `ASTEditToolParams`: Add `last_modified?: number`.
+- **Modify** `ASTEditToolInvocation.calculateEdit`:
+    - Retrieve current file `mtime`.
+    - If `params.last_modified` is provided, compare it with current `mtime`.
+    - If they differ, return a `ToolErrorType.FILE_MODIFIED_CONFLICT` error.
+    - **CRITICAL**: The error payload MUST include the *current* `mtime` so the agent can immediately retry with the correct timestamp or `force: true`.
+- **Update** `ASTEditToolInvocation.executePreview`: Ensure the returned preview includes the current `last_modified` timestamp.
+
+### 2. Replace BM25 with Git-based "Working Set" Context (Medium Priority)
+- **Delete** `BM25SearchEngine` class (it is redundant for single-file).
+- **Modify** `RepositoryContextProvider`:
+    - Add method `getWorkingSetFiles(limit: number = 5)`:
+        - Use `git diff --name-only` (unstaged).
+        - Use `git diff --name-only --cached` (staged).
+        - Use `git log -n 5 --name-only --format=` (recent commits).
+        - return distinct list of absolute paths (excluding deleted files and current file).
+- **Modify** `ASTContextCollector`:
+    - Remove `searchEngine` and related logic.
+    - In `collectEnhancedContext`, call `repoProvider.getWorkingSetFiles()`.
+    - For each file in the working set:
+        - Read file content.
+        - **Skeleton View**: Use `ASTQueryExtractor` to get `declarations` (high-level symbols only: classes, functions).
+        - **Optimization**: Do NOT include function bodies or full text for these files. Only signatures and docstrings.
+        - Add these to `enhancedContext.connectedFiles` (new property).
+        - Strict token budget: limit each file's context to avoid overflow.
+
+### 3. Improve Workspace File Discovery (Low Priority)
+- **Modify** `ASTContextCollector.getWorkspaceFiles`:
+    - Use `git ls-files` as the primary source of truth for project structure.
+
+## Verification Plan
+
+### Automated Tests
+- **Existing Tests**: Run `npm test` in `packages/core` to ensure no regressions.
+- **New Test Case**:
+    1.  Create a test that reads a file and gets its `mtime`.
+    2.  Simulate an external modification (touch the file or write to it).
+    3.  Attempt to call `ast_edit` with `force: true` and the *old* `mtime`.
+    4.  Verify that the tool returns an error indicating the file has changed.
+
+### Manual Verification
+1.  **Freshness Check**:
+    - Use `ast_read_file` to read a file.
+    - Manually edit the file (e.g. via terminal `echo "change" >> file`).
+    - Attempt to use `ast_edit` with the `fileFreshness` timestamp from the read step (simulating a delayed agent action).
+    - Expect failure.
+2.  **BM25 Removal**:
+    - Verify `ast_edit` preview still works and produces context (declarations, snippets) without the search section.

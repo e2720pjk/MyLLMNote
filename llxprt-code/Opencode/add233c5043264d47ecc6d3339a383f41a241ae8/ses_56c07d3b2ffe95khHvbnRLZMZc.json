@@ -1,0 +1,16 @@
+{
+  "id": "ses_56c07d3b2ffe95khHvbnRLZMZc",
+  "version": "1.0.68",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing authenticity of latest review on PR 9",
+  "time": {
+    "created": 1763419106381,
+    "updated": 1763419317620
+  },
+  "summary": {
+    "additions": 1,
+    "deletions": 1,
+    "files": 1
+  }
+}

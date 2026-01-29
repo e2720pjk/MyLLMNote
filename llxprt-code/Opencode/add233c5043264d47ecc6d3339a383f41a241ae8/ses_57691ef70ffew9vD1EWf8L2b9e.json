@@ -1,0 +1,17 @@
+{
+  "id": "ses_57691ef70ffew9vD1EWf8L2b9e",
+  "version": "1.0.65",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_576926b40ffehjz4MTBrix4iZt",
+  "title": "Analyze missing features in current branch (@general subagent)",
+  "time": {
+    "created": 1763242283151,
+    "updated": 1763242446656
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

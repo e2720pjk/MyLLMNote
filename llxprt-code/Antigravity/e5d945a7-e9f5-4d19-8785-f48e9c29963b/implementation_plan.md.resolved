@@ -1,0 +1,33 @@
+# Fix Persistent "Initializing..." Display
+
+## Goal Description
+The "Initializing..." message persists in the CLI output even after the application has started. This is caused by [ConfigInitDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/ConfigInitDisplay.tsx#14-47) being rendered unconditionally in [DefaultAppLayout](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/layouts/DefaultAppLayout.tsx#48-314). This component defaults to showing "Initializing..." and expects `AppEvent.McpClientUpdate` events to update its state. If no MCP servers are configured, these events may not fire or may not clear the initialization state, leaving the message stuck.
+
+This change ensures [ConfigInitDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/ConfigInitDisplay.tsx#14-47) is only rendered when there are actually MCP servers configured to connect to.
+
+## User Review Required
+> [!NOTE]
+> This change assumes that [ConfigInitDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/ConfigInitDisplay.tsx#14-47) is solely for MCP server connection status. If it is intended for other initialization tasks in the future, this logic might need adjustment.
+
+## Proposed Changes
+
+### UI Layout
+
+#### [MODIFY] [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/layouts/DefaultAppLayout.tsx)
+- Retrieve `mcpServers` from `config.getMcpServers()`.
+- Calculate `hasMcpServers` by checking if the returned object is truthy and has keys.
+- Wrap `<ConfigInitDisplay />` in a conditional check: `{hasMcpServers && <ConfigInitDisplay />}`.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run test` in `packages/cli` to ensure no regressions in layout tests.
+- Specifically run `packages/cli/src/ui/App.test.tsx` if applicable.
+
+### Manual Verification
+- **Case 1: No MCP Servers (Current User Scenario)**
+    - Run `llxprt --profile-load chutes` (or any profile without MCP servers).
+    - Verify that "Initializing..." does NOT appear in the output.
+- **Case 2: With MCP Servers**
+    - Run `llxprt` with a configuration that includes MCP servers (if possible to mock or configure easily).
+    - Verify that "Initializing..." appears and then updates to "Connecting...".

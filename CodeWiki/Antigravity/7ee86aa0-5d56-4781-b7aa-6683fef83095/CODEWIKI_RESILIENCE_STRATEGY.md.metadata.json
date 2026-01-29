@@ -1,0 +1,5 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_OTHER",
+  "summary":  "Strategy for handling failures, rate limits, and incremental updates. Defines the 'Resilience Protocol'.",
+  "updatedAt":  "2026-01-14T02:46:11.372979Z"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "ses_51907642bffe0KYDvHLx9uq1Pt",
+  "version": "1.0.129",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "title": "Executing Phase 0: rendering optimization llxprt-code - ink-migration-eval",
+  "time": {
+    "created": 1764811643860,
+    "updated": 1764811772200
+  },
+  "summary": {
+    "additions": 200,
+    "deletions": 14,
+    "files": 3
+  }
+}

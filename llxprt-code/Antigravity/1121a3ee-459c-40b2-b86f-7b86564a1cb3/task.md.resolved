@@ -1,0 +1,18 @@
+# Task: Debugging Runtime Crash and UI Layout
+
+- [ ] **Debug 'Range is not defined' Crash**
+    - [x] Search for `Range` usage in codebase <!-- id: 3996 -->
+    - [ ] Inspect [DebugProfiler.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/DebugProfiler.tsx) and related components for browser-specific APIs
+    - [ ] Inspect dependencies for `Range` usage (likely [ink](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/colors.ts#89-92) or a visualization lib)
+    - [ ] Reproduce crash locally if possible
+    - [ ] Fix the `Range` error (polyfill or remove offending code)
+- [ ] **Fix UI Layout Overlap**
+    - [ ] Inspect [DefaultAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/layouts/DefaultAppLayout.tsx) for Footer stacking context
+    - [ ] Inspect [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/MainContent.tsx) height calculations
+    - [ ] Fix overlap issue (likely z-index or flexbox sizing)
+- [ ] **Refine E2E Tests**
+    - [ ] Verify existing Todo test robustly checks tab switching
+    - [ ] Add explicit check for "long chat" scenario and tool display correctness
+    - [ ] Ensure `DEBUG=true` scenario is covered or at least doesn't crash
+- [ ] **Final Verification**
+    - [ ] Run full test suite and `preflight`

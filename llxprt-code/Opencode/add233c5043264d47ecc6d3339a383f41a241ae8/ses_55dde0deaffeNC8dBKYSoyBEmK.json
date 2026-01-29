@@ -1,0 +1,16 @@
+{
+  "id": "ses_55dde0deaffeNC8dBKYSoyBEmK",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Reviewing branch-wide changes and PR#20 details on GH",
+  "time": {
+    "created": 1763656725013,
+    "updated": 1763657980940
+  },
+  "summary": {
+    "additions": 70,
+    "deletions": 10,
+    "files": 1
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_OTHER",
+  "summary": "Evaluation of PageIndex. Recommends using it as the 'Documentation Indexer' (Layer 3) to enable reasoning-based RAG for the Chat interface.",
+  "updatedAt": "2026-01-24T00:17:46.368330Z"
+}

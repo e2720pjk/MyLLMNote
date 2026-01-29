@@ -1,0 +1,21 @@
+# Fix History Disappearing on Resize
+
+## Goal Description
+Fix the issue where chat history disappears when the terminal window is resized. This is caused by the `Static` component in [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/components/MainContent.tsx) not re-rendering when the terminal is cleared and redrawn.
+
+## Proposed Changes
+
+### UI Components
+
+#### [MODIFY] [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/components/MainContent.tsx)
+- Add `key={uiState.staticKey}` to the `<Static>` component.
+- This ensures that when [AppContainer](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/AppContainer.tsx#155-1663) updates `staticKey` (which it does on resize), `Static` remounts and reprints the history.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run lint` to ensure no regressions.
+
+### Manual Verification
+- Resize the terminal window while the app is running.
+- Verify that the chat history persists and is redrawn correctly.

@@ -1,0 +1,35 @@
+# Implementation Plan - Optimize ASTReadFileTool
+
+## Goal Description
+The [ASTReadFileTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1619-1700) currently suffers from severe performance issues and potential memory leaks (causing CLI crashes) because it attempts to scan, read, and parse every file in the workspace to build a symbol index on every single execution.
+
+This plan aims to:
+1.  **Remove the full workspace scan** from the [ASTReadFileTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1619-1700) execution path.
+2.  **Optimize Context Collection** to rely on lighter-weight methods (e.g., parsing only likely related files or using `grep` without full AST loading).
+3.  **Preserve "Working Set" context** which is more targeted (likely relevant files based on git status), but ensure it has reasonable limits.
+
+## User Review Required
+> [!IMPORTANT]
+> **Breaking Change to Context Depth**: The "Cross-file Relationship Analysis" which indexed the entire workspace will be disabled or significantly restricted. This means the tool might miss some "deep" symbol relationships that required full project indexing, but it will essentially trade that (often unnecessary) depth for usability and stability.
+
+## Proposed Changes
+
+### packages/core
+
+#### [MODIFY] [ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts)
+- **Modify `ASTContextCollector.collectEnhancedContext`**:
+    - Remove or conditionalize the call to `this.relationshipAnalyzer.buildSymbolIndex(workspaceFiles)`.
+    - Instead of indexing everything, potentially rely only on `findInFiles` (ripgrep) for specific symbol lookups if needed, or skip the "Related Symbols" section that requires full indexing.
+- **Modify [CrossFileRelationshipAnalyzer](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#668-944)**:
+    - [buildSymbolIndex](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#671-722) should likely be removed or deprecated in favor of on-demand lookup if possible.
+    - If we keep [findRelatedSymbols](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#723-828), it should use `findInFiles` (grep) directly rather than relying on a pre-built memory-heavy index.
+
+## Verification Plan
+
+### Automated Tests
+- Run existing tests to ensure no regression in basic functionality: `npm test packages/core/src/tools/ast-edit.test.ts`.
+- Create a performance benchmark (optional/manual): Run [ASTReadFile](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1619-1700) on a large repo and measure time/memory.
+
+### Manual Verification
+- **User Verification**: The user (or I via the tool) will run [ASTReadFile](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1619-1700) on a known large file/project and observe responsiveness.
+- Check that the process does not crash.

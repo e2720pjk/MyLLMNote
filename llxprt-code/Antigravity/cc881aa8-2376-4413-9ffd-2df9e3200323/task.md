@@ -1,0 +1,19 @@
+# Task: Investigate Terminal State Issues in llxprt-code-2
+
+## Status
+- [x] Search for TTY/Raw Mode handling in `llxprt-code-2` <!-- id: 0 -->
+- [x] Search for Bell character usage in `llxprt-code-2` <!-- id: 1 -->
+- [x] Compare TTY handling with `gemini-cli` <!-- id: 2 -->
+- [x] Identify if cleanup/exit handlers are missing <!-- id: 3 -->
+- [x] Formulate conclusion and recommendation <!-- id: 4 -->
+- [x] Implement fix in `kittyProtocolDetector.ts` <!-- id: 5 -->
+- [ ] Verify fix <!-- id: 6 -->
+- [x] Create GitHub Issue (Issue #26) <!-- id: 7 -->
+- [x] Switch to `llxprt-code-4` and implement fix <!-- id: 8 -->
+- [x] Attempt delegation via `llxprt` CLI (Skipped: binary/workflow not found) <!-- id: 9 -->
+- [x] Run verification script <!-- id: 10 -->
+- [x] Revert manual changes in `llxprt-code-4` <!-- id: 11 -->
+- [x] Revert manual changes in `llxprt-code-4` <!-- id: 11 -->
+- [x] Delegate task to `llxprt` (Failed: internal errors) <!-- id: 12 -->
+- [x] Compare `llxprt` result with manual fix (Skipped: delegation failed) <!-- id: 13 -->
+- [x] Restore manual fix <!-- id: 14 -->

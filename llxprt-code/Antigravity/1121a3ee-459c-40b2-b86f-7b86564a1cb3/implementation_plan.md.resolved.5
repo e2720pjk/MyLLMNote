@@ -1,0 +1,42 @@
+# Refine TODO Tab and Fix Redraw Logic
+
+This plan addresses issues with the TODO tab integration, layout stability, and redraw failures when switching tabs.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - Switching tabs will now trigger a full terminal clear and static re-render to ensure a clean UI state. This is necessary to resolve redraw issues with complex components like tool call windows.
+> - The TODO tab will be refactored to use the same logic as the Chat and Debug tabs, which may change its internal structure but will ensure it respects terminal height constraints and supports scrolling.
+
+## Proposed Changes
+
+### UI Components
+
+#### [MODIFY] [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx)
+- Use `uiState.staticKey` instead of `uiState.historyRemountKey` for `Static` components to ensure `refreshStatic()` triggers a remount.
+- Refactor `todo` tab content to use [ScrollableList](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/ScrollableList.tsx#40-153) (virtualized) or `Static` (non-virtualized) like other tabs.
+- Define `todoVirtualizedData` to include [AppHeader](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/AppHeader.tsx#18-33) and the [TodoPanel](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx#26-29).
+
+#### [MODIFY] [TodoTab.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/tabs/TodoTab.tsx) [Optional/DELETE]
+- Either refine this component to match the new architecture or move its logic into [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/MainContent.tsx) for consistency.
+
+#### [MODIFY] [TodoPanel.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx)
+- Update [useVerticalResponsive](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx#35-50) to use `availableTerminalHeight` from context if available, rather than hardcoded `rows - 8`.
+- Remove internal `rows` calculation if it conflicts with the global height management.
+
+### Contexts & Hooks
+
+#### [MODIFY] [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/AppContainer.tsx)
+- Update [setActiveTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/AppContainer.tsx#1827-1834) to call `refreshStatic()`.
+
+## Verification Plan
+
+### Automated Tests
+- `npm run preflight` to ensure no regressions.
+- Verify that `staticKey` change doesn't cause excessive re-renders during normal operation.
+
+### Manual Verification
+1. Open a conversation with tool calls.
+2. Switch to Debug tab and then back to Chat tab. Verify tool call windows redraw correctly.
+3. Switch to TODO tab. Verify it doesn't "push up" the TabBar and follows the $H$ constraints.
+4. Add many todos and verify the TODO tab scrolls correctly.

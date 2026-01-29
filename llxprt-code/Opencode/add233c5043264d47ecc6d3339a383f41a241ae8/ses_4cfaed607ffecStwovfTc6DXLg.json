@@ -1,0 +1,17 @@
+{
+  "id": "ses_4cfaed607ffecStwovfTc6DXLg",
+  "version": "1.0.166",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli",
+  "parentID": "ses_4cfaf8df9ffeTZqFaRObCcor9y",
+  "title": "Examine screen reader detection and usage (@explore subagent)",
+  "time": {
+    "created": 1766042184184,
+    "updated": 1766042513944
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

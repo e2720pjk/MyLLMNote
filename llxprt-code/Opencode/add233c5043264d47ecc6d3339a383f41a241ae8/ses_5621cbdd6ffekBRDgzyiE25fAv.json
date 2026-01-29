@@ -1,0 +1,16 @@
+{
+  "id": "ses_5621cbdd6ffekBRDgzyiE25fAv",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing coretoolsettings tests for generateDynamicToolSettings",
+  "time": {
+    "created": 1763585507882,
+    "updated": 1763585978976
+  },
+  "summary": {
+    "additions": 75,
+    "deletions": 7,
+    "files": 3
+  }
+}

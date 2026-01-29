@@ -1,0 +1,34 @@
+{
+  "id": "ses_441880ed1ffeEOjCXaFz284uMO",
+  "version": "1.1.10",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "parentID": "ses_44189f8aeffeln0ik5fa0efT23",
+  "title": "Search ast-edit development status (@explore subagent)",
+  "permission": [
+    {
+      "permission": "todowrite",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "todoread",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "task",
+      "action": "deny",
+      "pattern": "*"
+    }
+  ],
+  "time": {
+    "created": 1768427090222,
+    "updated": 1768427414706
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "ses_50ffd0113ffez8lozW1muGU3l7",
+  "version": "1.0.133",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_50ffd1882ffe2WK9NUHXt7I8cw",
+  "title": "Analyze WASM memory error (@explore subagent)",
+  "time": {
+    "created": 1764963319532,
+    "updated": 1764963486942
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

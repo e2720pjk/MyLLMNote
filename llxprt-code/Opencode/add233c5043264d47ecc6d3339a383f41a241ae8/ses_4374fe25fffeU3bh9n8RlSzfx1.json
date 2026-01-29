@@ -1,0 +1,35 @@
+{
+  "id": "ses_4374fe25fffeU3bh9n8RlSzfx1",
+  "slug": "proud-harbor",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_437502effffe1iq3aZQiEZAeRn",
+  "title": "Review test spy patterns (@explore subagent)",
+  "permission": [
+    {
+      "permission": "todowrite",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "todoread",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "task",
+      "action": "deny",
+      "pattern": "*"
+    }
+  ],
+  "time": {
+    "created": 1768598543776,
+    "updated": 1768598634284
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

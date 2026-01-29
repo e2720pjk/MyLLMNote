@@ -1,0 +1,29 @@
+# Progress Report and PR Documentation Plan
+
+This plan outlines the creation of two key documents: a new [PR.md](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/PR.md) for the `llxprt-code` branch (old branch) and a comprehensive `progress.md` (Progress Report) to share with other developers.
+
+## Proposed Changes
+
+### Documentation Components
+
+#### [NEW] [PR.md](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/PR_NEW.md)
+Draft a new PR description for the `llxprt-code` branch focusing on the high-quality Tabs implementation.
+- **Highlights**: Stable Tabs architecture, multi-tab interface (`chat`, `debug`, `todo`, `system`), and improved rendering logic.
+- **Issue Linking**: Connect to #35, #36, and #37.
+- **Status**: Mark it as "High Completion but with specific pending items".
+
+#### [NEW] [progress.md](file:///Users/caishanghong/Shopify/cli-tool/progress.md)
+Create a progress report that synthesizes the current state of both branches and the UI debugging research.
+- **Branch Comparison**:
+    - `llxprt-code`: The "Gold Standard" implementation, stable but on an older base.
+    - `llxprt-code-4` (PR #43): The "Modern Port", based on current main, integrates newer UI optimizations but currently less stable.
+- **Roadblock**: Highlight the "UI Debugging" bottleneck.
+- **SOT Context**: Reference the research in [SOT.md](file:///Users/caishanghong/Shopify/cli-tool/SOT.md) regarding Fiber Recorder for UI debugging.
+- **Next Steps**: Continue Fiber Recorder validation to unlock the "Last Mile" of UI optimization.
+
+## Verification Plan
+
+### Manual Verification
+- Review the generated `PR_NEW.md` to ensure it accurately reflects the user's satisfaction with the `llxprt-code` implementation.
+- Review the `progress.md` to ensure it correctly balances the achievements and the remaining challenges.
+- Verify that all URL placeholders and issue references are correct.

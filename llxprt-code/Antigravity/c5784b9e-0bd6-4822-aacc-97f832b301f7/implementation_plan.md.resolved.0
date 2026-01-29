@@ -1,0 +1,25 @@
+# Restore nextSpeakerChecker
+
+## Goal Description
+Restore `nextSpeakerChecker.ts` to `llxprt-code-3` from `gemini-cli` and integrate it, ensuring it respects the new configuration options (enable/disable).
+
+## User Review Required
+- [ ] Confirm if `nextSpeakerChecker` should be enabled by default.
+
+## Proposed Changes
+### Core
+#### [NEW] [nextSpeakerChecker.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/utils/nextSpeakerChecker.ts)
+- Copy content from `gemini-cli`.
+
+#### [MODIFY] [config.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/config/config.ts)
+- Ensure configuration for enabling/disabling exists.
+
+### CLI
+- Integrate `nextSpeakerChecker` into the main loop or message handling logic.
+
+## Verification Plan
+### Automated Tests
+- Run `npm test` in `packages/core`.
+
+### Manual Verification
+- Verify that the checker runs (or doesn't run) based on config.

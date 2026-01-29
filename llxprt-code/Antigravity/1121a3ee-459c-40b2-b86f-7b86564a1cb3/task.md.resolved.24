@@ -1,0 +1,37 @@
+# Upstream Porting of Tabs Feature ✅
+
+- [x] Analyze upstream changes in `llxprt-code-4`
+- [x] Port Tabs feature components and state management
+- [x] Integrate upstream UI improvements into ported components
+- [x] Fix keybindings and remove redundant UI logic
+- [x] Resolve all TypeScript and Lint errors
+    - [x] Fix [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/components/MainContent.tsx) property mismatches
+    - [x] Fix [ScreenReaderAppLayout.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/cli/src/ui/layouts/ScreenReaderAppLayout.tsx) Footer props
+    - [x] Fix missing module imports ([AppContext](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/contexts/AppContext.tsx#16-23), `useAlternateBuffer`, `ConfigContext`)
+    - [x] Address `RenderOptions` discrepancies
+- [x] Verify build and basic functionality
+- [x] Investigate UI layout and tab positioning discrepancies
+    - [x] Compare Source and Target layout components
+    - [x] Delegate assessment to opencode-review
+    - [x] Resolve identified migration gaps
+- [x] Investigate Screen Reader Mode regression
+    - [x] Compare ScreenReaderAppLayout and MainContent
+    - [x] Identify and fix regressions
+    - [x] Verify with opencode-review
+
+## Archive
+
+### Phase 1.1: Screen Reader Layout ✅
+- [x] Create ScreenReaderAppLayout.tsx
+- [x] Update AppContainer.tsx
+- [x] Test SR mode layout
+
+### Phase 2: Systematic Memoization ✅
+- [x] Memoize HistoryItemDisplay
+- [x] Memoize AppHeader
+- [x] Optimize MainContent rendering
+
+### Phase 3: Tabs Feature Integration ✅
+- [x] Port TabBar and tab definitions
+- [x] Update UIState and AppReducer
+- [x] Add tab cycling keybindings

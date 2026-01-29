@@ -1,0 +1,12 @@
+# Task Checklist
+
+- [ ] Analyze git log since `v0.1.0` [/]
+    - [x] Gather commit messages
+    - [ ] Identify merged branches and their specific changes
+    - [ ] Filter out upstream (github/main) and unmerged changes
+- [ ] Read current `Change-Report.md` [ ]
+- [ ] Draft new content for `Change-Report.md` [ ]
+    - [ ] Section: 功能 (Features)
+    - [ ] Section: 調整 (Adjustments)
+- [ ] Update `Change-Report.md` [ ]
+- [ ] Verification [ ]

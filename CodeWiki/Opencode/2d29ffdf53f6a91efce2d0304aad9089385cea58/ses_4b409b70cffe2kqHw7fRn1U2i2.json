@@ -1,0 +1,17 @@
+{
+  "id": "ses_4b409b70cffe2kqHw7fRn1U2i2",
+  "version": "1.0.191",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "parentID": "ses_4b4a7d8c9ffeYRtDpmmb7wzX4C",
+  "title": "Fix test return values (@general subagent)",
+  "time": {
+    "created": 1766505990387,
+    "updated": 1766506765646
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

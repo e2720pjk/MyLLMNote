@@ -1,0 +1,14 @@
+# Task List
+
+- [ ] Analyze Project Structure
+    - [ ] Read `package.json` to understand dependencies
+    - [ ] Read `app/root.tsx` to understand global layout
+    - [ ] Analyze `app/routes` to understand page flow
+    - [ ] Analyze `app/shopify.server.ts` and `app/db.server.ts` for backend coupling
+- [ ] Design Template Architecture
+    - [ ] Identify reusable UI components
+    - [ ] Identify generic flow (e.g., settings, dashboard)
+    - [ ] Define interface between Template and Business Logic
+- [ ] Create Implementation Plan
+    - [ ] Draft `implementation_plan.md`
+    - [ ] Review with User

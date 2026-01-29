@@ -1,0 +1,16 @@
+{
+  "id": "ses_52fbd7cf9ffe6EajdooiD51cZj",
+  "version": "1.0.107",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "title": "Analyzing MCP failure with ERR_MODULE_NOT_FOUND keytar issue",
+  "time": {
+    "created": 1764430611206,
+    "updated": 1764431244933
+  },
+  "summary": {
+    "additions": 26,
+    "deletions": 48,
+    "files": 2
+  }
+}

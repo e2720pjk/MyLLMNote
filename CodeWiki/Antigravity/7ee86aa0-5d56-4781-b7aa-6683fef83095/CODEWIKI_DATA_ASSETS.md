@@ -1,0 +1,68 @@
+# CodeWiki Data Assets & Evolution Strategy
+
+This document details the **Analysis Artifacts** preserved after Phase 1 and explains how they power the Future Phases (Chat & Incremental Updates).
+
+---
+
+## 1. Phase 1 Deliverables: The "Data Lake"
+Beyond the visible Markdown files, Phase 1 leaves behind a structured **Knowledge Base**.
+
+| Artifact | Format | Content Description | Purpose (Why keep it?) |
+| :--- | :--- | :--- | :--- |
+| **1. Structure Graph** | `module_tree.json` | Full dependency tree, hierarchy, and component signatures. | **Navigation Map.** Used by Chat to locate files and understand "Project Shape". |
+| **2. Semantic Summaries** | `metadata/summaries/*.json` | High-level architectural summaries of each module (from Recursive Agents). | **Fast RAG.** Allows LLM to answer "What does the Auth module do?" without reading code. |
+| **3. Git Evidence** | `history_index.json` | Map of `File -> [CommitID, IntentSummary]`. | **Traceability.** Used to answer "Who changed this and why?" and verify claims. |
+| **4. Analysis Metadata** | `analysis_state.json` | Hash/Timestamp of every processed file + Token usage stats. | **Incremental Check.** The "State File" for detecting what changed. |
+
+**Value:** The Markdown is just a snapshot. These 4 JSONs are the **Live Database** of your codebase.
+
+---
+
+## 2. Phase 2: Enabling "Chat" (The Data Consumer)
+*Question: Can we strictly rely on Phase 1 data for Chat?*
+**Answer: YES.**
+
+The Chat functionality does **not** need to re-read the code. It acts as a Query Engine over the Phase 1 artifacts:
+
+*   **Scenario: "How does the login flow work?"**
+    1.  **Retrieval:** Chat Agent searches **Semantic Summaries** (Artifact #2) for "login".
+    2.  **Navigation:** Agent uses **Structure Graph** (Artifact #1) to find `src/auth/login.py` and its dependencies.
+    3.  **Synthesis:** Agent answers using the pre-computed summary. *Zero tokens used on reading raw code.*
+
+*   **Scenario: "Who introduced the bug in validation?"**
+    1.  **Lookup:** Agent queries **Git Evidence** (Artifact #3) for `src/auth/validation.py`.
+    2.  **Result:** Returns list of recent commits with "Bug Fix" intents.
+
+**Constraint:** Without Phase 4 (Deep Joern), the Chat knows "Structure" and "Intent", but cannot answer complex Data Flow questions (e.g., "Show me the taint path"). This is acceptable for a v1 Chat.
+
+---
+
+## 3. Phase 3: Incremental Updates (The "Dirty Bit" Strategy)
+*Question: How to handle version updates?*
+**Strategy: Dependency Propagation.**
+
+We use the `analysis_state.json` (Artifact #4) to minimize work.
+
+**The Algorithm:**
+1.  **Scan:** On `codewiki update`, calculate `git hash` for all files.
+2.  **Diff:** Compare with `analysis_state.json`. Identify `Changed_Files`.
+3.  **Leaf Update:** Re-run `AgentOrchestrator` (with ASTChunk) *only* on `Changed_Files`.
+4.  **Propagation (The Recursive Magic):**
+    *   Mark `Parent(Changed_File)` as "Dirty".
+    *   Re-generate **Parent Summary** using the *new* Child Summary + *cached* sibling summaries.
+    *   Repeat up to Root.
+
+**Benefit:**
+*   If you change 1 file in a 10,000 file repo:
+*   **Old Way:** Re-analyze everything (Hours).
+*   **New Way:** Re-analyze 1 File + Update ~5 Parent Summaries (Seconds).
+*   **Consistency:** The Documentation always stays 100% in sync with code.
+
+---
+
+## 4. Summary
+*   **Phase 1** is not just "Writing Docs". It is "Indexing the Codebase".
+*   **Phase 2 (Chat)** is simply a UI over the **Index**.
+*   **Phase 3 (Updates)** is simply maintaining the **Index**.
+
+This data-centric approach ensures your investment in Phase 1 pays off repeatedly in all future phases.

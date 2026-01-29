@@ -1,0 +1,41 @@
+# Implementation Plan - Fix Terminal Corruption (Issue #26)
+
+## Problem Analysis
+Comparison between `v0.5.0` and `HEAD` reveals a critical regression in [packages/cli/src/utils/cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts).
+- **v0.5.0**: [runExitCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#18-32) simply iterated through `cleanupFunctions`. Ink's `instance.unmount()` (registered as a cleanup function) handled terminal restoration naturally.
+- **HEAD**: [runExitCleanup](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#18-32) was modified to **explicitly reset the terminal** (disable raw mode, show cursor) **BEFORE** running `cleanupFunctions`.
+
+This "early reset" conflicts with Ink's unmount process. Ink expects to be in control of the terminal during unmount. When we forcibly disable raw mode and show the cursor *while* Ink is still trying to render its final frame or clear the screen (especially active during an OpenAI stream), it leads to the reported terminal corruption (stair-stepping, artifacts).
+
+## Proposed Changes
+
+### CLI Package
+
+#### [MODIFY] [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts)
+
+1.  **Extract Reset Logic**: Create a `resetTerminalState()` helper function containing the terminal reset code (sequences + raw mode toggle).
+2.  **Revert Order**: In [runExitCleanup()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts#18-32), move the call to `resetTerminalState()` to the **END** of the function, *after* the `cleanupFunctions` loop.
+    - This restores the v0.5.0 behavior where Ink cleans up first.
+    - The explicit reset at the end serves as a safety net.
+3.  **Safety Timeout**: In `gracefulExit()`, ensure `resetTerminalState()` is called inside the fallback timeout (1s) to guarantee restoration even if the main cleanup hangs.
+
+## User Review Required
+
+> [!IMPORTANT]
+> This change restores the cleanup order to match v0.5.0 (Application Cleanup -> Terminal Reset) while keeping the robust signal handling and safety timeouts introduced in v0.6.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run preflight` to ensure no regressions.
+
+### Manual Verification
+- **Test 1: OpenAI Stream Exit**
+    1. Start the CLI with OpenAI provider.
+    2. Start a long generation.
+    3. Press `Ctrl+C` *during* the generation.
+    4. Verify the terminal is restored correctly (cursor visible, no stair-stepping).
+- **Test 2: Normal Exit**
+    1. Start CLI.
+    2. Type `/exit`.
+    3. Verify terminal is clean.

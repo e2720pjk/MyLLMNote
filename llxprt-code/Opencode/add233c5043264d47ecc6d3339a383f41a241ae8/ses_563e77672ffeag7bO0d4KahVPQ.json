@@ -1,0 +1,17 @@
+{
+  "id": "ses_563e77672ffeag7bO0d4KahVPQ",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "parentID": "ses_563e78933ffeuhs8Sn9snql1YT",
+  "title": "Analyze project structure and tools (@general subagent)",
+  "time": {
+    "created": 1763555445133,
+    "updated": 1763555496468
+  },
+  "summary": {
+    "additions": 5,
+    "deletions": 6,
+    "files": 1
+  }
+}

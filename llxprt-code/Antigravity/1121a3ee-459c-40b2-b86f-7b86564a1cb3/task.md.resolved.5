@@ -1,0 +1,42 @@
+# UI Optimization Migration - Task Tracker
+
+## Phase 0: Ink Version Evaluation ✅
+
+- [x] Verify @jrichman/ink@6.4.6 compatibility
+- [x] Run existing tests
+- [x] Create performance baseline test
+- [x] Document verification results
+
+## Phase 1: Static Component Architecture ✅
+
+- [x] Create implementation plan
+- [x] Implement useRenderMode hook
+- [x] Update UIStateContext (historyRemountKey, history/pendingHistory separation)
+- [x] Refactor MainContent for dual mode rendering
+- [x] Verify performance improvements
+- [x] Fix appReducer.test.ts
+
+## Phase 1.1: Screen Reader Support ✅
+
+- [x] Create ScreenReaderAppLayout.tsx
+  - [x] Implement component with SR-optimized layout (Footer on top, 90% width)
+  - [x] Add proper imports and exports
+  - [x] Include useFlickerDetector integration
+- [x] Update AppContainer.tsx
+  - [x] Import useIsScreenReaderEnabled from ink
+  - [x] Import ScreenReaderAppLayout
+  - [x] Add conditional rendering logic (SR ? ScreenReaderAppLayout : DefaultAppLayout)
+- [x] Testing & Verification
+  - [x] Test SR mode layout (verified by code inspection)
+  - [x] Test mode switching (conditional rendering verified)
+  - [x] Run test suite (typecheck, lint passed)
+- [ ] (Optional) Remove pendingHistory field
+  - [ ] Investigation complete: gemini-cli doesn't use this field
+  - [ ] Decision: Keep for now (non-blocking, backward compatible)
+
+## Phase 2+: Future Enhancements (Not Started)
+
+- [ ] Systematic Memoization
+- [ ] Flicker Prevention system integration
+- [ ] Advanced Memory Management
+- [ ] Additional accessibility features

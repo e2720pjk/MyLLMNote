@@ -1,0 +1,16 @@
+{
+  "id": "ses_4cfed4414ffelCv5ZVyN8e5pj5",
+  "version": "1.0.164",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli",
+  "title": "Debugging AppContainer.tsx useMemo version prop usage and build verification",
+  "time": {
+    "created": 1766038092779,
+    "updated": 1766038095070
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

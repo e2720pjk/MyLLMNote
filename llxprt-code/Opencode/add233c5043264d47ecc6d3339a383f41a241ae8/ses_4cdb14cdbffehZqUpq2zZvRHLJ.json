@@ -1,0 +1,16 @@
+{
+  "id": "ses_4cdb14cdbffehZqUpq2zZvRHLJ",
+  "version": "1.0.166",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4",
+  "title": "Debugging UI Layout, Early Logs, and Verification Suite Runs",
+  "time": {
+    "created": 1766075577124,
+    "updated": 1766076987023
+  },
+  "summary": {
+    "additions": 22722,
+    "deletions": 77092,
+    "files": 34
+  }
+}

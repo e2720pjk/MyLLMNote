@@ -1,0 +1,55 @@
+# Analysis: ASTChunk Integration Value
+
+## 1. The Verdict
+**Yes, we must adopt this.**
+Your intuition is correct. [ASTChunk](file:///Users/caishanghong/Shopify/cli-tool/astchunk/src/astchunk/astchunk.py#5-213) solves the specific "Context Quality" problems identified in current CodeWiki, specifically for **Large File Handling**.
+
+It is the missing piece for the **"Context Projector"** layer defined in our Implementation Strategy.
+
+---
+
+## 2. Technical Comparison
+
+| Feature | Current CodeWiki (`read_code_components`) | [ASTChunk](file:///Users/caishanghong/Shopify/cli-tool/astchunk/src/astchunk/astchunk.py#5-213) | Value Gain |
+| :--- | :--- | :--- | :--- |
+| **Boundary** | Arbitrary Character Count (16k limit) | Syntactic Node Boundary (e.g., end of function) | **No Syntax Errors** for LLM. |
+| **Integrity** | Can cut [if](file:///Users/caishanghong/Shopify/cli-tool/astchunk/src/astchunk/astchunk_builder.py#294-334) block in half. | Guarantees complete blocks (recursive descent). | **Logic Safety** (LLM sees complete conditionals). |
+| **Context** | Lost if bottom of file is truncated. | [chunk_expansion](file:///Users/caishanghong/Shopify/cli-tool/astchunk/src/astchunk/astchunk.py#173-195) adds "Ancestors" header to *every* chunk. | **Zero Context Loss**. Chunk 5 knows it belongs to `Class A`. |
+| **Token Usage**| Wastes tokens on irrelevant adjacent functions. | Selectable chunks based on relevance (Future RAG). | **Cost Efficiency**. |
+
+---
+
+## 3. Integration Strategy (The "Smart Context" Implementation)
+
+We should integrate this into the **Phase 2 (New Capabilities)** of our [CODEWIKI_IMPLEMENTATION_STRATEGY.md](file:///Users/caishanghong/.gemini/antigravity/brain/7ee86aa0-5d56-4781-b7aa-6683fef83095/CODEWIKI_IMPLEMENTATION_STRATEGY.md).
+
+### New Class: `ASTChunkContextProjector`
+
+Instead of `read_code_components` blindly reading the file, we use [ASTChunkBuilder](file:///Users/caishanghong/Shopify/cli-tool/astchunk/src/astchunk/astchunk_builder.py#20-334):
+
+1.  **Input:** A large file (e.g., 2000 lines).
+2.  **Process:**
+    *   `builder = ASTChunkBuilder(max_chunk_size=TOKEN_LIMIT, language="python")`
+    *   `chunks = builder.chunkify(source_code)`
+3.  **Selection Strategy (The "Smart" Part):**
+    *   *Option A (Doc Gen):* If documenting a specific function, pick *only* the chunk containing that function + its ancestors.
+    *   *Option B (Full Gen):* If documenting the file, iterate through chunks. The "Overlap" feature ensures the LLM understands continuity.
+4.  **Output:** A list of syntactically valid, context-aware strings.
+
+---
+
+## 4. Specific CodeWiki Fixes
+
+*   **Replace `str_replace_editor.py`'s `maybe_truncate`:**
+    *   *Old:* `text[:16000]`
+    *   *New:* [ASTChunkBuilder(max=16000).chunkify(text)[0].content](file:///Users/caishanghong/Shopify/cli-tool/astchunk/src/astchunk/astchunk_builder.py#20-334) (Returns the largest *complete* valid block that fits).
+
+*   **Enhance `read_code_components.py`:**
+    *   Use `chunk.apply_chunk_expansion()` to prepend `class/function` hierarchy to every code snippet sent to the LLM. This prevents the "I don't know where this code lives" hallucination.
+
+---
+
+## 5. Decision
+**Adoption Recommended.**
+It requires adding `tree-sitter` language bindings (which CGR likely already has or needs).
+It aligns perfectly with the "System 2" architecture: Precision over Guesswork.

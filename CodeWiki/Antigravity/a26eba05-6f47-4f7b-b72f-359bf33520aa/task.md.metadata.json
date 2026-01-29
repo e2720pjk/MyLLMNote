@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_TASK",
+  "summary": "Task list for investigating and fixing Issue #26 (terminal corruption with OpenAI provider).",
+  "updatedAt": "2025-12-02T23:17:31.621871Z",
+  "version": "2"
+}

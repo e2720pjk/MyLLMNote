@@ -1,0 +1,35 @@
+{
+  "id": "ses_422805c7effedV9DSBD6WJfRUN",
+  "slug": "clever-otter",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "parentID": "ses_4228087b3ffeB76E1egk390OoS",
+  "title": "Explore analysis_service patterns (@explore subagent)",
+  "permission": [
+    {
+      "permission": "todowrite",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "todoread",
+      "action": "deny",
+      "pattern": "*"
+    },
+    {
+      "permission": "task",
+      "action": "deny",
+      "pattern": "*"
+    }
+  ],
+  "time": {
+    "created": 1768947688321,
+    "updated": 1768947700286
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "ses_4cfa2a3d2ffeccWyfVIvkeXfKm",
+  "version": "1.0.166",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli",
+  "title": "Debugging Screen Reader Mode regression in CLI UI",
+  "time": {
+    "created": 1766042983469,
+    "updated": 1766043327596
+  },
+  "summary": {
+    "additions": 134,
+    "deletions": 59,
+    "files": 6
+  }
+}

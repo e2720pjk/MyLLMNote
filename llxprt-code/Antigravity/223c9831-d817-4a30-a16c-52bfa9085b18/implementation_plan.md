@@ -1,0 +1,43 @@
+# Implementation Plan - Enhance Fiber Recorder for Ink
+
+The goal is to improve `fiber-recorder` to correctly capture deeper state and specific details of Ink-based CLI applications, addressing the "unperfect" logs with `[MAX_DEPTH_EXCEEDED]` and missing DOM (terminal) details.
+
+## User Review Required
+
+> [!IMPORTANT]
+> The user has requested a comparison with `rrweb` and wants "video-like" playback for LLMs. Since Ink runs in a terminal (no DOM), we cannot use `rrweb`. We must simulate `rrweb`'s data richness by capturing Ink's `stateNode` internals (Layout/Style/Text) and creating a specialized "Ink Player" or enhanced log format.
+
+## Proposed Changes
+
+### fiber-recorder
+
+#### [MODIFY] [types.ts](file:///Users/caishanghong/Shopify/cli-tool/fiber-recorder/src/types.ts)
+- Add `FiberSerializerConfig` interface.
+- Add `depth` and `customHandler` options.
+
+#### [MODIFY] [sanitizer.ts](file:///Users/caishanghong/Shopify/cli-tool/fiber-recorder/src/lib/sanitizer.ts)
+- Increase `DEFAULT_MAX_OBJECT_DEPTH` to 10 (or make configurable).
+- Improve `sanitizeObject` to handle `Set` and `Map` which are common in React info.
+
+#### [MODIFY] [serializer.ts](file:///Users/caishanghong/Shopify/cli-tool/fiber-recorder/src/lib/serializer.ts)
+- **Ink Detection**: Add logic to detect if a fiber is an Ink component (often `fiber.tag` or specific types).
+- **StateNode Inspection**: For Host Components (likely strings in `fiber.type`), inspect `stateNode`.
+    - In Ink, `stateNode` contains `style`, `yogaNode` (layout), and internal text.
+- **Better Naming**: Improve `getComponentType` to resolve `ForwardRef`, `Memo`, and `Context` names properly.
+- **Circular Reference Handling**: Use a `visited` set in serialization to prevent infinite loops instead of hard cutoff.
+
+#### [MODIFY] [logger.ts](file:///Users/caishanghong/Shopify/cli-tool/fiber-recorder/src/lib/logger.ts)
+- Update to use the improved serializer options.
+
+## Verification Plan
+
+### Automated Tests
+- Created unit tests in `fiber-recorder` do not exist currently (only `TESTING-PLAN.md`).
+- I will verify by running the tool against `llxprt-code-4`.
+
+### Manual Verification
+1.  Apply `llxprt-code-4.patch` to `llxprt-code-4` (if not present).
+2.  Link `fiber-recorder` into `llxprt-code-4` (or ensure it's available).
+3.  Run `ENABLE_FIBER_LOGGER=true npm start` in `llxprt-code-4`.
+4.  Inspect the generated `fiber-log.jsonl`.
+5.  Confirm that `[MAX_DEPTH_EXCEEDED]` is reduced and we see meaningful props/state.

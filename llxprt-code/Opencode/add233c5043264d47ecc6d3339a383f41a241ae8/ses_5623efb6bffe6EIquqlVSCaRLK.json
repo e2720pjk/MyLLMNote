@@ -1,0 +1,17 @@
+{
+  "id": "ses_5623efb6bffe6EIquqlVSCaRLK",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "parentID": "ses_5623f19c6ffeF8iqvsWOu262j2",
+  "title": "Find history UI components (@general subagent)",
+  "time": {
+    "created": 1763583263892,
+    "updated": 1763583312561
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

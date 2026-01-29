@@ -1,0 +1,16 @@
+{
+  "id": "ses_5622acea9ffeq66qMjeXc0axZK",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing generateDynamicToolSettings completeness return",
+  "time": {
+    "created": 1763584586071,
+    "updated": 1763585868180
+  },
+  "summary": {
+    "additions": 399,
+    "deletions": 7,
+    "files": 2
+  }
+}

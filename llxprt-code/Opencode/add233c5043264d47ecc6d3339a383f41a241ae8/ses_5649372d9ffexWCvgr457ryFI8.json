@@ -1,0 +1,16 @@
+{
+  "id": "ses_5649372d9ffexWCvgr457ryFI8",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Reviewing git diff HEAD for handleCoreToolToggle",
+  "time": {
+    "created": 1763544173862,
+    "updated": 1763545652970
+  },
+  "summary": {
+    "additions": 365,
+    "deletions": 0,
+    "files": 1
+  }
+}

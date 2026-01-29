@@ -1,0 +1,11 @@
+# Joern Analysis Discrepancy Resolution
+
+- [x] Integrate Joern 4.x into CodeWiki <!-- id: 0 -->
+- [/] Analyze and Fix Content Discrepancy <!-- id: 1 -->
+    - [x] Compare `wiki` and `raw-Wiki` metadata <!-- id: 2 -->
+    - [x] Identify hardcoded file limit in [DependencyGraphBuilder](file:///Users/caishanghong/Shopify/cli-tool/CodeWiki/codewiki/src/be/dependency_analyzer/dependency_graphs_builder.py#16-145) <!-- id: 3 -->
+    - [ ] Remove hardcoded `max_files=100` limit <!-- id: 4 -->
+    - [ ] Harmonize node identifiers between AST and Joern <!-- id: 5 -->
+    - [ ] Improve Joern-based relationship enhancement <!-- id: 6 -->
+- [ ] Verify Fix and Generate Improved Documentation <!-- id: 7 -->
+- [ ] Document Joern's value proposition for the user <!-- id: 8 -->

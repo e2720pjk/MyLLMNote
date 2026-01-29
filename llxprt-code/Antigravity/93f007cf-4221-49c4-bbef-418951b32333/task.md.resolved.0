@@ -1,0 +1,18 @@
+# Task: Fix Terminal Corruption in Kitty Protocol Detector
+
+- [ ] Analyze and Compare Signal Handling <!-- id: 0 -->
+    - [ ] Locate and read `kittyProtocolDetector.ts` in `llxprt-code` and `gemini-cli`
+    - [ ] Locate and read `terminalSequences.ts` and `bracketedPaste.ts` in both
+    - [ ] Check entry points (`gemini.tsx` / `index.ts`) for global signal handlers
+    - [ ] Compare implementations and identify gaps in `llxprt-code`
+- [ ] Formulate Improvement Plan <!-- id: 1 -->
+    - [ ] Design a robust signal handling strategy (SIGINT, SIGTERM, exit)
+    - [ ] Address synchronous writing requirements
+    - [ ] Resolve potential conflicts with existing handlers
+- [ ] Implement Fixes <!-- id: 2 -->
+    - [ ] Create/Update `writeToStdoutSync` helper
+    - [ ] Update `bracketedPaste.ts`
+    - [ ] Update `kittyProtocolDetector.ts` with proper handlers
+    - [ ] Ensure no conflicts with `gemini.tsx`
+- [ ] Verify Fixes <!-- id: 3 -->
+    - [ ] Manual verification (CTRL+C, Crash, Rapid CTRL+C)

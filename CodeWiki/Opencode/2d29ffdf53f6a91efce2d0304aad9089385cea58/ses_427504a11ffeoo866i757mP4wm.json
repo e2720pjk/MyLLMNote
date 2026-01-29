@@ -1,0 +1,17 @@
+{
+  "id": "ses_427504a11ffeoo866i757mP4wm",
+  "slug": "crisp-falcon",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "PR.md: Readme changes and quick-check plan for test fixtures validation",
+  "time": {
+    "created": 1768866952686,
+    "updated": 1768954485225
+  },
+  "summary": {
+    "additions": 288,
+    "deletions": 18,
+    "files": 2
+  }
+}

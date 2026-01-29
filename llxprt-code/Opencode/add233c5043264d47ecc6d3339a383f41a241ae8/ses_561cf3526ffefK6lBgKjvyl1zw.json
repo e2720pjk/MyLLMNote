@@ -1,0 +1,16 @@
+{
+  "id": "ses_561cf3526ffefK6lBgKjvyl1zw",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing ProQuotaDialog removal completion",
+  "time": {
+    "created": 1763590589147,
+    "updated": 1763656037950
+  },
+  "summary": {
+    "additions": 25,
+    "deletions": 15,
+    "files": 5
+  }
+}

@@ -1,0 +1,51 @@
+# Refine TODO Tab and Fix Redraw Logic
+
+This plan addresses issues with the TODO tab integration, layout stability, and redraw failures when switching tabs.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Full Migration:** The [TodoPanel](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx#26-30) and detailed Todo tool outputs must be **removed** from the `MainChat` tab and exclusively rendered in the [TodoTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/tabs/TodoTab.tsx#14-31). `MainChat` should only display minimal summaries if necessary, keeping the interface clean and stable.
+> - **Redraw Fix:** Switching tabs will trigger a full terminal clear and static re-render to ensure a clean UI state.
+
+## Proposed Changes
+
+### UI Components
+
+#### [MODIFY] [ToolGroupMessage.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx)
+- Add logic to **filter out** `todoread` and `todowrite` tool calls completely when `showTodoPanel` (or a new `hideTodoTools`) prop is set.
+- This ensures that when the user is in the [Chat](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/types.ts#181-185) tab, they do not see redundant Todo tool artifacts, as these are now fully managed in the [TodoTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/tabs/TodoTab.tsx#14-31).
+
+#### [MODIFY] [HistoryItemDisplay.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/HistoryItemDisplay.tsx)
+- Ensure the `showTodoPanel` (or `hideTodoTools`) prop is correctly passed down to [ToolGroupMessage](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/messages/ToolGroupMessage.tsx#82-255).
+
+#### [MODIFY] [MainContent.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx)
+- **Remove** any [TodoPanel](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx#26-30) rendering from the 'chat' tab logic.
+- Ensure [HistoryItemDisplay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/HistoryItemDisplay.tsx#49-181) is configured to hide todo tools when rendering for the 'chat' tab.
+- Ensure [TodoPanel](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx#26-30) is **only** rendered within the 'todo' tab structure.
+- Use `uiState.staticKey` instead of `uiState.historyRemountKey` for `Static` components in all tabs to ensure `refreshStatic()` triggers a correct remount and terminal clear.
+- Refactor `todo` tab content to use the same [ScrollableList](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/shared/ScrollableList.tsx#40-153) / `Static` pattern as [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/config/config.ts#673-681) tab.
+- Define `todoVirtualizedData` (for virtualized mode) that includes [AppHeader](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/AppHeader.tsx#20-42) and the [TodoPanel](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx#26-30).
+- Ensure the [TodoPanel](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx#26-30) is properly centered/padded and doesn't cause layout shifting by using `flexGrow={1}` or high-level height constraints in the [MainContent](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/MainContent.tsx#109-549) container.
+
+#### [MODIFY] [TodoPanel.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx)
+- Update [useVerticalResponsive](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/TodoPanel.tsx#36-50) to use `availableTerminalHeight` from context if available, rather than hardcoded `rows - 8`, reaching out to `UIStateContext` if necessary.
+- Align header styling (`Todo Progress`) with [McpStatus](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/components/McpStatus.tsx#16-50) (e.g. Yellow, bold, underline) for UI consistency across specialized tabs.
+- Ensure the main `Box` doesn't use `borderStyle="round"` if it's already inside a constrained container that handles borders (optional, based on visual fit).
+
+### Contexts & Hooks
+
+#### [MODIFY] [AppContainer.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/AppContainer.tsx)
+- Update [setActiveTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/AppContainer.tsx#1828-1835) to explicitly call `refreshStatic()`. This ensures that switching tabs clears the terminal and triggers a clean re-render, resolving redraw artifacts (like missing tool call windows).
+
+## Verification Plan
+
+### Automated Tests
+- `npm run preflight` to ensure no regressions.
+- Verify that `staticKey` change doesn't cause excessive re-renders during normal operation.
+
+### Manual Verification
+1. Open a conversation with tool calls.
+2. Switch to Debug tab and then back to Chat tab. Verify tool call windows redraw correctly.
+3. Switch to TODO tab. Verify it doesn't "push up" the TabBar and follows the $H$ constraints.
+4. Add many todos and verify the TODO tab scrolls correctly.

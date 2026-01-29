@@ -1,0 +1,16 @@
+{
+  "id": "ses_5831c75bfffeVcxeKcV04XsGbW",
+  "version": "1.0.61",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Fixing TS18046 errors in OpenAIProvider.ts",
+  "time": {
+    "created": 1763031878208,
+    "updated": 1763032326277
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

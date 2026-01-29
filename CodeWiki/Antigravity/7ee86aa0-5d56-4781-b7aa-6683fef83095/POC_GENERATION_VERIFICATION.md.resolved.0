@@ -1,0 +1,80 @@
+# POC: Context Quality & Deterministic Verification
+
+This POC ignores RAG/Search. It focuses purely on **"Writing Better Code"** and **"Automated Checking"**.
+
+---
+
+## Part 1: The Context Experiment (Generation Quality)
+*Hypothesis: LLM writes better code when given the CPG Tree (Structure) than Raw Code (Tokens).*
+
+### Experiment Setup
+*   **Task:** "Create a new Component `FeatureC` similar to existing `FeatureA`."
+*   **The Failure Mode (Baseline):** LLM creates `FeatureC` but forgets to import `useHook`. It looks correct but crashes at runtime.
+
+### The A/B Test
+1.  **Group A (Raw Context):**
+    *   **Input:** `file_content` of `FeatureA.tsx`.
+    *   **Prompt:** "Copy this pattern."
+    *   **Expected Result:** High fidelity text, but often misses hidden dependencies (e.g., global types, context providers).
+
+2.  **Group B (Structured Context):**
+    *   **Input:** `CPG_Node` of `FeatureA.tsx` (Dependencies, Calls, Imports) + `PageIndex_Tree`.
+    *   **Prompt:** "Implement a component that satisfies this Structural Contract."
+    *   **Expected Result:** The LLM sees the *Edges* (Dependencies). It explicitly sees `CALLS: useHook`. It is forced to include it.
+
+---
+
+## Part 2: Deterministic Verification (The "No-LLM" Guardrail)
+*Hypothesis: We can validate code logic using Graph Isomorphism, without asking an LLM "Is this good?".*
+
+This is the **Killer Feature**.
+
+### The Mechanism
+An LLM can hallucinate "Yes, I fixed it". **Math cannot.**
+
+1.  **Define the Contract (The "Skeleton"):**
+    *   Extract from `FeatureA` (The Reference).
+    *   `Constraint = { "MustCall": ["usePreservedSearch"], "MustImplement": ["LoaderFunction"] }`
+
+2.  **Parse the Output (The Check):**
+    *   Take the LLM-generated code (`temp_output.tsx`).
+    *   Run `joern-parse` or fast `tree-sitter` parse.
+    *   Generate `Output_Graph`.
+
+3.  **The Verification Function (Python):**
+    ```python
+    def verify_logic(output_graph, constraints):
+        # 1. Check strict dependency
+        if not output_graph.has_edge("FeatureC", "usePreservedSearch", type="CALLS"):
+            return Fail("Missing required hook: usePreservedSearch")
+        
+        # 2. Check structure
+        if not output_graph.has_node("loader", type="FUNCTION"):
+            return Fail("Missing required export: loader")
+            
+        return Pass
+    ```
+
+### Why this changes everything
+*   **Speed:** < 100ms. No LLM latency.
+*   **Cost:** $0.
+*   **Trust:** 100%. If the edge is missing, the code is wrong. Period.
+
+---
+
+## 3. Revised POC Plan (The "Writer's Workbench")
+
+**Goal:** Build a script that aids the *Writing* process, not the *Search* process.
+
+### Step 1: The "Context Builder" Script
+*   Input: `ReferenceFile`.
+*   Output: `StructuredContext.json` (Contains Imports, Interface methods, Hook calls).
+*   *Action:* Feed this JSON to LLM prompt.
+
+### Step 2: The "Logic Linter" Script
+*   Input: `GeneratedFile` + `ReferenceGraph`.
+*   Action: Parse `GeneratedFile`. Compare Edges.
+*   Output: `Pass` or [Error(Missing Edge: X)](file:///Users/caishanghong/Shopify/cli-tool/code-graph-rag/codebase_rag/types_defs.py#391-395).
+
+**Verdict:**
+This approach directly attacks the "Migration Failure" problem. The Failure happened because the LLM didn't "know" a hook was mandatory. The **Context Builder** tells it. The **Logic Linter** catches it if it forgets.

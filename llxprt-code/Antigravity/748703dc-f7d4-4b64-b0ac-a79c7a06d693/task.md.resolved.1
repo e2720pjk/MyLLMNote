@@ -1,0 +1,11 @@
+# Task: IME Ctrl+C, Deadlock & Terminal Leakage Fix Investigation
+
+- [x] Explore and Compare Codebases <!-- id: 0 -->
+    - [x] Read [packages/cli/src/gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/gemini.tsx) in `llxprt-code-3` and `gemini-cli` <!-- id: 1 -->
+    - [x] Read [packages/cli/src/utils/cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/utils/cleanup.ts) in `llxprt-code-3` and `gemini-cli` <!-- id: 2 -->
+    - [x] Read `packages/cli/src/utils/kittyProtocolDetector.ts` in `llxprt-code-3` and `gemini-cli` <!-- id: 3 -->
+    - [x] Identify IME Ctrl+C mapping logic in `llxprt-code-3` <!-- id: 4 -->
+- [x] Analyze Impact on Lifecycle <!-- id: 5 -->
+    - [x] Determine how IME mapping affects signal handling <!-- id: 6 -->
+    - [x] Check for potential deadlocks or leakage sources <!-- id: 7 -->
+- [x] Report Findings <!-- id: 8 -->

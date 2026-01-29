@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan to fix signal propagation in `fetchWithTimeout` and `GoogleWebFetchTool`.",
+  "updatedAt": "2025-11-27T22:53:25.396899Z"
+}

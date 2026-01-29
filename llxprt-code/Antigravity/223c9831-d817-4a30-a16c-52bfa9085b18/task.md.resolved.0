@@ -1,0 +1,6 @@
+# Task: Analyze and Improve Fiber Recorder
+
+- [ ] Analyze `fiber-recorder` codebase <!-- id: 0 -->
+- [ ] Analyze [llxprt-code-4/fiber-log.jsonl](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/fiber-log.jsonl) content <!-- id: 1 -->
+- [ ] Analyze `llxprt-code-4` project structure <!-- id: 2 -->
+- [ ] Formulate recommendation (Fix vs. Rewrite) <!-- id: 3 -->

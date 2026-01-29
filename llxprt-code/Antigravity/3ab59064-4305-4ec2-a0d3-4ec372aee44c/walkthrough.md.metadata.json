@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Reviewed current changes and fixed .prettierignore/.eslintignore patterns.\n- Verified AST validation and result display enhancements in core and cli packages.\n- Expanded ignore patterns to cover all root-level test files (test_*), fixing lint/format failures caused by intentional syntax errors.\n- Confirmed 'npm run lint' and 'npm run format' pass successfully.",
+  "updatedAt": "2026-01-15T05:43:52.251992Z"
+}

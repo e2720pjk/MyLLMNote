@@ -1,0 +1,17 @@
+{
+  "id": "ses_4d0433875ffeIkUKfZGKMyW21G",
+  "version": "1.0.164",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli",
+  "parentID": "ses_4d04362e4ffeljJBtoBQvO3H3x",
+  "title": "Find Tabs related files (@explore subagent)",
+  "time": {
+    "created": 1766032459658,
+    "updated": 1766032511486
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

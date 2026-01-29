@@ -1,0 +1,51 @@
+# Fix Terminal Leakage (Raw Mode Conflict)
+
+## Goal Description
+Fix the persistent terminal leakage where control keys are interpreted as input after exit. Investigation revealed that [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx) manually restores raw mode (`process.stdin.setRawMode(wasRaw)`) in its `SIGTERM` and `SIGINT` handlers. This likely overrides the explicit cleanup we added in [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/utils/cleanup.ts), causing the terminal to remain in a bad state.
+
+## User Review Required
+> [!IMPORTANT]
+> This change removes the manual `setRawMode` calls in [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)'s signal handlers and replaces them with `await runExitCleanup()`. This ensures our centralized cleanup (which explicitly disables raw mode and Kitty protocol) is the single source of truth for exit logic.
+
+## Proposed Changes
+
+### CLI
+#### [MODIFY] [gemini.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/gemini.tsx)
+- Update `SIGTERM` and `SIGINT` handlers to remove `process.stdin.setRawMode(wasRaw)`.
+- Ensure `await runExitCleanup()` is called.
+
+```typescript
+    process.on('SIGTERM', async () => {
+      // process.stdin.setRawMode(wasRaw); // REMOVED
+      await runExitCleanup();
+      process.exit(0);
+    });
+    process.on('SIGINT', async () => {
+      // process.stdin.setRawMode(wasRaw); // REMOVED
+      await runExitCleanup();
+      process.exit(130); // Standard exit code for SIGINT
+    });
+```
+
+#### [MODIFY] [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts)
+- Add a synchronous flush to `stdout` to ensure escape sequences are sent before the process dies.
+
+```typescript
+  // Explicitly reset terminal modes to prevent leakage
+  if (process.stdout.isTTY) {
+    process.stdout.write(
+      DISABLE_BRACKETED_PASTE + DISABLE_FOCUS_TRACKING + SHOW_CURSOR,
+    );
+    disableProtocol(); // Disable Kitty keyboard protocol
+    process.stdout.write('\n'); // Force flush
+  }
+```
+
+## Verification Plan
+
+### Manual Verification
+1.  **IME Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Enable non-English IME.
+    -   Run `/quit` or press `Ctrl+C`.
+    -   **Expected Result**: Terminal should behave normally. Typing `Ctrl+C` should generate a SIGINT (or copy), not input characters.

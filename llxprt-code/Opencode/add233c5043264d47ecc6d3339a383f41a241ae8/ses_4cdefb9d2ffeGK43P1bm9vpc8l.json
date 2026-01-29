@@ -1,0 +1,16 @@
+{
+  "id": "ses_4cdefb9d2ffeGK43P1bm9vpc8l",
+  "version": "1.0.166",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli",
+  "title": "Verifying UI changes and linting builds for MainContent.tsx, Debug tab migration",
+  "time": {
+    "created": 1766071485997,
+    "updated": 1766071986422
+  },
+  "summary": {
+    "additions": 5,
+    "deletions": 0,
+    "files": 2
+  }
+}

@@ -1,0 +1,58 @@
+# LLxprt Agent Guide
+
+This document describes how to use the `llxprt` CLI tool as an agent.
+
+## Core Concept
+`llxprt` is a CLI tool that connects to an LLM. When used by an agent (non-interactive mode), it functions as a single-turn request:
+**Input (Prompt + Context) -> Processing (LLM + Tools) -> Output (Response)**
+
+## 1. Invocation (Non-Interactive)
+Always use the non-interactive mode by passing the prompt as a positional argument.
+
+```bash
+llxprt "Your prompt here"
+```
+
+## 2. Providing Context (`@filename`)
+You can include file contents in your prompt using the `@filename` syntax. The CLI resolves these references **locally** before sending the prompt to the LLM.
+
+**Syntax:**
+```bash
+llxprt "Refactor the error handling in @src/utils.ts and @src/api.ts"
+```
+
+- **How it works**: The CLI reads `src/utils.ts` and `src/api.ts`, appends their content to your prompt, and sends the full context to the LLM.
+- **Support**: This works in **both** interactive and non-interactive modes.
+
+## 3. Configuration & Flags
+**CRITICAL**: Do **NOT** use slash commands (e.g., `/model`, `/sandbox`) in non-interactive mode. They are interpreted as chat text, not commands.
+
+Use CLI flags instead:
+
+| Goal | Incorrect (Slash Command) | Correct (CLI Flag) |
+| :--- | :--- | :--- |
+| **Set Model** | `/model gemini-1.5-pro` | `llxprt --model gemini-1.5-pro "..."` |
+| **Enable Sandbox** | `/sandbox` | `llxprt --sandbox "..."` |
+| **Debug Mode** | `/debug` | `llxprt --debug "..."` |
+
+## 4. Best Practices for Agents
+
+### Prompting
+- **Be Explicit**: Since there is no conversation history by default in non-interactive mode, provide all necessary context in the single prompt.
+- **Use `@` References**: Heavily rely on `@filename` to give the LLM the code it needs to work on.
+
+### Example Workflows
+
+**Task: Fix a bug in a specific file**
+```bash
+llxprt "Fix the null pointer exception in @src/login.ts. The error occurs when user is undefined."
+```
+
+**Task: Generate a test**
+```bash
+llxprt --model gemini-1.5-pro "Create a unit test for @src/components/Button.tsx using React Testing Library"
+```
+
+## Summary of Limitations
+1.  **No Interactive Commands**: `/help`, `/clear`, `/image` etc. do not work as expected.
+2.  **Stateless**: Each command is a fresh session (unless you implement a custom history mechanism, which is advanced usage).

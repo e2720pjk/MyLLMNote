@@ -1,0 +1,17 @@
+{
+  "id": "ses_482d41769ffeuccTT0jm8Ct0AE",
+  "version": "1.0.134",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/var/folders/8m/309xc4vn3737_yftd2xz73l40000gn/T/vibe-kanban/worktrees/6da9-implementation-p/CodeWiki-1",
+  "parentID": "ses_482d425bfffe5UUJnt4zPCgMgr",
+  "title": "探索現有 AST 分析架構 (@explore subagent)",
+  "time": {
+    "created": 1767331588246,
+    "updated": 1767331626231
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

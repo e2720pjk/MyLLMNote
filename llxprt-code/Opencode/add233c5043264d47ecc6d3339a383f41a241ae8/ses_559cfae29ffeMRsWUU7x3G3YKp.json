@@ -1,0 +1,16 @@
+{
+  "id": "ses_559cfae29ffeMRsWUU7x3G3YKp",
+  "version": "1.0.82",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing main diff for package dependency failure and build issues",
+  "time": {
+    "created": 1763724775894,
+    "updated": 1763726461803
+  },
+  "summary": {
+    "additions": 2887,
+    "deletions": 89,
+    "files": 6
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "ses_432046dd4ffeoq2FfnRxz57kZr",
+  "slug": "kind-rocket",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki",
+  "title": "Code review of merge and max_depth integration steps",
+  "time": {
+    "created": 1768687374891,
+    "updated": 1768688419503
+  },
+  "summary": {
+    "additions": 29,
+    "deletions": 13,
+    "files": 1
+  }
+}

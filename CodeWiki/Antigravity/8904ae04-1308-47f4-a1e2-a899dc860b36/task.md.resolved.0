@@ -1,0 +1,7 @@
+# Tasks
+
+- [ ] Analyze Project Structure & Feasibility for Joern Integration [/]
+    - [x] Read README.md
+    - [x] Explore code structure (codewiki/src/be)
+    - [ ] Explore dependency_analyzer module
+    - [ ] Formulate understanding report

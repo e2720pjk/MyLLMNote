@@ -1,0 +1,42 @@
+# Fix Deadlock in OpenAI Provider Retry Logic
+
+## Goal Description
+The `llxprt` CLI experiences a deadlock when exiting (Ctrl+C) while an OpenAI provider conversation is active, specifically during retries (e.g., rate limits or network errors). The [retryWithBackoff](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/utils/retry.ts#255-357) utility uses a `setTimeout` based delay that does not respect `AbortSignal`, causing the process to hang until the timeout completes even if the user has requested cancellation.
+
+This plan addresses this by adding `AbortSignal` support to the retry logic and ensuring the OpenAI provider passes the signal correctly.
+
+## User Review Required
+> [!IMPORTANT]
+> This change modifies a core utility [retryWithBackoff](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/utils/retry.ts#255-357). While intended to be backward compatible, it changes the behavior of [delay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/utils/retry.ts#246-254) to be abortable.
+
+## Proposed Changes
+
+### Core Package
+
+#### [MODIFY] [retry.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/utils/retry.ts)
+- Update [RetryOptions](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/utils/retry.ts#16-29) interface to include `signal?: AbortSignal`.
+- Update [delay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/utils/retry.ts#246-254) function to accept `signal?: AbortSignal`.
+  - If `signal` is provided, use it to reject the promise immediately upon abort.
+- Update [retryWithBackoff](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/utils/retry.ts#255-357) to:
+  - Accept `signal` in options.
+  - Pass `signal` to [delay](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/utils/retry.ts#246-254).
+  - Check `signal.aborted` before making a new attempt.
+
+#### [MODIFY] [OpenAIProvider.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/providers/openai/OpenAIProvider.ts)
+- In [generateLegacyChatCompletionImpl](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/providers/openai/OpenAIProvider.ts#1038-2001), pass the `abortSignal` (already extracted from metadata) to [retryWithBackoff](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/utils/retry.ts#255-357).
+
+## Verification Plan
+
+### Automated Tests
+- Add a new test case to `packages/core/src/utils/retry.test.ts` that verifies [retryWithBackoff](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/core/src/utils/retry.ts#255-357) aborts immediately when the signal is triggered during a delay.
+- Run tests: `npm test packages/core/src/utils/retry.test.ts`
+
+### Manual Verification
+1.  **Reproduction (Pre-fix)**:
+    - Simulate a 429 error loop in OpenAI provider (can be done by mocking or using a dummy key/endpoint).
+    - Trigger a request.
+    - Hit Ctrl+C immediately.
+    - Observe the CLI hanging for the duration of the retry delay.
+2.  **Verification (Post-fix)**:
+    - Repeat the above steps.
+    - The CLI should exit immediately upon Ctrl+C.

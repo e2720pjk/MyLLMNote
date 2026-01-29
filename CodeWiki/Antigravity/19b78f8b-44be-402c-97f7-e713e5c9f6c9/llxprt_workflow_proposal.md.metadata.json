@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Revised proposal. Corrects the misconception about slash commands in non-interactive mode. They are sent to the LLM, not executed locally.",
+  "updatedAt": "2025-11-27T13:14:41.050709Z",
+  "version": "1"
+}

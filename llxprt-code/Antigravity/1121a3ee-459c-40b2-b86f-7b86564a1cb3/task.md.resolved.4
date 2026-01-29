@@ -1,0 +1,43 @@
+# UI Optimization Migration - Task Tracker
+
+## Phase 0: Ink Version Evaluation ✅
+
+- [x] Verify @jrichman/ink@6.4.6 compatibility
+- [x] Run existing tests
+- [x] Create performance baseline test
+- [x] Document verification results
+
+## Phase 1: Static Component Architecture ✅
+
+- [x] Create implementation plan
+- [x] Implement useRenderMode hook
+- [x] Update UIStateContext (historyRemountKey, history/pendingHistory separation)
+- [x] Refactor MainContent for dual mode rendering
+- [x] Verify performance improvements
+- [x] Fix appReducer.test.ts
+
+## Phase 1.1: Screen Reader Support (In Progress)
+
+- [ ] Create ScreenReaderAppLayout.tsx
+  - [ ] Implement component with SR-optimized layout (Footer on top, 90% width)
+  - [ ] Add proper imports and exports
+  - [ ] Include useFlickerDetector integration
+- [ ] Update AppContainer.tsx
+  - [ ] Import useIsScreenReaderEnabled from ink
+  - [ ] Import ScreenReaderAppLayout
+  - [ ] Add conditional rendering logic (SR ? ScreenReaderAppLayout : DefaultAppLayout)
+- [ ] Testing & Verification
+  - [ ] Test SR mode layout
+  - [ ] Test mode switching
+  - [ ] Run test suite (npm run preflight)
+- [ ] (Optional) Remove pendingHistory field
+  - [ ] Remove from UIStateContext interface
+  - [ ] Remove from AppContainer initialization
+  - [ ] Update any references (if any)
+
+## Phase 2+: Future Enhancements (Not Started)
+
+- [ ] Systematic Memoization
+- [ ] Flicker Prevention system integration
+- [ ] Advanced Memory Management
+- [ ] Additional accessibility features

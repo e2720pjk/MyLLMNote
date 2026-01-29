@@ -1,0 +1,16 @@
+{
+  "id": "ses_557dd032fffejVWHsoFqh3ovWL",
+  "version": "1.0.85",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing PR639 merge impacting hybrid-approach-implementation",
+  "time": {
+    "created": 1763757456592,
+    "updated": 1763757632836
+  },
+  "summary": {
+    "additions": 66,
+    "deletions": 14,
+    "files": 1
+  }
+}

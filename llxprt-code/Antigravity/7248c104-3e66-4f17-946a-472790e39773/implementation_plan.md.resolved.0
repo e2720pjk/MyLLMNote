@@ -1,0 +1,25 @@
+# Implementation Plan: Code Comment Reinforcement Rule
+
+This plan outlines the creation of a general rule to enforce meaningful code comments that explain the "why" and "how" of changes, ensuring consistency and auditability.
+
+## User Review Required
+
+> [!IMPORTANT]
+> The rule itself will be written in **Chinese**, but it will explicitly mandate that all generated code comments and documentation must be in **English** for cross-project compatibility.
+
+## Proposed Changes
+
+### Configuration / Rule Layer
+
+#### [NEW] [code-comment-reinforcement.md](file:///Users/caishanghong/.gemini/antigravity/playground/distant-intergalactic/.agent/rules/code-comment-reinforcement.md)
+Create a new rule file that defines the "Code Comment Reinforcement" (CCR) policy.
+
+- **Objective**: Ensure every logic change is justified and connected to the core system.
+- **Requirement**: AI must include comments explaining the "Relation" and "Reason" for each modification.
+- **Language**: Rule is in Chinese; Output comments MUST be in English.
+
+## Verification Plan
+
+### Manual Verification
+- Review the generated rule content to ensure it matches the user's conceptual requirements.
+- Simulate an AI response following this rule to verify the output format.

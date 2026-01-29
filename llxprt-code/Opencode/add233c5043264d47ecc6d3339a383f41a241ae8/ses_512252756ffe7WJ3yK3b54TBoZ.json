@@ -1,0 +1,16 @@
+{
+  "id": "ses_512252756ffe7WJ3yK3b54TBoZ",
+  "version": "1.0.133",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Refactoring progress: Keyboard shortcuts debugging and code cleanup",
+  "time": {
+    "created": 1764927133865,
+    "updated": 1764928843980
+  },
+  "summary": {
+    "additions": 271,
+    "deletions": 530,
+    "files": 5
+  }
+}

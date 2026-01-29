@@ -1,0 +1,16 @@
+{
+  "id": "ses_50d290330ffexJXifyvJE55T9S",
+  "version": "1.0.133",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code",
+  "title": "Implementing TabBar, Tab Views, MainContent integration in CLI UI",
+  "time": {
+    "created": 1765010767055,
+    "updated": 1765011594643
+  },
+  "summary": {
+    "additions": 225,
+    "deletions": 26,
+    "files": 7
+  }
+}

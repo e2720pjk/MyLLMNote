@@ -1,0 +1,30 @@
+# Implementation Plan: Code Comment Reinforcement (CCR) - Lifecycle Edition
+
+Integrate segmented comments, file header logs, function grouping, and pruning strategies to maintain code health.
+
+## Proposed Changes
+
+### Configuration Layer
+
+#### [MODIFY] [.agent-rules.md](file:///Users/caishanghong/.gemini/antigravity/playground/distant-intergalactic/.agent-rules.md)
+Expand the rule with the following lifecycle practices:
+
+- **Example-Driven Segments**: Logic blocks must be preceded by context comments.
+- **Function Grouping**: Related functions should be wrapped in semantic comments (e.g., `// Section: API Handlers`).
+- **File Header Log**: Every file must start with a `## Change Log` block tracking major architectural shifts.
+- **Pruning Strategy**: Rule for AI to archive/delete outdated CCR comments when code is "stable" or during commit preparation to avoid noise.
+
+## Strategic Advice & Direction
+
+> [!IMPORTANT]
+> **這些建議極具價值，特別是「註解生命週期管理 (Pruning)」與「範例驅動」。**
+> 
+> 1. **防止「註解爆發」**：第 4 點「歸檔或刪除」是維持專案長青的關鍵。AI 往往會生成過多註解，明確的「剪枝規則」能確保註解品質始終維持在高點。
+> 2. **提升自省能力**：透過「檔案開頭的更動記錄」，AI 在每次讀取檔案時會先獲得「歷史脈絡」，這能顯著降低其產生與歷史邏輯衝突的可能性。
+> 3. **結構化知識轉移**：分組註解（Grouped Comments）實際上是在代碼中建立「虛擬模組」，這對大型專案的解耦非常有幫助。
+
+## Verification Plan
+
+### Manual Verification
+- Review the updated [.agent-rules.md](file:///Users/caishanghong/.gemini/antigravity/playground/distant-intergalactic/.agent-rules.md).
+- Generate a "Full Lifecycle Example" file showing header, segments, and groups.

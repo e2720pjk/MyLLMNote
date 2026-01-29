@@ -1,0 +1,27 @@
+# Walkthrough: ASTEdit Tool Fixes
+
+## Changes Made
+
+### 1. Signature Extraction ([ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts))
+- Added `signature?: string` to [Declaration](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#74-81) and [EnhancedDeclaration](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#153-162) interfaces.
+- Updated [ASTQueryExtractor](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#224-407) to capture function/method parameters and return types.
+- Added [extractSignatureBasic](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#398-406) fallback using regex for unsupported languages.
+
+### 2. Git Command Robustness
+- Changed `git diff --name-only` to use `-z` flag (null-byte separator).
+- Updated split logic to use `\0` instead of `\n`.
+
+### 3. Context Formatting & Branding
+- Replaced "TABBY EDIT PREVIEW" with "LLXPRT EDIT PREVIEW".
+- [executePreview](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts#1603-1725) now shows Working Set files with their declarations (Markdown list), not just a count.
+
+### 4. Unit Tests ([ast-edit.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.test.ts))
+- Added test: `should extract signatures`.
+- Added test: `should include current_mtime in error payload when file is modified`.
+- Updated snapshots to include new `signature` field.
+
+## Verification
+
+**Command**: `npx vitest run src/tools/ast-edit.test.ts -u`
+
+**Result**: ✅ 7 tests passed, 2 snapshots updated.

@@ -1,0 +1,16 @@
+{
+  "id": "ses_4cff1f17effeashhbbYXosfMdB",
+  "version": "1.0.164",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli",
+  "title": "Diagnosing/ fixing CLI module not found errors in providerManagerInstance.js",
+  "time": {
+    "created": 1766037786241,
+    "updated": 1766037823144
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

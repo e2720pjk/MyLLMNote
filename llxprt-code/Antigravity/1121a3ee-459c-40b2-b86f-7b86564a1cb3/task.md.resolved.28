@@ -1,0 +1,14 @@
+# Task: Refine TODO Tab and Fix Redraw Logic
+
+- [ ] Investigate and Refine TODO Tab Integration
+    - [ ] Compare current `TodoTab.tsx` with [Debug](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/config/config.ts#673-681) tab styling and functionality
+    - [ ] Identify missing features in `TodoTab` (e.g., proper virtualization, styling consistency)
+    - [ ] Fix the "pushing up" layout issue in the TODO tab
+- [ ] Debug and Fix Redraw Logic
+    - [ ] Analyze `handleResize` vs [setActiveTab](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/AppContainer.tsx#1827-1834) redraw triggers in [UIStateContext.tsx](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-4/packages/cli/src/ui/contexts/UIStateContext.tsx)
+    - [ ] Investigate why tool call windows don't correctly redraw on tab switch
+    - [ ] Implement a unified or more robust redraw trigger for tab switching
+- [ ] Verification
+    - [ ] Verify TODO tab styling and layout stability
+    - [ ] Verify tool call windows redraw correctly when switching back to Chat tab
+    - [ ] Run full preflight check

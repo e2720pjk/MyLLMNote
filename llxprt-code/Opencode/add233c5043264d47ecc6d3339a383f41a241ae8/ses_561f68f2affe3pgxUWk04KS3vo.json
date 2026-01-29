@@ -1,0 +1,16 @@
+{
+  "id": "ses_561f68f2affe3pgxUWk04KS3vo",
+  "version": "1.0.78",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing History-Ledger Rolling with Ink Static Constraints",
+  "time": {
+    "created": 1763588010197,
+    "updated": 1763591870297
+  },
+  "summary": {
+    "additions": 313,
+    "deletions": 13,
+    "files": 2
+  }
+}

@@ -1,0 +1,44 @@
+# Renaming WebFetch Tools
+
+## Goal Description
+Rename the two conflicting "WebFetch" tools to clearly distinguish their functionality and avoid confusion.
+- [web-fetch.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/web-fetch.ts) (Gemini-powered) -> `SmartWebFetchTool`
+- [webfetch.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/core/src/tools/webfetch.ts) (Direct HTTP) -> `DirectWebFetchTool`
+
+## Proposed Changes
+
+### Core Tools
+#### [RENAME] [web-fetch.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/web-fetch.ts) -> `google-web-fetch.ts`
+- Rename class [WebFetchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/core/src/tools/webfetch.ts#29-70) to `GoogleWebFetchTool`
+- Rename tool name `web_fetch` to `google_web_fetch`
+
+#### [RENAME] [webfetch.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/webfetch.ts) -> `direct-web-fetch.ts`
+- Rename class [WebFetchTool](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code/packages/core/src/tools/webfetch.ts#29-70) to `DirectWebFetchTool`
+- Rename tool name `webfetch` to `direct_web_fetch`
+
+### Tests
+#### [RENAME] [web-fetch.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/web-fetch.test.ts) -> `google-web-fetch.test.ts`
+- Update imports and class names
+
+#### [RENAME] [webfetch.test.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/webfetch.test.ts) -> `direct-web-fetch.test.ts`
+- Update imports and class names
+
+### Configuration
+#### [MODIFY] [config.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/config/config.ts)
+- Update imports and registrations for both tools
+
+#### [MODIFY] [tool-defaults.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/prompt-config/defaults/tool-defaults.ts)
+- Update references to tool names and markdown files
+
+### Documentation
+#### [RENAME] [webfetch.md](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/prompt-config/defaults/tools/webfetch.md) -> `direct-web-fetch.md`
+- Update content to reflect new tool name
+
+#### [NEW] [google-web-fetch.md](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/prompt-config/defaults/tools/google-web-fetch.md)
+- Create documentation for the google web fetch tool (if needed)
+
+## Verification Plan
+### Automated Tests
+- Run `npm run lint`
+- Run `npx vitest run packages/core/src/tools/smart-web-fetch.test.ts`
+- Run `npx vitest run packages/core/src/tools/direct-web-fetch.test.ts`

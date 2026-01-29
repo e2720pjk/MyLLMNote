@@ -1,0 +1,16 @@
+{
+  "id": "ses_56242c765ffekZEGL6XBu0R8y9",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing project plan progress and starting execution",
+  "time": {
+    "created": 1763583015066,
+    "updated": 1763585936605
+  },
+  "summary": {
+    "additions": 169,
+    "deletions": 18,
+    "files": 3
+  }
+}

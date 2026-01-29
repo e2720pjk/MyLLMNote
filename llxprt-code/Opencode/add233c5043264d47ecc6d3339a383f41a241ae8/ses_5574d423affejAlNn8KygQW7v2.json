@@ -1,0 +1,16 @@
+{
+  "id": "ses_5574d423affejAlNn8KygQW7v2",
+  "version": "1.0.85",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing branch changes worth keeping splitting main-based clean branch cherry-picking Hybrid-ap...",
+  "time": {
+    "created": 1763766877637,
+    "updated": 1763766994030
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 15,
+    "files": 1
+  }
+}

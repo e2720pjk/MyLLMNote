@@ -1,0 +1,6 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary":  "Updated implementation plan to explicitly detail backward compatibility strategy for non-Joern environments.",
+  "updatedAt":  "2026-01-03T00:16:47.912511Z",
+  "version":  "3"
+}

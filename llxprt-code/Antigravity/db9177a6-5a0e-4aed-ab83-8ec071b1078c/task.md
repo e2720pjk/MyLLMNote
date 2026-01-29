@@ -1,0 +1,40 @@
+# UI Architecture Parity Analysis
+
+- [x] **Foundation**: Port Virtualization Engine <!-- id: 5 -->
+    - [x] Port `VirtualizedList.tsx` and `ScrollableList.tsx`
+    - [x] Port `useAnimatedScrollbar.ts`, `useMouse.ts`, `useMouseClick.ts`
+- [x] **Components**: Port Missing UI Components <!-- id: 6 -->
+    - [x] Port `ConfigInitDisplay.tsx`
+    - [x] Re-implement `MainContent.tsx` (adapted for llxprt)
+- [x] **Integration**: Refactor Layout <!-- id: 7 -->
+    - [x] Update `DefaultAppLayout.tsx` to use `MainContent`
+    - [x] Verify integration with `TodoPanel` and `Header`
+- [x] **Verification**: Validate Performance & Features <!-- id: 8 -->
+    - [x] Verify scrolling in long sessions
+    - [x] Verify mouse interactions
+    - [x] Ensure no regressions in existing features
+- [x] **Fix Build & Lint Errors** <!-- id: 9 -->
+    - [x] Fix `ConfigInitDisplay.tsx` (imports, events)
+    - [x] Fix `MainContent.tsx` (types, callbacks)
+    - [x] Fix `MouseContext.tsx` (useMemo, logger)
+    - [x] Fix `VirtualizedList.tsx` (overflowY)
+    - [x] Create `ink-utils.ts` and fix `ScrollProvider`/`useMouseClick`
+    - [x] Create `color-utils.ts` and `debug.ts`
+    - [x] Fix `useAnimatedScrollbar.ts`
+    - [x] Fix `events.ts` and `keyMatchers.test.ts`
+    - [x] Verify build and lint pass
+- [x] **Refine ConfigInitDisplay Logic** <!-- id: 10 -->
+    - [x] Update `DefaultAppLayout.tsx` to conditionally render `ConfigInitDisplay`
+- [/] **Compare ToolCall UI** <!-- id: 11 -->
+    - [x] Compare `ToolGroupMessage.tsx`
+    - [x] Compare `ToolMessage.tsx`
+    - [x] Investigate `ToolResultDisplay` usage
+- [/] **Port ToolCall UI Components** <!-- id: 12 -->
+    - [x] Create `ToolShared.tsx` (extract common components)
+    - [x] Port `StickyHeader.tsx`
+    - [x] Port `ToolResultDisplay.tsx`
+    - [x] Port `ShellInputPrompt.tsx`
+    - [x] Port `ShellToolMessage.tsx`
+    - [x] Refactor `ToolMessage.tsx` to use new components
+    - [x] Refactor `ToolGroupMessage.tsx` to integrate StickyHeader and ShellToolMessage
+- [ ] Verify build and lint pass

@@ -1,0 +1,17 @@
+{
+  "id": "ses_43ce9ccddfferN4ued0teFMDiQ",
+  "slug": "cosmic-orchid",
+  "version": "1.1.20",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Workspace support restoration for generate-notices.js: plan vs cherry-pick decision",
+  "time": {
+    "created": 1768504570659,
+    "updated": 1768505795657
+  },
+  "summary": {
+    "additions": 2559,
+    "deletions": 3,
+    "files": 5
+  }
+}

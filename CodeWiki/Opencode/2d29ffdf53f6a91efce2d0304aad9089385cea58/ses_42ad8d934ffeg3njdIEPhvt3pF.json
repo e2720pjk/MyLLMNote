@@ -1,0 +1,17 @@
+{
+  "id": "ses_42ad8d934ffeg3njdIEPhvt3pF",
+  "slug": "glowing-knight",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "Hybrid gitignore: robust ignore with git check + pathspec fallback",
+  "time": {
+    "created": 1768807671499,
+    "updated": 1768807675201
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}

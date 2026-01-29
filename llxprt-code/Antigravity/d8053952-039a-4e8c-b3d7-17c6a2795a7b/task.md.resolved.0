@@ -1,0 +1,12 @@
+# TabbyEdit Implementation Analysis & Refactoring
+
+- [ ] Verify Code Review Findings <!-- id: 0 -->
+    - [ ] Analyze BM25 implementation in [ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts) <!-- id: 1 -->
+    - [ ] Analyze Git context usage in [ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts) <!-- id: 2 -->
+    - [ ] Analyze File Freshness check in [ast-edit.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-2/packages/core/src/tools/ast-edit.ts) <!-- id: 3 -->
+- [ ] Create Implementation Plan <!-- id: 4 -->
+- [ ] Implement Corrections <!-- id: 5 -->
+    - [ ] Implement File Freshness Check (High Priority) <!-- id: 6 -->
+    - [ ] Fix or Remove BM25 Search (Medium Priority) <!-- id: 7 -->
+    - [ ] Decide on Git Info usage (Low Priority) <!-- id: 8 -->
+- [ ] Verification <!-- id: 9 -->

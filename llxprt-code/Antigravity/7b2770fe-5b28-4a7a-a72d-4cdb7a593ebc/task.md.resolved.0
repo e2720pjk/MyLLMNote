@@ -1,0 +1,8 @@
+# Task: Fix MouseContext Error in llxprt-code-3
+
+## Status
+- [ ] Analyze `MouseProvider` usage in `llxprt-code-3` <!-- id: 0 -->
+- [ ] Compare with `gemini-cli` implementation <!-- id: 1 -->
+- [ ] Identify the cause of `useMouseContext must be used within a MouseProvider` <!-- id: 2 -->
+- [ ] Fix the issue by adding `MouseProvider` or adjusting component hierarchy <!-- id: 3 -->
+- [ ] Verify the fix <!-- id: 4 -->

@@ -1,0 +1,46 @@
+# MCP Display and Status Logic Fixes Walkthrough
+
+## Changes
+
+### 1. Display Glitch Fix
+**File**: `packages/cli/src/ui/components/HistoryItemDisplay.tsx`
+-   **Change**: Modified `escapeAnsiCtrlCodes` usage to skip sanitization for `info`, `error`, `warning`, and `oauth_url` message types.
+-   **Reason**: To allow ANSI color codes from system messages (like MCP status) to be rendered correctly instead of being displayed as raw text.
+
+### 2. Status Logic Fix
+**Files**:
+-   `packages/core/src/mcp/token-storage/file-token-storage.ts`
+-   `packages/core/src/mcp/token-storage/keychain-token-storage.ts`
+-   **Change**: Removed `isTokenExpired` checks in `getCredentials` and `getAllCredentials`.
+-   **Reason**: To allow the UI layer (`mcpCommand.ts`) to receive expired tokens and correctly display "(OAuth token expired)" instead of "(OAuth not authenticated)".
+
+### 3. Dependency Addition
+**File**: `packages/core/package.json`
+-   **Change**: Added `keytar` as an `optionalDependency`.
+-   **Reason**: To enable secure token storage on macOS via `KeychainTokenStorage`.
+
+### 4. Robustness Improvement
+**File**: `packages/core/src/mcp/token-storage/keychain-token-storage.ts`
+-   **Change**: Added `this.validateCredentials(credentials)` in `getCredentials` and `getAllCredentials`.
+-   **Reason**: To ensure that structurally invalid credentials (which might have been implicitly filtered by the previous expiration check) are explicitly rejected/filtered out.
+
+## Verification Results
+
+### Automated Tests
+Ran `vitest` on relevant test files:
+-   `packages/core/src/mcp/token-storage/file-token-storage.test.ts`
+-   `packages/core/src/mcp/token-storage/keychain-token-storage.test.ts`
+-   `packages/core/src/mcp/oauth-token-storage.test.ts`
+
+**Result**: All 50 tests passed.
+```
+ Test Files  3 passed (3) 
+      Tests  50 passed (50)
+   Start at  05:18:47
+   Duration  4.61s
+Exit code: 0
+```
+
+### Manual Verification Steps (Recommended)
+1.  **Display**: Run `/mcp list` and verify colored output.
+2.  **Expiration**: Manually expire a token and verify status shows "(OAuth token expired)".

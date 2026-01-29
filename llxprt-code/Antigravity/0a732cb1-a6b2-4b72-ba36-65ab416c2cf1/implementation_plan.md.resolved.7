@@ -1,0 +1,48 @@
+# Fix Terminal Leakage on Exit (Kitty Protocol)
+
+## Goal Description
+Fix the persistent terminal leakage where control keys are interpreted as input after exit. Investigation revealed that `llxprt-code` enables the **Kitty Keyboard Protocol** (`CSI > 1 u`) but relies on `process.on('exit')` to disable it. Since we explicitly call `process.exit(0)` after our own cleanup, the exit handler might not run correctly or `stdout` might be compromised. We need to explicitly disable this protocol in [runExitCleanup](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/utils/cleanup.ts#33-44).
+
+## User Review Required
+> [!IMPORTANT]
+> This change exports [disableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101) from [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/ui/utils/kittyProtocolDetector.ts) and calls it explicitly in [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/utils/cleanup.ts). This ensures the terminal is reset from the advanced keyboard mode before the process terminates.
+
+## Proposed Changes
+
+### CLI
+#### [MODIFY] [kittyProtocolDetector.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/kittyProtocolDetector.ts)
+- Export the [disableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101) function so it can be called externally.
+
+```typescript
+export function disableProtocol() {
+  if (protocolEnabled) {
+    process.stdout.write('\x1b[<u');
+    protocolEnabled = false;
+  }
+}
+```
+
+#### [MODIFY] [cleanup.ts](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/utils/cleanup.ts)
+- Import [disableProtocol](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101).
+- Call [disableProtocol()](file:///Users/caishanghong/Shopify/cli-tool/llxprt-code-3/packages/cli/src/ui/utils/kittyProtocolDetector.ts#95-101) in [runExitCleanup](file:///Users/caishanghong/Shopify/cli-tool/gemini-cli/packages/cli/src/utils/cleanup.ts#33-44).
+
+```typescript
+import { disableProtocol } from '../ui/utils/kittyProtocolDetector.js';
+
+// ... inside runExitCleanup ...
+
+  // Explicitly reset terminal modes
+  if (process.stdout.isTTY) {
+    process.stdout.write(DISABLE_BRACKETED_PASTE + DISABLE_FOCUS_TRACKING + SHOW_CURSOR);
+    disableProtocol(); // Disable Kitty keyboard protocol
+  }
+```
+
+## Verification Plan
+
+### Manual Verification
+1.  **IME Ctrl+C Test**:
+    -   Launch the CLI.
+    -   Enable non-English IME.
+    -   Run `/quit` or press `Ctrl+C`.
+    -   **Expected Result**: Terminal should behave normally. Typing `Ctrl+C` should generate a SIGINT (or copy), not input characters.

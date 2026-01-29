@@ -1,0 +1,16 @@
+{
+  "id": "ses_5665bf7a3ffeDZyW6qCVuZl1MI",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Analyzing commit a9ea7c92fda1a48d88a465f3c7028ec75ab7a086",
+  "time": {
+    "created": 1763514255452,
+    "updated": 1763516712801
+  },
+  "summary": {
+    "additions": 1197,
+    "deletions": 2,
+    "files": 6
+  }
+}

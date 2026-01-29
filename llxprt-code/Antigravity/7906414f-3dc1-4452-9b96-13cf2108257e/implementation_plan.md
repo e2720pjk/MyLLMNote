@@ -1,0 +1,75 @@
+# Implementation Plan - Extract UI Architecture to Open Source Template
+
+## Goal
+Extract the generic UI architecture and flow from the current Shopify App into a reusable open-source template (npm package). This allows the main project to focus on business logic while the template handles the UI shell, navigation, and common Shopify app patterns.
+
+## User Review Required
+> [!IMPORTANT]
+> This plan involves refactoring the current `app/routes/app/route.tsx` and potentially `app/root.tsx` to use a new library.
+> We need to decide if we want to convert the current repo into a monorepo (using workspaces) to host both the app and the library, or if the library should be a completely separate repository.
+> **Recommendation**: Start with a monorepo structure (`packages/template` and `app`) for easier development, then publish the template package.
+
+## Proposed Changes
+
+### 1. Create Template Package
+Create a new repository `shopify-app-template` with the following structure:
+- `packages/lib/`: The core library code.
+    - `components/`: Reusable UI components.
+    - `flows/`: Encapsulated business flows (e.g., `ExtensionInstallFlow`).
+    - `hooks/`: Logic hooks.
+- `examples/demo-app/`: **[NEW]** A standalone Remix app that imports `packages/lib` to demonstrate functionality.
+    - This allows developing and testing the template in isolation.
+    - Serves as a "Living Documentation" for the flows.
+
+### 2. Component & Logic Separation Strategy
+
+**✅ Template Package (Generic Wrappers & Mechanisms)**
+*   **`AppShell`**: The master layout handling `AppProvider`, `NavMenu`, `Loading`, `I18n`, and `Toast` context.
+*   **`usePopupCommunicator`**: A generic hook to handle `window.open` + `postMessage` protocol. It knows *how* to talk, but not *what* to say.
+*   **`ExtensionInstallFlow`**: A generic UI component that guides users to enable an extension. It accepts `title`, `description`, `actionUrl` as props.
+*   **`LoadingPage`**: A standard loading screen.
+
+**❌ Business Logic (Remains in App)**
+*   **`ElementSelector`**: The specific feature for selecting DOM elements.
+*   **`HtmlContentsIndexTable`**: The specific data table for rules.
+*   **`ThemeAppEmbedStatusCard`**: The specific card checking the app's embed status.
+*   **`Billing`**: The specific billing plans and logic.
+
+### 3. Refactor Original App
+Modify `app/routes/app/route.tsx` to use the new package:
+- Import `AppShell` from the new package.
+- Use `usePopupCommunicator` to implement the *Element Selector* feature (passing the specific selector URL).
+
+### 4. Demo App Strategy (Simulating Complex Flows)
+To demonstrate the `postMessage` flow without a real Shopify store:
+- Create a route `/mock-storefront` in the Demo App.
+- This route simulates the `star_rating.liquid` behavior (sends `postMessage` back).
+- The Demo App uses `usePopupCommunicator` to open `/mock-storefront` and receive data.
+- Import `AppLayout` from the new package.
+- Pass `apiKey`, `shop`, `navItems`, and `children` (Outlet) to `AppLayout`.
+
+### 4. Define Interface
+The `AppLayout` component will accept:
+```typescript
+interface AppLayoutProps {
+  apiKey: string;
+  shop: string;
+  i18n: any; // Polaris i18n data
+  navItems: { label: string; href: string; rel?: string }[];
+  children: React.ReactNode;
+}
+```
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run test` to ensure existing tests pass.
+- Add unit tests in the new package for `AppLayout`.
+
+### Manual Verification
+- Run `npm run dev` to start the app.
+- Verify the app loads correctly with the new layout.
+- Verify navigation works.
+- Verify loading states work.
+- Verify i18n works (change locale).
+

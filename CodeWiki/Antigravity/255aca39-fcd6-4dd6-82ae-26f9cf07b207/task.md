@@ -1,0 +1,53 @@
+# Task: Analyze and Compare Tools
+
+- [ ] Explore tool directories <!-- id: 0 -->
+    - [x] List contents of `opencode/packages/opencode/src/tool` <!-- id: 1 -->
+    - [x] List contents of `llxprt-code-2/packages/core/src/tools` <!-- id: 2 -->
+- [ ] Analyze tool implementations <!-- id: 3 -->
+    - [x] Read files in `opencode` tool directory <!-- id: 4 -->
+    - [x] Read files in `llxprt-code-2` tool directory <!-- id: 5 -->
+- [ ] Compare and Report <!-- id: 6 -->
+    - [x] Draft comparison report <!-- id: 7 -->
+
+- [ ] Analyze `tabby-edit.ts` <!-- id: 8 -->
+    - [ ] Read `~/Shopify/cli-tool/llxprt-code/packages/core/src/tools/tabby-edit.ts` <!-- id: 9 -->
+    - [ ] Compare with `opencode/edit.ts` and `llxprt-code-2/smart-edit.ts` <!-- id: 10 -->
+    - [x] Report on quality and usability <!-- id: 11 -->
+- [ ] Plan `opencode` Integrations <!-- id: 12 -->
+    - [x] Create plan for New Tools (Search, WebFetch) <!-- id: 13 -->
+    - [x] Create plan for Tool Enhancements (Shell, Edit) <!-- id: 14 -->
+
+- [ ] Implement Integrations (Target: `llxprt-code-2`) <!-- id: 15 -->
+    - [x] Verify `llxprt-code-2` state and dependencies <!-- id: 23 -->
+    - [x] Port `CodeSearchTool` to `llxprt-code-2` <!-- id: 17 -->
+    - [x] Rename WebFetch tools to avoid confusion <!-- id: 50 -->
+    - [x] Rename `web-fetch.ts` to `google-web-fetch.ts` <!-- id: 51 -->
+    - [x] Rename `webfetch.ts` to `direct-web-fetch.ts` <!-- id: 52 -->
+    - [x] Update configuration and tests <!-- id: 53 -->
+    - [x] Register new tools in `llxprt-code-2/tool-registry.ts` <!-- id: 21 -->
+    - [x] Check `ShellTool` and `SmartEditTool` in `llxprt-code-2` (Analysis only) <!-- id: 24 -->
+    - [x] Verify implementations (Code review and registration check) <!-- id: 22 -->
+
+- [ ] Review Commit and Gap Analysis <!-- id: 25 -->
+    - [x] Inspect commit `fbf628ec6894ec03e4b329ba163d9fed46d1a306` in `llxprt-code` <!-- id: 26 -->
+    - [x] Analyze tool addition steps (Config, Registry, Tests, etc.) <!-- id: 27 -->
+    - [x] Compare with `llxprt-code-2` implementation <!-- id: 28 -->
+    - [x] Identify and report gaps <!-- id: 29 -->
+    - [x] Implement missing unit tests (`codesearch.test.ts`, `webfetch.test.ts`) <!-- id: 30 -->
+
+- [ ] Refining Tool Integration and Sanitization <!-- id: 31 -->
+    - [x] Locate and implement `TOOL_DEFAULTS` logic <!-- id: 32 -->
+    - [x] Sanitize "opencode" references in code and docs <!-- id: 33 -->
+    - [x] Verify changes <!-- id: 34 -->
+
+- [x] Port Tabby-edit Tool <!-- id: 35 -->
+    - [x] Identify and copy Tabby-edit files <!-- id: 36 -->
+    - [x] Register tool in `config.ts` <!-- id: 37 -->
+    - [x] Adapt and run unit tests <!-- id: 38 -->
+
+- [x] Fix Tabby-edit Output Format <!-- id: 39 -->
+    - [x] Analyze `TabbyEditTool` output logic <!-- id: 40 -->
+    - [x] Modify `executePreview` to return `FileDiff` <!-- id: 41 -->
+    - [x] Remove unused code and verify <!-- id: 42 -->
+    - [x] Refine `executePreview` to handle "Read" mode (no changes) <!-- id: 43 -->
+    - [x] Verify and Commit Changes <!-- id: 44 -->

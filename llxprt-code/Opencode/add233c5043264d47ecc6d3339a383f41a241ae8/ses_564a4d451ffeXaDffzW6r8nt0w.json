@@ -1,0 +1,16 @@
+{
+  "id": "ses_564a4d451ffeXaDffzW6r8nt0w",
+  "version": "1.0.74",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-3",
+  "title": "Analyzing UI Layout Analysis Report differences",
+  "time": {
+    "created": 1763543034798,
+    "updated": 1763549246112
+  },
+  "summary": {
+    "additions": 4783,
+    "deletions": 248,
+    "files": 35
+  }
+}

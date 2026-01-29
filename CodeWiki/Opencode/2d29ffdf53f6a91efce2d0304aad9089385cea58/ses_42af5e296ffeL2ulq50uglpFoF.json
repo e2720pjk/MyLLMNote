@@ -1,0 +1,17 @@
+{
+  "id": "ses_42af5e296ffeL2ulq50uglpFoF",
+  "slug": "mighty-orchid",
+  "version": "1.1.20",
+  "projectID": "2d29ffdf53f6a91efce2d0304aad9089385cea58",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/CodeWiki-1",
+  "title": "Understanding tests/fixtures usage and gitignore behavior",
+  "time": {
+    "created": 1768805768556,
+    "updated": 1768807234725
+  },
+  "summary": {
+    "additions": 15,
+    "deletions": 11,
+    "files": 2
+  }
+}

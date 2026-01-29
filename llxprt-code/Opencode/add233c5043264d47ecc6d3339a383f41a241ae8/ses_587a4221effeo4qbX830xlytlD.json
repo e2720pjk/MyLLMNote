@@ -1,0 +1,16 @@
+{
+  "id": "ses_587a4221effeo4qbX830xlytlD",
+  "version": "1.0.55",
+  "projectID": "add233c5043264d47ecc6d3339a383f41a241ae8",
+  "directory": "/Users/caishanghong/Shopify/cli-tool/llxprt-code-2",
+  "title": "Debugging ToolCall not triggering in pipeline",
+  "time": {
+    "created": 1762955877857,
+    "updated": 1762963777679
+  },
+  "summary": {
+    "additions": 0,
+    "deletions": 0,
+    "files": 0
+  }
+}
