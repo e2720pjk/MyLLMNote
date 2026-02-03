@@ -1,0 +1,30 @@
+# OpenClaw 內部配置（敏感）
+.clawdhub/
+.clawhub/
+.clawhub.json*
+network-state.json*
+*.tmp
+*.log
+
+# 敏感記憶檔案
+MEMORY.md
+memory/2026-*.md
+memory/*-daily.md
+
+# 外部 git repos（避免 git-in-git）
+repos/
+
+# OpenCode 內部配置
+.opencode/
+.opencode.json*
+
+# 堅硬測試報告
+reports/
+*-report.md
+*-evaluation.md
+*-summary.md
+*/
+
+# 保留重要的技術記憶
+!memory/opencode-*.md
+!memory/optimization-*.md
