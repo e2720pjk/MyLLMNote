@@ -33,32 +33,36 @@
 
 ---
 
-## 📂 類別：專案複查與整理
+## 📂 類別：專案現況整理
 
-### Goal 3: 整理並審查 MyLLMNote/llxprt-code 狀況
+### Goal 3: llxprt-code 專案現況整理
 
 - **id**: goal-003
-- **agent**: Librarian（搜尋） + Sisyphus（規劃）
+- **agent**: Librarian（搜尋 GitHub PR） + Atlas（執行）
 - **frequency**: 每週一次
 - **status**: pending
-- **description**: 整理並審查 MyLLMNote 內 llxprt-code 的過去對話記錄與專案現況，找出待辦事項
+- **description**: 整理 llxprt-code 的最新狀況，通過 GitHub PR 和聊天記錄找到待辦事項
 - **context**:
+  - **AST 工具**：已經建置並更新，但有修正項目尚未處理完成
+  - **UI Tab 組件**：更新計畫推行的最新進度排查
   - 位置：~/MyLLMNote/llxprt-code/
-  - 關注點：未完成任務、需處理事項、重點記錄
+  - 方法：查看 GitHub PR 紀錄 + Antigravity 聊天記錄
 - **output**: goals/goal-003/results.md
 
 ---
 
-### Goal 4: 整理並審查 MyLLMNote/CodeWiki 狀況
+### Goal 4: CodeWiki RAG 新技術導入現況
 
 - **id**: goal-004
-- **agent**: Librarian（搜尋） + Sisyphus（規劃）
+- **agent**: Librarian（搜尋 GitHub PR） + Atlas（執行）
 - **frequency**: 每週一次
 - **status**: pending
-- **description**: 整理並審查 MyLLMNote 內 CodeWiki 的過去對話記錄與專案現況
+- **description**: 確認 CodeWiki RAG 新技術導入相關狀況，整合多種技術的延伸研究項目計畫
 - **context**:
+  - **RAG 新技術導入**：最新進展與整合狀況
+  - **延伸研究項目**：整合多種技術的計畫狀況確認
   - 位置：~/MyLLMNote/CodeWiki/
-  - 關注點：未完成任務、需處理事項、重點記錄
+  - 方法：查看 GitHub PR 紀錄 + Antigravity 聊天記錄 + 策略文檔
 - **output**: goals/goal-004/results.md
 
 ---
