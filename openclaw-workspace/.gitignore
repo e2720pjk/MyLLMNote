@@ -38,3 +38,7 @@ repos/
 !scripts/
 !skills/
 !docs/
+
+# New exclusions from version control research
+memory/heartbeat-state.json
+memory/test-*.md
