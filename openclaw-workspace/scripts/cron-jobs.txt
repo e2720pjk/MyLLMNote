@@ -1,0 +1,31 @@
+# Cron Jobs 配置建議
+#
+# 安裝方法：
+#   crontab -e
+#   然後將下面的內容貼上到文件末尾
+#
+# 查看當前 cron jobs：
+#   crontab -l
+#
+# 移除所有 cron jobs：
+#   crontab -r
+#
+# --------------------------------------------------
+
+# 監控 OpenCode sessions（每小時檢查一次）
+# 目標：檢測卡住的 sessions 並通知主 session
+0 * * * * /home/soulx7010201/.openclaw/workspace/scripts/check-opencode-sessions.sh >> /home/soulx7010201/.openclaw/workspace/scripts/opencode-monitor.log 2>&1
+
+# IP 檢查 + 探索任務（每天凌晨 2 點執行）
+# 目標：檢查 IP 變動 + 異步執行 4 個探索目標
+0 2 * * * /home/soulx7010201/.openclaw/workspace/scripts/check-ip.sh >> /home/soulx7010201/.openclaw/workspace/scripts/ip-check.log 2>&1
+
+# 可選：更頻繁的探索任務（每 6 小時）
+# 0 */6 * * * /home/soulx7010201/.openclaw/workspace/scripts/check-ip.sh >> /home/soulx7010201/.openclaw/workspace/scripts/ip-check.log 2>&1
+
+# --------------------------------------------------
+# 備註：
+# - 日誌會累積，建議定期清理或使用 logrotate
+# - 修改腳本路徑時，請確保使用絕對路徑
+# - 測試時可以臨時改成 "* * * * *"（每分鐘執行）
+# --------------------------------------------------

@@ -231,7 +231,7 @@ Dashboard: http://127.0.0.1:18789/
 {
   "lastCheck": "2026-02-02T07:54:57Z",
   "internalIP": "10.140.0.2",
-  "externalIP": "35.185.149.101",
+  "externalIP": "[GCP_PUBLIC_IP_MASKED]",
   "hasChange": 0
 }
 ```
